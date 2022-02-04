@@ -5,12 +5,13 @@
     background-color: khaki;
     display: flex;
     align-items: center;
+    padding: 20px 40px;
 }
 
 .footer {
     position: fixed;
     bottom: 0;
-    height: 100px;
+    justify-content: space-between;
 }
 
 .nav {
@@ -19,7 +20,6 @@
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    padding: 20px 40px;
 }
 
 .app-name {
@@ -35,7 +35,9 @@
 }
 
 .register-open__button,
-.sign-open__button {
+.sign-open__button,
+.about-us__button {
+    width: fit-content;
     cursor: pointer;
     font-size: 20px;
     font-family: sans-serif;
@@ -47,9 +49,10 @@
 
 .main {
     display: flex;
-    height: calc(100% - 200px);
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    padding: 0 40px;
 }
 
 .games-button__wrap {
@@ -59,6 +62,7 @@
     gap: 30px;
     flex-direction: row;
     justify-content: space-evenly;
+    margin: 70px 0;
 }
 
 .game1,
@@ -74,4 +78,106 @@
     border-radius: 30px;
     background-color: khaki;
     border: 3px solid black;
+}
+
+.register-block,
+.sign-block {
+    display: none;
+}
+
+.register-block.active,
+.sign-block.active {
+    display: block;
+    width: fit-content;
+    height: fit-content;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: khaki;
+    border: 2px solid black;
+}
+
+.close-form {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 20px;
+    left: calc(100% - 45px);
+    cursor: pointer;
+}
+
+.register-form,
+.sign-form {
+    display: flex;
+    flex-direction: column;
+    margin: 70px;
+    font-size: 15px;
+    font-family: sans-serif;
+}
+
+.form-label {
+    margin-bottom: 5px;
+}
+
+.form-input {
+    border: 1px solid black;
+    padding: 5px;
+    margin-bottom: 15px;
+}
+
+.register-submit,
+.sign-submit {
+    margin-top: 10px;
+    background-color: khaki;
+    border: 1.5px solid black;
+    padding: 10px;
+    font-size: 15px;
+    font-family: sans-serif;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+}
+
+.register-submit:hover,
+.sign-submit:hover {
+    background-color: black;
+    color: khaki;
+    transition: all .5s ease-in-out;
+}
+
+.about-us__block {
+    width: 100%;
+}
+
+.about-us__info {
+    margin: 30px 0;
+    height: 200px;
+    font-size: 20px;
+    font-family: sans-serif;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+.rsschool-img {
+    width: 80px;
+    height: auto;
+}
+
+.developers {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.developers a {
+    text-decoration: none;
+    color: black;
+    font-family: sans-serif;
+}
+
+.year {
+    font-size: 18px;
+    font-family: sans-serif;
 }
