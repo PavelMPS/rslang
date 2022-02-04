@@ -36,7 +36,8 @@
 
 .register-open__button,
 .sign-open__button,
-.about-us__button {
+.about-us__button,
+.statistics-open__button {
     width: fit-content;
     cursor: pointer;
     font-size: 20px;

@@ -6,6 +6,7 @@ export function renderStartPage(): void {
   <nav class="nav">
       <div class="app-name">RSLang</div>
       <div class="register-sign__block">
+      <button class="statistics-open__button">Statistics</button>
           <button class="register-open__button">Register</button>
           <div class="register-block">
               <img class="close-form" src="./assets/cross.svg" alt="Close">
