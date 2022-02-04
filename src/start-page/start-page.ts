@@ -4,13 +4,32 @@ export function renderStartPage(): void {
   const startPage = `
   <header class="header">
   <nav class="nav">
-      <div class="app-name">RSLang</div>
+
+  <div class="burger">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+  </div>
+
+<div class="burger-menu">
+  <nav class="burger-menu__nav">
+    <ul>
+      <li><a href="#">Game1</a></li>
+      <li><a href="#">Game2</a></li>
+      <li><a href="#">Textbook</a></li>
+      <li><a href="#">Statistics</a></li>
+      <li><a href="#">About us</a></li>
+    </ul>
+  </nav>
+</div>
+
       <div class="register-sign__block">
-      <button class="statistics-open__button">Statistics</button>
           <button class="register-open__button">Register</button>
           <div class="register-block">
               <img class="close-form" src="./assets/cross.svg" alt="Close">
               <form class="register-form">
+                  <label class="form-label" for="register-name">Name</label>
+                  <input class="form-input" type="text" name="register-name" id="register-name" required>
                   <label class="form-label" for="register-email">E-mail</label>
                   <input class="form-input" type="email" name="register-email" id="register-email" required>
                   <label class="form-label" for="register-password">Password</label>
@@ -35,17 +54,17 @@ export function renderStartPage(): void {
 </header>
 
 <main class="main">
-  <section class="games-button__wrap">
-      <div class="game1">Game1</div>
-      <div class="game2">Game2</div>
-  </section>
-
   <section class="about-us__block">
       <button class="about-us__button">About us</button>
       <article class="about-us__info">
           Description
       </article>
   </section>
+
+  <section class="games-button__wrap">
+  <div class="game1">Game1</div>
+  <div class="game2">Game2</div>
+</section>
 </main>
 
 <footer class="footer">
@@ -81,4 +100,33 @@ export function renderStartPage(): void {
     });
   });
 
+  const burger = document.querySelector('.burger') as HTMLElement;
+  const burgerMenu = document.querySelector('.burger-menu') as HTMLElement;
+  const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a');
+
+  const clickBurger = () => {
+    burgerMenu.classList.toggle('active');
+    burger.children[0].classList.toggle('active');
+    burger.children[1].classList.toggle('passive');
+    burger.children[2].classList.toggle('active');
+  };
+
+  burgerMenuLinks.forEach(el => {
+    el.addEventListener('click', () => {
+      clickBurger();
+    });
+  });
+
+  burger.addEventListener('click', () => {
+    clickBurger();
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target !== burger) {
+      burgerMenu.classList.remove('active');
+      burger.children[0].classList.remove('active');
+      burger.children[1].classList.remove('passive');
+      burger.children[2].classList.remove('active');
+    }
+  });
 };
