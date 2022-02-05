@@ -1,3 +1,4 @@
+import { burgerListen } from '../listen/burger-listen';
 import '../start-page/start-page.css';
 
 export function renderStartPage(): void {
@@ -14,11 +15,11 @@ export function renderStartPage(): void {
 <div class="burger-menu">
   <nav class="burger-menu__nav">
     <ul>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/exercise.png"><div>Sprint</div></a></a></li>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/audio.png"><div>Audio</div></a></a></li>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/textbook.png"><div>Textbook</div></a></li>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/stats.png"><div>Statistics</div></a></li>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/about.png"><div>About us</div></a></li>
+      <li><a id="burger-menu-item-1" href="#"><img class="burger-menu__img" src="./assets/exercise.png"><div>Sprint</div></a></a></li>
+      <li><a id="burger-menu-item-2" href="#"><img class="burger-menu__img" src="./assets/audio.png"><div>Audio</div></a></a></li>
+      <li><a id="burger-menu-item-3" href="#"><img class="burger-menu__img" src="./assets/textbook.png"><div>Textbook</div></a></li>
+      <li><a id="burger-menu-item-4"href="#"><img class="burger-menu__img" src="./assets/stats.png"><div>Statistics</div></a></li>
+      <li><a id="burger-menu-item-5"href="#"><img class="burger-menu__img" src="./assets/about.png"><div>About us</div></a></li>
     </ul>
   </nav>
 </div>
@@ -125,4 +126,5 @@ export function renderStartPage(): void {
       burger.children[2].classList.remove('active');
     }
   });
+  burgerListen();
 };
