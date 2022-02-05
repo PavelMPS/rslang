@@ -1,5 +1,6 @@
 import { renderSprintPage } from "../sprint-game/sprint-game";
 import { renderStatisticPage } from "../statistic-page/statistic-page";
+import { renderTextbookPage } from "../textbook-page/textbook-page";
 
 export function burgerListen(): void {
     const burgerContainer: HTMLElement | null = document.querySelector('.burger-menu__nav');
@@ -13,7 +14,7 @@ export function burgerListen(): void {
                 console.log('audiochallenge');
                 break;             
             case 'burger-menu-item-3': 
-                console.log('Textbook open');
+                renderTextbookPage();
                 break;            
             case 'burger-menu-item-4': 
                 renderStatisticPage();

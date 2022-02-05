@@ -1,0 +1,269 @@
+.textbook {
+  margin: 20px 0;
+  width: 90%;
+  margin-bottom: 100px;
+}
+.sidebar {
+  position: relative;
+  display: block;
+  width: 50px;
+}
+.page-nav {
+  position: absolute;
+  top: 380px;
+  right: 0px;
+  justify-content: space-between;
+}
+.prev-page,
+.next-page,
+.page-num {
+  width: 40px;
+  height: 40px;
+  font-size: 30px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+.prev-page:hover,
+.next-page:hover,
+.prev-page.active,
+.next-page.active {
+  transform: scale(1.4);
+  transition: 0.3s;
+}
+.prev-page.disable,
+.next-page.disable,
+.prev-page.disable:hover,
+.next-page.disable:hover {
+  opacity: 0.5;
+}
+.prev-page {
+  background-image: url(../assets/icons8-chevron-left-100.png);
+  background-size: 40px;
+}
+.next-page {
+  background-image: url(../assets/icons8-chevron-right-100.png);
+  background-size: 40px;
+}
+.prev-page.disable,
+.next-page.disable {
+  opacity: 0.2;
+}
+.prev-page.disable:hover,
+.next-page.disable:hover {
+  opacity: 0.2;
+}
+.game-container {
+  width: 100px;
+  position: fixed;
+  display: block;
+  top: 50%;
+  transform: translate(0%, -50%);
+  right: 30px;
+  z-index: 10;
+}
+.sprint-btn:hover, 
+.audio-call-btn:hover {
+  transform: scale(1.4);
+  transition: 0.3s;
+  margin: 40px 0;
+  cursor: pointer;
+}
+.game-menu-text {
+  font-size: 25px;
+  font-weight: 700;
+  color:rgb(10, 0, 53);
+  text-align: center;
+}
+.sprint-btn,
+.audio-call-btn {
+  height: 100px;
+  width: 100px;
+  background-size: 100%;
+  margin: 20px 0;
+}
+.sprint-btn {
+  background-image: url(../assets/free-sticker-busy-4850894.png);
+}
+.audio-call-btn {
+  background-image: url(../assets/free-sticker-marketing-4850876.png);
+}
+
+.page-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+.page {
+  left: 50px;
+  width: calc(100% - 50px);
+  min-height: 300px;
+  box-shadow: 0px 0px 20px -1px rgba(34, 60, 80, 0.27);
+  background-color: #e9fcfd;
+}
+.bookmarks {
+  position: relative;
+}
+.bookmark {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  left: 0px;
+  font-size: 35px;
+  color: #ffffff;
+  text-align: center;
+  line-height: 50px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 2px solid #3a3a3a;
+  border-right: none;
+  cursor: pointer;
+}
+.bookmark:hover,
+.bookmark.active {
+  transform: scale(1.2);
+  transition: 0.3s;
+  box-shadow: -5px 5px 5px -1px rgba(34, 60, 80, 0.23);
+  z-index: 10;
+}
+.bookmark:nth-child(1) {
+  top: 0px;
+  background-color: #00bf76;
+}
+.bookmark:nth-child(2) {
+  top: 50px;
+  background-color: #00b3ba;
+}
+.bookmark:nth-child(3) {
+  top: 100px;
+  background-color: #0081af;
+}
+.bookmark:nth-child(4) {
+  top: 150px;
+  background-color: #003daf;
+}
+.bookmark:nth-child(5) {
+  top: 200px;
+  background-color: #57009e;
+}
+.bookmark:nth-child(6) {
+  top: 250px;
+  background-color: #970086;
+}
+.bookmark:nth-child(7) {
+  top: 300px;
+  background-color: #b83100;
+  background-image: url(../assets/icons8-bookmark-100.png);
+  background-size: 50px 50px;
+}
+
+.bookmark.active:nth-child(1),
+.bookmark:nth-child(1):hover {
+  top: 5px;
+  background-color: #00ff9d;
+}
+.bookmark.active:nth-child(2),
+.bookmark:nth-child(2):hover {
+  background-color: #00f7ff;
+}
+.bookmark.active:nth-child(3),
+.bookmark:nth-child(3):hover {
+  background-color: #00bbff;
+}
+.bookmark.active:nth-child(4),
+.bookmark:nth-child(4):hover {
+  background-color: #0059ff;
+}
+.bookmark.active:nth-child(5),
+.bookmark:nth-child(5):hover {
+  background-color: #8c00ff;
+}
+.bookmark.active:nth-child(6),
+.bookmark:nth-child(6):hover {
+  background-color: #ff00e1;
+}
+.bookmark.active:nth-child(7),
+.bookmark:nth-child(7):hover {
+  background-color: #ff4400;
+}
+
+.word-card {
+  position: relative;
+  width: 98%;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  column-gap: 20px;
+  font-size: 25px;
+  line-height: 35px;
+  background-color: #d9f9fa;
+}
+.word-card.heavy-word {
+  box-shadow: 0px 0px 9px 4px rgba(255, 133, 170, 0.7);
+}
+.word-card.learned-word {
+  opacity: 0.5;
+}
+.word-img {
+  height: 200px;
+  width: 200px;
+  background-size: cover;
+  border-radius: 50%;
+}
+.word {
+  font-size: 35px;
+  line-height: 45px;
+}
+.word,
+.word-meaning {
+  margin-bottom: 10px;
+}
+.english {
+  color: #000000;
+}
+.translation {
+  color: #6d6d6d;
+}
+
+.word-settings-container {
+  width: 50px;
+  height: 100%;
+}
+.audio-btn,
+.heavy-btn,
+.learned-btn {
+  position: absolute;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  cursor: pointer;
+}
+.audio-btn,
+.heavy-btn,
+.learned-btn {
+  background-size: 50px 50px;
+  opacity: 0.6;
+  cursor: pointer;
+}
+.audio-btn {
+  background-image: url(../assets/icons8-audio-100.png);
+  top: 10px;
+}
+.heavy-btn {
+  background-image: url(../assets/icons8-high-priority-100.png);
+  top: 80px;
+}
+.learned-btn {
+  background-image: url(../assets/icons8-ok-100.png);
+  top: 150px;
+}
+.audio-btn:hover,
+.heavy-btn:hover,
+.heavy-btn.active,
+.learned-btn:hover,
+.learned-btn.active {
+  transform: scale(1.4);
+  transition: 0.3s;
+  opacity: 1;
+}
