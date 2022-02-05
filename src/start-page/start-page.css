@@ -261,9 +261,10 @@
 }
 
 .burger-menu nav ul li {
-    padding: 18px 0;
+    padding: 7px 0;
     display: flex;
-    padding-left: 30px;
+    padding-left: 25px;
+    text-align: left;
 }
 
 .burger-menu nav ul li a {
