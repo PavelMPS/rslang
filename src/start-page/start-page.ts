@@ -1,4 +1,5 @@
 import { burgerListen } from '../listen/burger-listen';
+import { startPageListen } from '../listen/start-page-listen';
 import '../start-page/start-page.css';
 
 export function renderStartPage(): void {
@@ -127,4 +128,5 @@ export function renderStartPage(): void {
     }
   });
   burgerListen();
+  startPageListen();
 };

@@ -288,3 +288,7 @@
     width: 30px;
     height: fit-content;
 }
+
+.disabled {
+    display: none;
+}

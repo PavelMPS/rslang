@@ -1,3 +1,4 @@
+import { renderSprintPage } from "../sprint-game/sprint-game";
 import { renderStatisticPage } from "../statistic-page/statistic-page";
 
 export function burgerListen(): void {
@@ -6,8 +7,8 @@ export function burgerListen(): void {
         const target = e.target as HTMLElement;
         switch (target.id) {
             case 'burger-menu-item-1': 
-               console.log('sprint');
-               break;             
+                renderSprintPage();
+                break;             
             case 'burger-menu-item-2': 
                 console.log('audiochallenge');
                 break;             
@@ -20,6 +21,11 @@ export function burgerListen(): void {
             case 'burger-menu-item-5': 
                 console.log('About us page');
                 break;             
+        }
+        if (target.id === 'burger-menu-item-3' || target.id === 'burger-menu-item-4' ||
+        target.id === 'burger-menu-item-5') {
+            const footer = document.querySelector('.footer') as HTMLElement;
+            footer.classList.remove('disabled');
         }
     })
 }
