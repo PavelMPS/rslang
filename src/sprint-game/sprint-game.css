@@ -1,0 +1,74 @@
+.game-sprint-title-container {
+    padding-top: 100px;
+}
+
+.game-sprint-page-title {
+    font-size: 36px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid black;
+    text-shadow: 2px 2px 3px rgb(121, 121, 120);
+}
+
+.game-sprint-describe-container {
+    width: 40%;
+    margin-bottom: 20px;
+}
+
+.game-sprint-describe {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 125px;
+}
+
+.game-sprint-difficult-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border: 2px solid black;
+    width: 40%;
+    height: 25%;
+    min-height: 150px;
+    background: khaki;
+    border-radius: 5px;
+    box-shadow: 2px 3px 3px grey;
+    margin-bottom: 40px;
+}
+
+.sprint-difficult-subtitle {
+    padding-top: 15px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.difficult-buttons-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.difficult-btn {
+    width: 16%;
+    height: 18%;
+    min-height: 50px;
+    font-size: 30px;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+
+.sprint-start-btn {
+    background: black;
+    color: white;
+    width: 13%;
+    height: 10%;
+    min-height: 40px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all 0.4s;
+}
+
+.sprint-start-btn:hover {
+    transform: scale(1.1);
+    transition: all 0.4s;
+}
