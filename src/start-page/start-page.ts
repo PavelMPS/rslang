@@ -14,11 +14,11 @@ export function renderStartPage(): void {
 <div class="burger-menu">
   <nav class="burger-menu__nav">
     <ul>
-      <li><a href="#">Game1</a></li>
-      <li><a href="#">Game2</a></li>
-      <li><a href="#">Textbook</a></li>
-      <li><a href="#">Statistics</a></li>
-      <li><a href="#">About us</a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/exercise.png"><div>Sprint</div></a></a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/audio.png"><div>Audio</div></a></a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/textbook.png"><div>Textbook</div></a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/stats.png"><div>Statistics</div></a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/about.png"><div>About us</div></a></li>
     </ul>
   </nav>
 </div>

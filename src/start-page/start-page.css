@@ -262,6 +262,8 @@
 
 .burger-menu nav ul li {
     padding: 18px 0;
+    display: flex;
+    padding-left: 30px;
 }
 
 .burger-menu nav ul li a {
@@ -273,8 +275,16 @@
     padding: 7px 10px;
     background-size: 0% 3.5px;
     transition: background-size .5s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.burger-menu nav ul li a:hover {
+/* .burger-menu nav ul li a:hover {
     background-size: 100% 3.5px;
+} */
+
+.burger-menu__img {
+    width: 30px;
+    height: fit-content;
 }
