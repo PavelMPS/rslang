@@ -1,0 +1,96 @@
+.games-statistic-title-container,
+.words-statistic-title-container {
+    margin-bottom: 20px;
+    padding-top: 50px;
+    border-bottom: 2px solid black;
+}
+
+.games-statistic-title,
+.words-statistic-title {
+    font-size: 36px;
+    text-shadow: 2px 2px 3px yellow;
+}
+
+.games-statistic-container {
+    display: flex;
+    width: 80%;
+    height: 30%;
+    min-height: 200px;
+    justify-content: space-around;
+    margin-bottom: -7px;
+}
+
+.game-audiochallenge,
+.game-sprint {
+    display: flex;
+    width: 45%;
+    min-width: 400px;
+    height: 30%;
+    min-height: 200px;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 2px solid black;
+    background: khaki;
+    box-shadow: 2px 3px 3px grey;
+    border-radius: 5px;
+}
+
+.game-audiochallenge-title,
+.game-sprint-title {
+    text-align: center;
+    font-size: 24px;
+
+}
+
+.words-statistic-container {
+    display: flex;
+    width: 50%;
+    min-width: 300px;
+    height: 30%;
+    min-height: 200px;
+    flex-direction: column;
+    justify-content: space-between;
+    background: khaki;
+    border: 2px solid black;
+    box-shadow: 2px 3px 3px grey;
+    border-radius: 5px;
+}
+
+.new-words-count,
+.learn-words-count,
+.right-answers-count {
+    font-size: 28px;
+    margin-bottom: 35px;
+    padding-left: 25px;
+}
+
+.new-words-count {
+    padding-top: 15px;
+}
+
+.home-btn {
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.sprint-newwords-stat,
+.sprint-right-answer-stat,
+.sprint-longest-serie-stat,
+.audiochallenge-newwords-stat,
+.audiochallenge-right-answer-stat,
+.audiochallenge-longest-serie-stat {
+    font-size: 24px;
+    padding-left: 10px;
+}
+
+@media (max-width: 800px) {
+    .games-statistic-container {
+        flex-direction: column;
+    }
+}

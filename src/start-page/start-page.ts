@@ -1,3 +1,4 @@
+import { burgerListen } from '../listen/burger-listen';
 import '../start-page/start-page.css';
 
 export function renderStartPage(): void {
@@ -14,11 +15,11 @@ export function renderStartPage(): void {
 <div class="burger-menu">
   <nav class="burger-menu__nav">
     <ul>
-      <li><a href="#">Game1</a></li>
-      <li><a href="#">Game2</a></li>
-      <li><a href="#">Textbook</a></li>
-      <li><a href="#">Statistics</a></li>
-      <li><a href="#">About us</a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/exercise.png"><div id="burger-menu-item-1">Sprint</div></a></a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/audio.png"><div id="burger-menu-item-2">Audio</div></a></a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/textbook.png"><div id="burger-menu-item-3">Textbook</div></a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/stats.png"><div id="burger-menu-item-4">Statistics</div></a></li>
+      <li><a href="#"><img class="burger-menu__img" src="./assets/about.png"><div id="burger-menu-item-5">About us</div></a></li>
     </ul>
   </nav>
 </div>
@@ -102,9 +103,9 @@ export function renderStartPage(): void {
 
   const burger = document.querySelector('.burger') as HTMLElement;
   const burgerMenu = document.querySelector('.burger-menu') as HTMLElement;
-  const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a');
+  const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a, .burger');
 
-  const clickBurger = () => {
+  const openBurgerMenu = () => {
     burgerMenu.classList.toggle('active');
     burger.children[0].classList.toggle('active');
     burger.children[1].classList.toggle('passive');
@@ -113,12 +114,8 @@ export function renderStartPage(): void {
 
   burgerMenuLinks.forEach(el => {
     el.addEventListener('click', () => {
-      clickBurger();
+      openBurgerMenu();
     });
-  });
-
-  burger.addEventListener('click', () => {
-    clickBurger();
   });
 
   window.addEventListener('click', (e) => {
@@ -129,4 +126,5 @@ export function renderStartPage(): void {
       burger.children[2].classList.remove('active');
     }
   });
+  burgerListen();
 };
