@@ -15,11 +15,11 @@ export function renderStartPage(): void {
 <div class="burger-menu">
   <nav class="burger-menu__nav">
     <ul>
-      <li><a href="#">Game1</a></li>
-      <li><a href="#">Game2</a></li>
-      <li><a href="#">Textbook</a></li>
-      <li><a href="#">Statistics</a></li>
-      <li><a href="#">About us</a></li>
+      <li><a id="burger-menu-item-1" href="#">Game1</a></li>
+      <li><a id="burger-menu-item-2" href="#">Game2</a></li>
+      <li><a id="burger-menu-item-3" href="#">Textbook</a></li>
+      <li><a id="burger-menu-item-4" href="#">Statistics</a></li>
+      <li><a id="burger-menu-item-5" href="#">About us</a></li>
     </ul>
   </nav>
 </div>
