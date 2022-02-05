@@ -1,3 +1,4 @@
+import { burgerListen } from '../listen/burger-listen';
 import '../start-page/start-page.css';
 
 export function renderStartPage(): void {
@@ -129,4 +130,5 @@ export function renderStartPage(): void {
       burger.children[2].classList.remove('active');
     }
   });
+  burgerListen();
 };
