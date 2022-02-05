@@ -261,7 +261,7 @@
 }
 
 .burger-menu nav ul li {
-    padding: 18px 0;
+    padding: 10px 0;
     display: flex;
     padding-left: 30px;
 }
@@ -287,4 +287,8 @@
 .burger-menu__img {
     width: 30px;
     height: fit-content;
+}
+
+.burger-menu__item {
+    text-align: left;
 }

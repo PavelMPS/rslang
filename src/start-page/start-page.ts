@@ -14,11 +14,35 @@ export function renderStartPage(): void {
 <div class="burger-menu">
   <nav class="burger-menu__nav">
     <ul>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/exercise.png"><div>Sprint</div></a></a></li>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/audio.png"><div>Audio</div></a></a></li>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/textbook.png"><div>Textbook</div></a></li>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/stats.png"><div>Statistics</div></a></li>
-      <li><a href="#"><img class="burger-menu__img" src="./assets/about.png"><div>About us</div></a></li>
+      <li><a href="#">
+      <img class="burger-menu__img" src="./assets/home.png">
+      <div id="burger-menu-item-0" class="burger-menu__item">Home</div>
+      </a></li>
+
+      <li><a href="#">
+      <img class="burger-menu__img" src="./assets/exercise.png">
+      <div id="burger-menu-item-1" class="burger-menu__item">Sprint</div>
+      </a></a></li>
+
+      <li><a href="#">
+      <img class="burger-menu__img" src="./assets/audio.png">
+      <div id="burger-menu-item-2" class="burger-menu__item">Audio challenge</div>
+      </a></li>
+
+      <li><a href="#">
+      <img class="burger-menu__img" src="./assets/textbook.png">
+      <div id="burger-menu-item-3" class="burger-menu__item">Textbook</div>
+      </a></li>
+
+      <li><a href="#">
+      <img class="burger-menu__img" src="./assets/stats.png">
+      <div id="burger-menu-item-4" class="burger-menu__item">Statistics</div>
+      </a></li>
+      
+      <li><a href="#">
+      <img class="burger-menu__img" src="./assets/about.png">
+      <div id="burger-menu-item-5" class="burger-menu__item">About us</div>
+      </a></li>
     </ul>
   </nav>
 </div>
