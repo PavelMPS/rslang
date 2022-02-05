@@ -22,5 +22,10 @@ export function burgerListen(): void {
                 console.log('About us page');
                 break;             
         }
+        if (target.id === 'burger-menu-item-3' || target.id === 'burger-menu-item-4' ||
+        target.id === 'burger-menu-item-5') {
+            const footer = document.querySelector('.footer') as HTMLElement;
+            footer.classList.remove('disabled');
+        }
     })
 }

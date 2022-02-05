@@ -23,7 +23,9 @@ export async function renderSprintPage(): Promise<void> {
     </div>
     <button class="btn sprint-start-btn">Let's start!</button>
     `;
+    const footer = document.querySelector('.footer') as HTMLElement;
     const main = document.querySelector('.main') as HTMLElement;
+    footer.classList.add('disabled');
     main.innerHTML = content;
     await startGameSprint();
 }
