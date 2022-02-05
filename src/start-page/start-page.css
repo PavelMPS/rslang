@@ -146,7 +146,7 @@
     background-repeat: no-repeat;
     padding: 7px 10px;
     background-size: 0% 100%;
-    transition: background-size .5s ease-in-out, color .5s ease-in-out;
+    transition: background-size .3s ease-in-out, color .3s ease-in-out;
     font-size: 15px;
     font-family: sans-serif;
     cursor: pointer;
@@ -155,7 +155,7 @@
 .register-submit:hover,
 .sign-submit:hover {
     color: khaki;
-    transition: background-size .5s ease-in-out, color .5s ease-in-out;
+    transition: background-size .3s ease-in-out, color .3s ease-in-out;
     background-size: 100% 100%;
 }
 
@@ -208,6 +208,7 @@
 .line1,
 .line2,
 .line3 {
+    pointer-events: none;
     width: 40px;
     height: 4px;
     background-color: black;
@@ -261,6 +262,8 @@
 
 .burger-menu nav ul li {
     padding: 18px 0;
+    display: flex;
+    padding-left: 30px;
 }
 
 .burger-menu nav ul li a {
@@ -272,8 +275,16 @@
     padding: 7px 10px;
     background-size: 0% 3.5px;
     transition: background-size .5s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.burger-menu nav ul li a:hover {
+/* .burger-menu nav ul li a:hover {
     background-size: 100% 3.5px;
+} */
+
+.burger-menu__img {
+    width: 30px;
+    height: fit-content;
 }
