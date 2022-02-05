@@ -1,0 +1,11 @@
+@import './normalize.css';
+
+html {
+	height: 100%;
+}
+
+.body {
+	height: inherit;
+	max-width: 1400px;
+	margin: auto;
+}
