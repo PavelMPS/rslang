@@ -102,9 +102,9 @@ export function renderStartPage(): void {
 
   const burger = document.querySelector('.burger') as HTMLElement;
   const burgerMenu = document.querySelector('.burger-menu') as HTMLElement;
-  const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a');
+  const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a, .burger');
 
-  const clickBurger = () => {
+  const openBurgerMenu = () => {
     burgerMenu.classList.toggle('active');
     burger.children[0].classList.toggle('active');
     burger.children[1].classList.toggle('passive');
@@ -113,12 +113,8 @@ export function renderStartPage(): void {
 
   burgerMenuLinks.forEach(el => {
     el.addEventListener('click', () => {
-      clickBurger();
+      openBurgerMenu();
     });
-  });
-
-  burger.addEventListener('click', () => {
-    clickBurger();
   });
 
   window.addEventListener('click', (e) => {
