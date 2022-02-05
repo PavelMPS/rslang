@@ -15,11 +15,11 @@ export function renderStartPage(): void {
 <div class="burger-menu">
   <nav class="burger-menu__nav">
     <ul>
-      <li><a id="burger-menu-item-1" href="#">Game1</a></li>
-      <li><a id="burger-menu-item-2" href="#">Game2</a></li>
-      <li><a id="burger-menu-item-3" href="#">Textbook</a></li>
-      <li><a id="burger-menu-item-4" href="#">Statistics</a></li>
-      <li><a id="burger-menu-item-5" href="#">About us</a></li>
+      <li><a id="burger-menu-item-1" href="#"><img class="burger-menu__img" src="./assets/exercise.png"><div>Sprint</div></a></a></li>
+      <li><a id="burger-menu-item-2" href="#"><img class="burger-menu__img" src="./assets/audio.png"><div>Audio</div></a></a></li>
+      <li><a id="burger-menu-item-3" href="#"><img class="burger-menu__img" src="./assets/textbook.png"><div>Textbook</div></a></li>
+      <li><a id="burger-menu-item-4"href="#"><img class="burger-menu__img" src="./assets/stats.png"><div>Statistics</div></a></li>
+      <li><a id="burger-menu-item-5"href="#"><img class="burger-menu__img" src="./assets/about.png"><div>About us</div></a></li>
     </ul>
   </nav>
 </div>
@@ -103,9 +103,9 @@ export function renderStartPage(): void {
 
   const burger = document.querySelector('.burger') as HTMLElement;
   const burgerMenu = document.querySelector('.burger-menu') as HTMLElement;
-  const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a');
+  const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a, .burger');
 
-  const clickBurger = () => {
+  const openBurgerMenu = () => {
     burgerMenu.classList.toggle('active');
     burger.children[0].classList.toggle('active');
     burger.children[1].classList.toggle('passive');
@@ -114,12 +114,8 @@ export function renderStartPage(): void {
 
   burgerMenuLinks.forEach(el => {
     el.addEventListener('click', () => {
-      clickBurger();
+      openBurgerMenu();
     });
-  });
-
-  burger.addEventListener('click', () => {
-    clickBurger();
   });
 
   window.addEventListener('click', (e) => {
