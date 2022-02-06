@@ -65,15 +65,8 @@ export async function renderStatisticPage(): Promise<void> {
     </div>
     </div>
     </div>
-    <button class="btn home-btn">Home</div>
 `;
 
     const main = document.querySelector('.main') as HTMLElement;
     main.innerHTML = content;
-    await backToHome();
-}
-
-async function backToHome(): Promise<void> {
-    const homeBtn = document.querySelector('.home-btn') as HTMLElement;
-    homeBtn.addEventListener('click', renderStartPage);
 }
