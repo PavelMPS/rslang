@@ -7,7 +7,7 @@
 .words-statistic-title {
     font-size: 36px;
     text-shadow: 2px 2px 3px yellow;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .games-statistic-container {
@@ -21,7 +21,7 @@
 .game-audiochallenge-title,
 .game-sprint-title {
     text-align: center;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 
@@ -52,26 +52,23 @@
 .stats__info {
     text-align: center;
     padding: 15px;
+    color: black;
 }
 
 .stats__description:nth-of-type(odd) {
-    background: khaki;
-    color: black;
+    background: #ffc792;
 }
 
 .stats__description:nth-of-type(even) {
-    background: #ffc107;
-    color: black;
+    background: #ff9c3d;
 }
 
 .stats__info:nth-of-type(odd) {
-    background: grey;
-    color: white;
+    background: #9befe6;
 }
 
 .stats__info:nth-of-type(even) {
-    background: black;
-    color: white;
+    background: #6ce0c0;
 }
 
 .stats-block__wrap {
@@ -80,6 +77,7 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 10px;
+    position: relative;
 }
 
 .stats__description-block,
@@ -105,4 +103,12 @@ h3 {
 .games-statistic-title,
 .words-statistic-title {
     font-family: sans-serif;
+}
+
+.stats-sticker__img {
+    width: 90px;
+    height: fit-content;
+    position: absolute;
+    top: -57px;
+    left: -55px;
 }
