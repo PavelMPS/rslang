@@ -3,8 +3,7 @@
     padding-top: 50px;
 }
 
-.games-statistic-title,
-.words-statistic-title {
+.games-statistic-title {
     font-size: 36px;
     text-shadow: 2px 2px 3px yellow;
     margin-top: 20px;
@@ -12,29 +11,17 @@
 
 .games-statistic-container {
     display: flex;
-    width: 80%;
+    width: 100%;
     justify-content: space-around;
-    column-gap: 40px;
+    column-gap: 60px;
     flex-wrap: wrap;
+    margin-bottom: 30px;
+    padding: 0 30px;
 }
 
-.game-audiochallenge-title,
-.game-sprint-title {
+.game-title {
     text-align: center;
     font-size: 20px;
-}
-
-
-.new-words-count,
-.learn-words-count,
-.right-answers-count {
-    font-size: 28px;
-    margin-bottom: 35px;
-    padding-left: 25px;
-}
-
-.new-words-count {
-    padding-top: 15px;
 }
 
 .home-btn {
