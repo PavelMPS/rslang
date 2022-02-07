@@ -1,4 +1,5 @@
 import '../audiochallenge-page/audiochallenge-page.css';
+import { startGameSprint } from '../sprint-game/sprint-game';
 
 export async function renderAudiochallengePage() {
   console.log('audiochallenge');
@@ -77,7 +78,6 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
         </ul>`;
 
     const startBTN: HTMLElement = main.querySelector('.start-btn') as HTMLElement;
-
     const difficultBTNs: NodeListOf<HTMLElement> = main.querySelectorAll('.difficult-btn') as NodeListOf<HTMLElement>;
 
     let group: string|undefined = '0';
@@ -99,6 +99,6 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
     } else if (game === 'sprint') {
       title.innerHTML = sprintTitle;
       description.innerHTML = sprintDescription;
-      //запускаем игру спринт
+      startBTN.addEventListener('click', startGameSprint);
     }
 }
