@@ -3,38 +3,26 @@
     padding-top: 50px;
 }
 
-.games-statistic-title,
-.words-statistic-title {
+.games-statistic-title {
     font-size: 36px;
-    text-shadow: 2px 2px 3px yellow;
-    margin-top: 30px;
+    text-shadow: 2px 2px 3px #ff9c3d;
+    margin-top: 50px;
 }
 
 .games-statistic-container {
     display: flex;
-    width: 80%;
+    width: 100%;
     justify-content: space-around;
-    column-gap: 40px;
+    column-gap: 60px;
     flex-wrap: wrap;
+    margin-bottom: 30px;
+    padding: 0 30px;
+    margin-top: 100px;
 }
 
-.game-audiochallenge-title,
-.game-sprint-title {
+.game-title {
     text-align: center;
-    font-size: 24px;
-}
-
-
-.new-words-count,
-.learn-words-count,
-.right-answers-count {
-    font-size: 28px;
-    margin-bottom: 35px;
-    padding-left: 25px;
-}
-
-.new-words-count {
-    padding-top: 15px;
+    font-size: 20px;
 }
 
 .home-btn {
@@ -51,27 +39,24 @@
 .stats__description,
 .stats__info {
     text-align: center;
-    padding: 15px;
+    padding: 20px;
+    color: black;
 }
 
 .stats__description:nth-of-type(odd) {
-    background: khaki;
-    color: black;
+    background: #ffc792;
 }
 
 .stats__description:nth-of-type(even) {
-    background: #ffc107;
-    color: black;
+    background: #ff9c3d;
 }
 
 .stats__info:nth-of-type(odd) {
-    background: grey;
-    color: white;
+    background: #9befe6;
 }
 
 .stats__info:nth-of-type(even) {
-    background: black;
-    color: white;
+    background: #6ce0c0;
 }
 
 .stats-block__wrap {
@@ -80,10 +65,12 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 10px;
+    position: relative;
 }
 
 .stats__description-block,
 .stats__info-block {
+    font-size: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -105,4 +92,12 @@ h3 {
 .games-statistic-title,
 .words-statistic-title {
     font-family: sans-serif;
+}
+
+.stats-sticker__img {
+    width: 100px;
+    height: fit-content;
+    position: absolute;
+    top: -57px;
+    left: -55px;
 }
