@@ -1,6 +1,7 @@
 import { renderSprintPage } from "../sprint-game/sprint-game";
 import { renderStatisticPage } from "../statistic-page/statistic-page";
 import { renderTextbookPage } from "../textbook-page/textbook-page";
+import { renderGroupSelectionPage } from "../audiochallenge-page/audiochallenge-page";
 
 export function burgerListen(): void {
     const burgerContainer: HTMLElement | null = document.querySelector('.burger-menu__nav');
@@ -11,7 +12,7 @@ export function burgerListen(): void {
                 renderSprintPage();
                 break;             
             case 'burger-menu-item-2': 
-                console.log('audiochallenge');
+                renderGroupSelectionPage('audiochallenge');
                 break;             
             case 'burger-menu-item-3': 
                 renderTextbookPage();
