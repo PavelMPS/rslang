@@ -8,6 +8,7 @@ export async function renderRegistrationBlock(): Promise<void> {
     <form class="register-form">
         <div class="form-block">
           <input class="form-input" type="text" name="register-name" id="register-name" required placeholder="Name">
+          <div class="register-error__name"></div>
         </div>
         <div class="form-block">
           <input class="form-input" type="email" name="register-email" id="register-email" required placeholder="Email">
@@ -17,7 +18,10 @@ export async function renderRegistrationBlock(): Promise<void> {
           <input class="form-input" type="password" name="register-password" id="register-password" required placeholder="Password">
           <div class="register-error__password"></div>
         </div>
-        <input class="register-submit" type="button" value="Register">
+        <div class="form-block">
+          <input class="register-submit" type="button" value="Register">
+          <div class="registration-success"></div>
+        </div>
     </form>
     </div>`;
 }
@@ -43,7 +47,16 @@ export async function renderSignBlock(): Promise<void> {
   </div>`;
 }
 
-export const createUser = async user => {
+const emailExistsError = 'User with this e-mail exists';
+const invalidNameError = 'Invalid name'
+const invalidEmailError = 'Invalid email';
+const invalidPasswordError = 'Invalid password';
+const nameTypeError = 'name';
+const emailTypeError = 'email';
+const passwordTypeError = 'password';
+const registrationSuccessText = 'Registration is done! Please sign up ;)'
+
+export const createUser = async (user: IUser) => {
   const rawResponse = await fetch('https://react-rslang-example.herokuapp.com/users', {
     method: 'POST',
     headers: {
@@ -53,73 +66,44 @@ export const createUser = async user => {
     body: JSON.stringify(user)
   });
 
+  const registerBlock = document.querySelector('.register-block') as HTMLElement;
+  const registerErrorName = document.querySelector('.register-error__name') as HTMLElement;
   const registerErrorEmail = document.querySelector('.register-error__email') as HTMLElement;
   const registerErrorPassword = document.querySelector('.register-error__password') as HTMLElement;
-  const content = await rawResponse.json();
-  console.log(rawResponse)
+  const registrationSuccess = document.querySelector('.registration-success') as HTMLElement;
+
   switch (rawResponse.status) {
 
     case 417:
-      console.log('Mistake: ', rawResponse.status);
-      registerErrorEmail.innerHTML = 'User with this e-mail exists';
+      registerErrorName.innerHTML = '';
+      registerErrorEmail.innerHTML = `${emailExistsError}`;
       break;
 
     case 200:
-      console.log('Everything okay: ', rawResponse.status);
+      const goodResult = await rawResponse.json();
+      registerErrorName.innerHTML = '';
       registerErrorEmail.innerHTML = '';
       registerErrorPassword.innerHTML = '';
-      localStorage.setItem('Your id', content.id)
+      registrationSuccess.innerHTML = `${registrationSuccessText}`;
+      localStorage.setItem('Your name', goodResult.name);
+      localStorage.setItem('Your id', goodResult.id);
+      localStorage.setItem('Your email', goodResult.email);
+      setTimeout(() => { registerBlock.innerHTML = '' }, 2000);
       break;
 
     case 422:
-      console.log('Mistake: ', rawResponse.status);
-      console.log(content.error.errors)
-      if (content.error && content.error.errors.length > 1) {
-        registerErrorEmail.innerHTML = 'Invalid email';
-        registerErrorPassword.innerHTML = 'Invalid password';
-      } else {
-        registerErrorEmail.innerHTML = '';
-        registerErrorPassword.innerHTML = '';
+      const badResult = await rawResponse.json();
 
-        content.error.errors.forEach(element => {
-          element.path.forEach(elem => {
+      if (badResult.error) {
+        badResult.error.errors.forEach((element: { path: string[]; }) => {
+          element.path.forEach((elem: string) => {
             console.log(elem)
-            elem == 'email' ? registerErrorEmail.innerHTML = 'Invalid email' : registerErrorEmail.innerHTML = '';
-            elem == 'password' ? registerErrorPassword.innerHTML = 'Invalid password' : registerErrorPassword.innerHTML = '';
+            elem == `${nameTypeError}` ? registerErrorName.innerHTML = `${invalidNameError}` : registerErrorName.innerHTML = '';
+            elem == `${emailTypeError}` ? registerErrorEmail.innerHTML = `${invalidEmailError}` : registerErrorEmail.innerHTML = '';
+            elem == `${passwordTypeError}` ? registerErrorPassword.innerHTML = `${invalidPasswordError}` : registerErrorPassword.innerHTML = '';
           });
         })
       }
-
       break;
   }
-
 };
-
-
-// export async function createUser(user): Promise<void> {
-
-//   fetch('https://react-rslang-example.herokuapp.com/users', {
-//     method: 'POST',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(user)
-//   }).then(data => {
-//     const content = data.json();
-//     const registerErrorEmail = document.querySelector('.register-error__email') as HTMLElement;
-//     switch (data.status) {
-//       case 200:
-//         console.log('Everything okay: ', data);
-
-//         break;
-//       case 422:
-//         console.log('Mistake: ', data);
-//         break;
-//       case 417:
-//         console.log('Mistake: ', data);
-//         break;
-//     }
-
-//   }).then(data => console.log(data))
-// };

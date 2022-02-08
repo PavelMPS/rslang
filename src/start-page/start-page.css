@@ -81,25 +81,6 @@
     border: 3px solid black;
 }
 
-.register-submit,
-.sign-submit {
-    margin-top: 10px;
-    border: 1.5px solid black;
-    color: white;
-    background-color: black;
-    padding: 7px 10px;
-    font-size: 15px;
-    font-family: sans-serif;
-    cursor: pointer;
-    transition: all .5s ease-in-out;
-}
-
-.register-submit:hover,
-.sign-submit:hover {
-    transition: all .5s ease-in-out;
-}
-
-
 .about-us__block {
     width: 100%;
     margin: 50px 0;

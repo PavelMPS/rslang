@@ -19,9 +19,10 @@ export async function authorizationListen(): Promise<void> {
     closeAuthorizationForms();
     const registerSubmit = document.querySelector('.register-submit') as HTMLElement;
     registerSubmit.addEventListener('click', () => {
+      const registerName = document.querySelector('#register-name') as HTMLInputElement;
       const registerEmail = document.querySelector('#register-email') as HTMLInputElement;
       const registerPassword = document.querySelector('#register-password') as HTMLInputElement;
-      createUser({ "email": `${registerEmail.value}`, "password": `${registerPassword.value}` })
+      createUser({ "name": `${registerName.value}`, "email": `${registerEmail.value}`, "password": `${registerPassword.value}` })
     })
   });
 
