@@ -1,4 +1,5 @@
 import '../audiochallenge-page/audiochallenge-page.css';
+import { sprintGame } from '../constants/sprint';
 import { startGameSprint } from '../sprint-game/sprint-game';
 
 export async function renderAudiochallengePage() {
@@ -89,6 +90,7 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
         })
         difficultBTN.classList.add('active');
         group = difficultBTN.dataset.group;
+        if (group) sprintGame.difficult = +group;
       })
     })
 

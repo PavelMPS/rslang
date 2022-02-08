@@ -2,12 +2,13 @@ export type GameWord = {
     question: string;
     answer: string;
     right: boolean;
+    rightAnswer: string;
+    userAnswer: boolean;
 }
 
 type Sprint = {
     difficult: number;
     gameWords: Array<GameWord>;
-    userAnswers: Array<GameWord>;
     page: number;
     group: number;
     count: number;
@@ -17,7 +18,6 @@ type Sprint = {
 export const sprintGame: Sprint = {
     difficult: 1,
     gameWords: [],
-    userAnswers: [],
     page: 0,
     group: 0,
     count: 0,
