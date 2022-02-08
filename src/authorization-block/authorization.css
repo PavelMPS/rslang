@@ -10,8 +10,14 @@
   left: 0;
   bottom: 0;
   margin: auto;
+}
+
+.form-border__wrap {
+  border: 3px solid rgb(255 199 146);
+  border-radius: 30px;
   background-color: #ff9c3d;
 }
+
 
 .close-form {
   width: 30px;
@@ -29,14 +35,25 @@
   margin: 70px;
   font-size: 15px;
   font-family: sans-serif;
-}
 
-.form-label {
-  margin-bottom: 5px;
 }
 
 .form-input {
-  border: 1px solid black;
+  border: 3px solid rgb(108 224 192);
+  border-radius: 7px;
   padding: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
+  background: rgb(155 239 230);
+  outline: 0;
+  color: black;
+}
+
+.form-block {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.register-error__email,
+.register-error__password {
+  position: absolute;
 }
