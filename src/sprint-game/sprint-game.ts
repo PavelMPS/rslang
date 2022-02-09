@@ -60,9 +60,7 @@ export async function startGameSprint(): Promise<void> {
     const content: string = `
     <div class="timer-sprint"></div>
     <div class="sprint-info-table">
-        <div class="sprint-cat-yes"></div>
         <div class="question-number">Question: 0/20</div>
-        <div class="sprint-cat-no"></div>
     </div>
     
     <div class="sprint-game-area">
@@ -73,8 +71,8 @@ export async function startGameSprint(): Promise<void> {
         </div>  
         <div class="question-area"></div>  
         <div class="answer-btn">
-            <button class="right-btn" id="right-answer">\<----RIGHT</button>
-            <button class="wrong-btn" id="wrong-answer">WRONG----\></button>
+            <button class="right-btn" id="right-answer"></button>
+            <button class="wrong-btn" id="wrong-answer"></button>
         </div> 
                                  
     </div>
@@ -92,34 +90,34 @@ async function verifyAnswer(e: Event): Promise<void> {
     const target = e.target as HTMLElement;
     if (target.id === sprintGame.gameOptions[1]) {
         if (sprintGame.gameWords[sprintGame.count - 1].right) { 
-            animateCat('sprint-cat-yes');
+            highlightAnswer('green');
             getSprintScore();
             renderQuestion(); 
         } else {
             sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
             sprintGame.answerSeries = 0;
-            animateCat('sprint-cat-no');
+            highlightAnswer('red');
             renderQuestion();
         }
     } else if (target.id === sprintGame.gameOptions[2]) {
         if (!sprintGame.gameWords[sprintGame.count - 1].right) {
-            animateCat('sprint-cat-yes');
+            highlightAnswer('green');
             getSprintScore();
             renderQuestion();
         } else {
             sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
             sprintGame.answerSeries = 0;
-            animateCat('sprint-cat-no');
+            highlightAnswer('red');
             renderQuestion();
         }
     }
 }
 
-function animateCat(catClass: string): void {
-    const cat = document.querySelector(`.${catClass}`) as HTMLElement;
-    cat.classList.add('active-cat');
+function highlightAnswer(color: string): void {
+    const answerArea = document.querySelector('.question-area') as HTMLElement;
+    answerArea.classList.add(`active-area-${color}`);
     setTimeout(() => {
-        cat.classList.remove('active-cat');
+        answerArea.classList.remove(`active-area-${color}`);
     }, 1000)
 }
 
@@ -248,29 +246,37 @@ function getResults(): void {
         sprintGame.seriesTotalStatistics += sprintGame.answerSeries;
     }
     clearInterval(timerId);
-    sprintGame.gameWords.length = sprintGame.count - 1;
+    sprintGame.gameWords.length = sprintGame.count;
     const main = document.querySelector('.main') as HTMLElement;
     let rightAnswers: string = '';
     let wrongAnswers: string = '';
-    sprintGame.gameWords.forEach((el,index) => {
+    sprintGame.gameWords.forEach(el => {
         if (el.userAnswer) {
             rightAnswers += `<li>${el.question} - ${el.rightAnswer}</li>`;
         } else if (!el.userAnswer) {
-            wrongAnswers += `<li>${el.question} - ${el.rightAnswer}</li>`;
+            wrongAnswers += `<li>${el.question} - ${el.rightAnswer} (you answered - ${el.answer})</li>`;
         }
     })
     const content: string = `
-        <div class="sprint-results-area">
-            <p class="sprint-results">${sprintGame.answerSeries === 0 ?
-                sprintGame.gameOver[0] : sprintGame.gameOver[1]}${sprintGame.gameOptions[3]}${sprintGame.score}</p>
-            <div class="area-results">
-                <p class="answer-subtitle-right">Right answers:</p>
-                <ol class="right-answers-result"></ol>
-                <p class="answer-subtitle-wrong">Wrong answers:</p>
-                <ol class="wrong-answers-result"></ol>
-            </div>          
+        <div class="results-container">
+            <div class="result-cat-right"></div>
+            <div class="sprint-results-area">
+                <p class="sprint-results">${sprintGame.answerSeries === 0 ?
+                    sprintGame.gameOver[0] : sprintGame.gameOver[1]}${sprintGame.gameOptions[3]}${sprintGame.score}</p>
+                <div class="area-results">
+                    <p class="answer-subtitle-right">Right answers:</p>
+                    <ol class="right-answers-result"></ol>
+                    <p class="answer-subtitle-wrong">Wrong answers:</p>
+                    <ol class="wrong-answers-result"></ol>
+                </div>          
+            </div>
+            <div class="result-button-container">
+                <button class="try-again-sprint">${sprintGame.gameOptions[4]}</button>
+                <div class="result-cat-left"></div>
+            </div>
+            
         </div>
-        <button class="try-again-sprint">${sprintGame.gameOptions[4]}</button>
+        
     `; 
     main.innerHTML = content;
     const rightAnswersResult = document.querySelector('.right-answers-result') as HTMLElement;
