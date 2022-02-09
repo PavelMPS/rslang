@@ -59,6 +59,12 @@ export async function startGameSprint(): Promise<void> {
     await resetSprintGame();
     const content: string = `
     <div class="timer-sprint"></div>
+    <div class="sprint-info-table">
+        <div class="sprint-cat-yes"></div>
+        <div class="question-number">Question: 0/20</div>
+        <div class="sprint-cat-no"></div>
+    </div>
+    
     <div class="sprint-game-area">
         <div class="sprint-difficult-info-container">
             <div class="sprint-score">${sprintGame.gameOptions[0]}<span class="score-window">0</span></div>
@@ -86,23 +92,35 @@ async function verifyAnswer(e: Event): Promise<void> {
     const target = e.target as HTMLElement;
     if (target.id === sprintGame.gameOptions[1]) {
         if (sprintGame.gameWords[sprintGame.count - 1].right) { 
+            animateCat('sprint-cat-yes');
             getSprintScore();
             renderQuestion(); 
         } else {
             sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
             sprintGame.answerSeries = 0;
+            animateCat('sprint-cat-no');
             renderQuestion();
         }
     } else if (target.id === sprintGame.gameOptions[2]) {
         if (!sprintGame.gameWords[sprintGame.count - 1].right) {
+            animateCat('sprint-cat-yes');
             getSprintScore();
             renderQuestion();
         } else {
             sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
             sprintGame.answerSeries = 0;
+            animateCat('sprint-cat-no');
             renderQuestion();
         }
     }
+}
+
+function animateCat(catClass: string): void {
+    const cat = document.querySelector(`.${catClass}`) as HTMLElement;
+    cat.classList.add('active-cat');
+    setTimeout(() => {
+        cat.classList.remove('active-cat');
+    }, 1000)
 }
 
 function timer(value: number): void {
@@ -119,31 +137,31 @@ function timer(value: number): void {
 
 function getSprintScore():void {
     switch (sprintGame.answerSeries) {
-        case 3: 
+        case 2: 
             sprintGame.score += sprintGame.advanceScore[0];
             showWinMessage('nice!', sprintGame.advanceScore[0]);
             break;
-        case 6:
+        case 5:
             sprintGame.score += sprintGame.advanceScore[1];
             showWinMessage('good!', sprintGame.advanceScore[1]);
             break;
-        case 9:
+        case 8:
             sprintGame.score += sprintGame.advanceScore[2];
             showWinMessage('very good!', sprintGame.advanceScore[2]);
             break;
-        case 12:
+        case 11:
             sprintGame.score += sprintGame.advanceScore[3];
             showWinMessage('amazing!', sprintGame.advanceScore[3]);
             break;
-        case 15:
+        case 14:
             sprintGame.score += sprintGame.advanceScore[4];
             showWinMessage('excellent!', sprintGame.advanceScore[4]);
             break;
-        case 18:
+        case 17:
             sprintGame.score += sprintGame.advanceScore[5];
             showWinMessage('impressive!', sprintGame.advanceScore[5]);
             break;
-        case 20:
+        case 19:
             sprintGame.score += sprintGame.advanceScore[6];
             showWinMessage('godlike!', sprintGame.advanceScore[6]);
             break;  
@@ -207,12 +225,15 @@ async function renderQuestion(): Promise<void> {
         return;
     }   
     setTimeout( () => {
+        const questionNumber = `Question: ${sprintGame.count + 1}/${sprintGame.gameWords.length}`;
         const content = `
         <div class="sprint-question">${sprintGame.gameWords[sprintGame.count].question}</div>
         <div class="sprint-meaning">this means?</div>
         <div class="sprint-answer">${sprintGame.gameWords[sprintGame.count].answer}</div>
         `;
         const gameArea = document.querySelector('.question-area') as HTMLElement;
+        const questionNumberArea = document.querySelector('.question-number') as HTMLElement;
+        questionNumberArea.innerHTML = questionNumber;
         gameArea.innerHTML = content;
         sprintGame.count++; 
     }, 350);    
@@ -240,7 +261,8 @@ function getResults(): void {
     })
     const content: string = `
         <div class="sprint-results-area">
-            <p class="sprint-results">GAME OVER! Your score is: ${sprintGame.score}</p>
+            <p class="sprint-results">${sprintGame.answerSeries === 0 ?
+                sprintGame.gameOver[0] : sprintGame.gameOver[1]}${sprintGame.gameOptions[3]}${sprintGame.score}</p>
             <div class="area-results">
                 <p class="answer-subtitle-right">Right answers:</p>
                 <ol class="right-answers-result"></ol>
@@ -248,14 +270,14 @@ function getResults(): void {
                 <ol class="wrong-answers-result"></ol>
             </div>          
         </div>
-        <button class="try-again-sprint">Try again?</button>
+        <button class="try-again-sprint">${sprintGame.gameOptions[4]}</button>
     `; 
     main.innerHTML = content;
     const rightAnswersResult = document.querySelector('.right-answers-result') as HTMLElement;
     const wrongAnswersResult = document.querySelector('.wrong-answers-result') as HTMLElement;
     const areaResult = document.querySelector('.area-results') as HTMLElement;
     if (sprintGame.count === 1) {
-        areaResult.innerHTML = 'You dont answer any question';
+        areaResult.innerHTML = sprintGame.gameOver[2];
     } else {
         rightAnswersResult.innerHTML = rightAnswers;
         wrongAnswersResult.innerHTML = wrongAnswers;      

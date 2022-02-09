@@ -14,6 +14,43 @@
     color: white;
 }
 
+.sprint-info-table {
+    display: flex;
+    width: 56%;
+    justify-content: space-evenly;
+}
+
+.sprint-cat-yes {
+    width: 200px;
+    height: 200px;
+    background: url("../assets/free-sticker-yes-message-4850764.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: all .6s;
+}
+
+.sprint-cat-no {
+    width: 200px;
+    height: 200px;
+    background: url("../assets/free-sticker-no-message-4850764.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: all .6s;
+}
+
+.active-cat {
+    transition: all 1s;
+    transform: scale(1.2);
+}
+
+.question-number {
+   font-size: 36px;
+   font-weight: bold;
+   color: #6ce0c0;
+   padding-top: 90px;
+   text-shadow: 2px 2px 3px grey;
+}
+
 .sprint-game-area {
     display: flex;
     flex-direction: column;
@@ -127,6 +164,12 @@
     text-align: center;
     font-size: 24px;
     text-transform: uppercase;
+}
+
+.area-results {
+    font-size: 26px;
+    margin: auto;
+    color: #ff9c3d;
 }
 
 .try-again-sprint {

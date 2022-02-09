@@ -8,6 +8,7 @@ export type GameWord = {
 
 type Sprint = {
     gameOptions: Array<string>;
+    gameOver: Array<string>;
     difficult: number;
     gameWords: Array<GameWord>;
     page: number;
@@ -20,7 +21,8 @@ type Sprint = {
 }
 
 export const sprintGame: Sprint = {
-    gameOptions: ['SCORE: ', 'right-answer', 'wrong-answer'],
+    gameOptions: ['SCORE: ', 'right-answer', 'wrong-answer', 'Your score is: ', 'Try again?'],
+    gameOver: ['Don\'t despair!', 'Nice work!','You dont answer any question :('],
     difficult: 1,
     gameWords: [],
     page: 0,
