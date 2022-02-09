@@ -7,7 +7,7 @@ const invalidPasswordError = 'Invalid password' as string;
 const nameTypeError = 'name' as string;
 const emailTypeError = 'email' as string;
 const passwordTypeError = 'password' as string;
-const registrationSuccessText = 'Registration is done! Please sign up  as string;)' as string;
+const registrationSuccessText = 'Registration is done! Please sign up ;)' as string;
 
 const notRegisteredEmailText = 'This email is not registered' as string;
 const writeEmailCaption = 'Please, write correct email' as string;
