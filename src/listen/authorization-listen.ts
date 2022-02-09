@@ -1,4 +1,4 @@
-import { renderRegistrationBlock, renderSignBlock, createUser, registerSubmit } from "../authorization-block/authorization";
+import { renderRegistrationBlock, renderSignBlock, createUser, loginUser } from "../authorization-block/authorization";
 
 export async function authorizationListen(): Promise<void> {
   const registerOpenButton = document.querySelector('.register-open__button') as HTMLElement;
@@ -22,14 +22,19 @@ export async function authorizationListen(): Promise<void> {
       const registerName = document.querySelector('#register-name') as HTMLInputElement;
       const registerEmail = document.querySelector('#register-email') as HTMLInputElement;
       const registerPassword = document.querySelector('#register-password') as HTMLInputElement;
-      createUser({ "name": `${registerName.value}`, "email": `${registerEmail.value}`, "password": `${registerPassword.value}` })
-    })
+      createUser({ "name": `${registerName.value}`, "email": `${registerEmail.value}`, "password": `${registerPassword.value}` });
+    });
   });
 
   signOpenButton.addEventListener('click', (): void => {
     registerButtonsArray.forEach(elem => (elem.nextElementSibling as HTMLElement).innerHTML = ``);
     renderSignBlock();
     closeAuthorizationForms();
+    const signSubmit = document.querySelector('.sign-submit') as HTMLElement;
+    signSubmit.addEventListener('click', () => {
+      const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
+      const signPassword = document.querySelector('#sign-password') as HTMLInputElement;
+      loginUser({ "email": `${signEmail.value}`, "password": `${signPassword.value}` });
+    });
   });
-
-}
+};

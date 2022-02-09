@@ -15,8 +15,13 @@ interface IWord {
   textExampleTranslate: string,
 }
 
-interface IUser {
+interface IRegisterUser {
   name: string,
+  email: string,
+  password: string
+}
+
+interface ISignUser {
   email: string,
   password: string
 }

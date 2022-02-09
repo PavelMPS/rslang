@@ -1,5 +1,20 @@
 import './authorization.css';
 
+const emailExistsError = 'User with this e-mail exists' as string;
+const invalidNameError = 'Invalid name' as string;
+const invalidEmailError = 'Invalid email' as string;
+const invalidPasswordError = 'Invalid password' as string;
+const nameTypeError = 'name' as string;
+const emailTypeError = 'email' as string;
+const passwordTypeError = 'password' as string;
+const registrationSuccessText = 'Registration is done! Please sign up  as string;)' as string;
+
+const notRegisteredEmailText = 'This email is not registered' as string;
+const writeEmailCaption = 'Please, write correct email' as string;
+const signSuccessText = 'Success!' as string;
+const signPasswordEmailError = 'Incorrect e-mail or password' as string;
+const serverUrl = `https://react-rslang-example.herokuapp.com` as string;
+
 export async function renderRegistrationBlock(): Promise<void> {
   const registerBlock = document.querySelector('.register-block') as HTMLElement;
   registerBlock.innerHTML = `
@@ -42,22 +57,16 @@ export async function renderSignBlock(): Promise<void> {
       <input class="form-input" type="password" name="sign-password" id="sign-password" required placeholder="Password">
       <div class="sign-error__password"></div>
     </div>
+    <div class="form-block">
       <input class="sign-submit" type="button" value="Sign in">
+      <div class="sign-success"></div>
+    </div>
   </form>
   </div>`;
 }
 
-const emailExistsError = 'User with this e-mail exists';
-const invalidNameError = 'Invalid name'
-const invalidEmailError = 'Invalid email';
-const invalidPasswordError = 'Invalid password';
-const nameTypeError = 'name';
-const emailTypeError = 'email';
-const passwordTypeError = 'password';
-const registrationSuccessText = 'Registration is done! Please sign up ;)'
-
-export const createUser = async (user: IUser) => {
-  const rawResponse = await fetch('https://react-rslang-example.herokuapp.com/users', {
+export const createUser = async (user: IRegisterUser): Promise<void> => {
+  const rawResponse: Response = await fetch(`${serverUrl}/users`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -72,37 +81,90 @@ export const createUser = async (user: IUser) => {
   const registerErrorPassword = document.querySelector('.register-error__password') as HTMLElement;
   const registrationSuccess = document.querySelector('.registration-success') as HTMLElement;
 
-  switch (rawResponse.status) {
+  function emptyRegisterCaptions(): void {
+    registerErrorName.innerHTML = '';
+    registerErrorEmail.innerHTML = '';
+    registerErrorPassword.innerHTML = '';
+  }
 
-    case 417:
-      registerErrorName.innerHTML = '';
-      registerErrorEmail.innerHTML = `${emailExistsError}`;
-      break;
+  switch (rawResponse.status as number) {
 
     case 200:
       const goodResult = await rawResponse.json();
-      registerErrorName.innerHTML = '';
-      registerErrorEmail.innerHTML = '';
-      registerErrorPassword.innerHTML = '';
+      emptyRegisterCaptions();
       registrationSuccess.innerHTML = `${registrationSuccessText}`;
+      localStorage.clear();
       localStorage.setItem('Your name', goodResult.name);
       localStorage.setItem('Your id', goodResult.id);
       localStorage.setItem('Your email', goodResult.email);
-      setTimeout(() => { registerBlock.innerHTML = '' }, 2000);
+      setTimeout((): void => { registerBlock.innerHTML = '' }, 2000);
+      break;
+
+    case 417:
+      emptyRegisterCaptions();
+      registerErrorEmail.innerHTML = `${emailExistsError}`;
       break;
 
     case 422:
       const badResult = await rawResponse.json();
+      emptyRegisterCaptions();
+      badResult.error.errors.forEach((element: { message: string; path: string[]; }) => {
+        element.path.forEach((elem: string): void => {
+          (document.querySelector(`.register-error__${elem}`) as HTMLElement).innerHTML = `Invalid ${element.path}`;
+        });
+      });
+      break;
+  };
+};
 
-      if (badResult.error) {
-        badResult.error.errors.forEach((element: { path: string[]; }) => {
-          element.path.forEach((elem: string) => {
-            console.log(elem)
-            elem == `${nameTypeError}` ? registerErrorName.innerHTML = `${invalidNameError}` : registerErrorName.innerHTML = '';
-            elem == `${emailTypeError}` ? registerErrorEmail.innerHTML = `${invalidEmailError}` : registerErrorEmail.innerHTML = '';
-            elem == `${passwordTypeError}` ? registerErrorPassword.innerHTML = `${invalidPasswordError}` : registerErrorPassword.innerHTML = '';
-          });
-        })
+
+export const loginUser = async (user: ISignUser): Promise<void> => {
+  const rawResponse: Response = await fetch(`${serverUrl}/signin`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(user)
+  });
+
+  function emptySignCaptions(): void {
+    signErrorEmail.innerHTML = '';
+    signErrorPassword.innerHTML = '';
+  }
+
+  const signBlock = document.querySelector('.sign-block') as HTMLElement;
+  const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
+  const signErrorEmail = document.querySelector('.sign-error__email') as HTMLElement;
+  const signErrorPassword = document.querySelector('.sign-error__password') as HTMLElement;
+  const signSuccess = document.querySelector('.sign-success') as HTMLElement;
+
+  switch (rawResponse.status as number) {
+
+    case 200:
+      const content = await rawResponse.json();
+      signSuccess.innerHTML = `${signSuccessText}`;
+      emptySignCaptions();
+      localStorage.setItem('Name', content.name);
+      localStorage.setItem('Message', content.message);
+      localStorage.setItem('Your token', content.token);
+      localStorage.setItem('Your refreshToken', content.refreshToken);
+      localStorage.setItem('Your userId', content.userId);
+      setTimeout((): void => { signBlock.innerHTML = '' }, 2000);
+      break;
+
+    case 403:
+      emptySignCaptions();
+      signErrorPassword.innerHTML = `${signPasswordEmailError}`;
+      break;
+
+    case 404:
+      if (signEmail.value.length < 1) {
+        emptySignCaptions();
+        signErrorEmail.innerHTML = `${writeEmailCaption}`;
+      } else {
+        emptySignCaptions();
+        signSuccess.innerHTML = `${notRegisteredEmailText}`;
       }
       break;
   }
