@@ -1,5 +1,6 @@
 import { GameWord, sprintGame } from '../constants/sprint';
 import '../sprint-game/sprint-game.css';
+import { setStatistic } from '../utilits/utilits';
 
 export let timerId: NodeJS.Timer;
 
@@ -55,46 +56,50 @@ async function getWords(): Promise<IWord[]> {
 // }
 
 export async function startGameSprint(): Promise<void> {
-        const content: string = `
-        <div class="timer-sprint"></div>
-        <div class="sprint-game-area">
-            <div class="sprint-difficult-info-container">
-                <div class="sprint-score">SCORE: <span class="score-window">0</span></div>
-                <p class="sprint-difficult-info">Difficulty: ${sprintGame.difficult + 1}</p>               
-            </div>  
-            <div class="question-area"></div>  
-            <div class="answer-btn">
-                <button class="right-btn" id="right-answer">\<----RIGHT</button>
-                <button class="wrong-btn" id="wrong-answer">WRONG----\></button>
-            </div> 
-                                     
-        </div>
-        `;
-        const main = document.querySelector('.main') as HTMLElement;
-        main.innerHTML = content;
-        await formGameWords();
-        timer(60);
-        const btnAnswer = document.querySelector('.answer-btn') as HTMLElement;   
-        btnAnswer.addEventListener('click', (e: Event): void => {
-        verifyAnswer(e)});       
+    await resetSprintGame();
+    const content: string = `
+    <div class="timer-sprint"></div>
+    <div class="sprint-game-area">
+        <div class="sprint-difficult-info-container">
+            <div class="sprint-score">${sprintGame.gameOptions[0]}<span class="score-window">0</span></div>
+            <div class="pop-up-window-score"></div>
+            <p class="sprint-difficult-info">Difficulty: ${sprintGame.difficult + 1}</p>               
+        </div>  
+        <div class="question-area"></div>  
+        <div class="answer-btn">
+            <button class="right-btn" id="right-answer">\<----RIGHT</button>
+            <button class="wrong-btn" id="wrong-answer">WRONG----\></button>
+        </div> 
+                                 
+    </div>
+    `;
+    const main = document.querySelector('.main') as HTMLElement;
+    main.innerHTML = content;
+    await formGameWords();
+    timer(60);
+    const btnAnswer = document.querySelector('.answer-btn') as HTMLElement;   
+    btnAnswer.addEventListener('click', async (e: Event): Promise<void> => {
+    await verifyAnswer(e)});       
 }
 
 async function verifyAnswer(e: Event): Promise<void> {
     const target = e.target as HTMLElement;
-    if (target.id === 'right-answer') {
+    if (target.id === sprintGame.gameOptions[1]) {
         if (sprintGame.gameWords[sprintGame.count - 1].right) { 
             getSprintScore();
             renderQuestion(); 
         } else {
             sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
+            sprintGame.answerSeries = 0;
             renderQuestion();
         }
-    } else if (target.id === 'wrong-answer') {
+    } else if (target.id === sprintGame.gameOptions[2]) {
         if (!sprintGame.gameWords[sprintGame.count - 1].right) {
             getSprintScore();
             renderQuestion();
         } else {
             sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
+            sprintGame.answerSeries = 0;
             renderQuestion();
         }
     }
@@ -113,9 +118,55 @@ function timer(value: number): void {
 }
 
 function getSprintScore():void {
-    sprintGame.score += 10;
+    switch (sprintGame.answerSeries) {
+        case 3: 
+            sprintGame.score += sprintGame.advanceScore[0];
+            showWinMessage('nice!', sprintGame.advanceScore[0]);
+            break;
+        case 6:
+            sprintGame.score += sprintGame.advanceScore[1];
+            showWinMessage('good!', sprintGame.advanceScore[1]);
+            break;
+        case 9:
+            sprintGame.score += sprintGame.advanceScore[2];
+            showWinMessage('very good!', sprintGame.advanceScore[2]);
+            break;
+        case 12:
+            sprintGame.score += sprintGame.advanceScore[3];
+            showWinMessage('amazing!', sprintGame.advanceScore[3]);
+            break;
+        case 15:
+            sprintGame.score += sprintGame.advanceScore[4];
+            showWinMessage('excellent!', sprintGame.advanceScore[4]);
+            break;
+        case 18:
+            sprintGame.score += sprintGame.advanceScore[5];
+            showWinMessage('impressive!', sprintGame.advanceScore[5]);
+            break;
+        case 20:
+            sprintGame.score += sprintGame.advanceScore[6];
+            showWinMessage('godlike!', sprintGame.advanceScore[6]);
+            break;  
+    }
+    sprintGame.score += sprintGame.advanceScore[0];
+    sprintGame.answerSeries++;
+    if (sprintGame.answerSeries > sprintGame.seriesTotalStatistics) {
+        sprintGame.seriesTotalStatistics = sprintGame.answerSeries
+    }
     const scoreWindow = document.querySelector('.score-window') as HTMLElement;
     scoreWindow.innerHTML = sprintGame.score.toString();
+    console.log( sprintGame.answerSeries, sprintGame.seriesTotalStatistics);
+}
+
+function showWinMessage(message: string, addingScore: number): void {
+    const content: string = `
+        <div class="win-message-container">
+            <p class="win-message">${message}</p>
+            <p class="adding-score">+${addingScore}</p>
+        </div>
+    `;
+    const popUpWindow = document.querySelector('.pop-up-window-score') as HTMLElement;
+    popUpWindow.innerHTML = content;
 }
 
 async function formGameWords(): Promise<void> {
@@ -125,7 +176,6 @@ async function formGameWords(): Promise<void> {
         const gameWord: GameWord = {question: elem.word, answer: elem.wordTranslate, right: true, rightAnswer: elem.wordTranslate, userAnswer: true}
         sprintGame.gameWords[index] = gameWord;      
     });
-    console.log(sprintGame.gameWords)
     await formRandomWords(); 
 }
 
@@ -137,7 +187,7 @@ async function formRandomWords() {
             el.right = temporary.right;
         }        
     })
-    shuffle(sprintGame.gameWords);
+    await shuffle(sprintGame.gameWords);
     await renderQuestion();
 }
 
@@ -155,23 +205,29 @@ async function renderQuestion(): Promise<void> {
     if (sprintGame.count === 20) { 
         getResults();
         return;
-    }
-    const content = `
-    <div class="sprint-question">${sprintGame.gameWords[sprintGame.count].question}</div>
-    <div class="sprint-meaning">this means?</div>
-    <div class="sprint-answer">${sprintGame.gameWords[sprintGame.count].answer}</div>
-    `;
-    const gameArea = document.querySelector('.question-area') as HTMLElement;
-    gameArea.innerHTML = content;
-    sprintGame.count++; 
+    }   
+    setTimeout( () => {
+        const content = `
+        <div class="sprint-question">${sprintGame.gameWords[sprintGame.count].question}</div>
+        <div class="sprint-meaning">this means?</div>
+        <div class="sprint-answer">${sprintGame.gameWords[sprintGame.count].answer}</div>
+        `;
+        const gameArea = document.querySelector('.question-area') as HTMLElement;
+        gameArea.innerHTML = content;
+        sprintGame.count++; 
+    }, 350);    
 }
 
-function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
+ async function shuffle(array: Array<GameWord>): Promise<void> {
+    array.sort(() => Math.random() - 0.5);
 }
 
 function getResults(): void {
+    if (sprintGame.answerSeries === 19) {
+        sprintGame.seriesTotalStatistics += sprintGame.answerSeries;
+    }
     clearInterval(timerId);
+    sprintGame.gameWords.length = sprintGame.count - 1;
     const main = document.querySelector('.main') as HTMLElement;
     let rightAnswers: string = '';
     let wrongAnswers: string = '';
@@ -185,24 +241,36 @@ function getResults(): void {
     const content: string = `
         <div class="sprint-results-area">
             <p class="sprint-results">GAME OVER! Your score is: ${sprintGame.score}</p>
-            <p class="answer-subtitle-right">Right answers:</p>
-            <ol class="right-answers-result"></ol>
-            <p class="answer-subtitle-wrong">Wrong answers:</p>
-            <ol class="wrong-answers-result"></ol>
+            <div class="area-results">
+                <p class="answer-subtitle-right">Right answers:</p>
+                <ol class="right-answers-result"></ol>
+                <p class="answer-subtitle-wrong">Wrong answers:</p>
+                <ol class="wrong-answers-result"></ol>
+            </div>          
         </div>
         <button class="try-again-sprint">Try again?</button>
     `; 
     main.innerHTML = content;
     const rightAnswersResult = document.querySelector('.right-answers-result') as HTMLElement;
     const wrongAnswersResult = document.querySelector('.wrong-answers-result') as HTMLElement;
-    rightAnswersResult.innerHTML = rightAnswers;
-    wrongAnswersResult.innerHTML = wrongAnswers;
+    const areaResult = document.querySelector('.area-results') as HTMLElement;
+    if (sprintGame.count === 1) {
+        areaResult.innerHTML = 'You dont answer any question';
+    } else {
+        rightAnswersResult.innerHTML = rightAnswers;
+        wrongAnswersResult.innerHTML = wrongAnswers;      
+    }
+    setStatistic();//Количество новых слов, самая длинная серия правильных ответов, кол-во правильных ответов.
     const tryAgainBtn = document.querySelector('.try-again-sprint') as HTMLButtonElement;
-    tryAgainBtn.addEventListener('click', () => {
-        sprintGame.count = 0;
-        sprintGame.score = 0;
-        sprintGame.group = sprintGame.difficult;
-        sprintGame.page = 0;
+    tryAgainBtn.addEventListener('click', () => {     
         startGameSprint();
     });
+}
+
+async function resetSprintGame(): Promise<void> {
+    sprintGame.count = 0;
+    sprintGame.score = 0;
+    sprintGame.answerSeries = 0;
+    sprintGame.group = sprintGame.difficult;
+    sprintGame.page = 0;
 }

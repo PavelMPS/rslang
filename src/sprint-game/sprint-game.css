@@ -34,6 +34,7 @@
 .sprint-score,
 .sprint-difficult-info {
     width: 30%;
+    height: 53px;
     font-size: 28px;
     padding: 10px 0px 0px 10px;
     color: white;
@@ -186,4 +187,24 @@
     background: #f87c66;
     border-top: 4px solid #ff9c3d;
     border-bottom: 4px solid #ff9c3d;
+}
+
+.win-message-container {
+    position: relative;
+    font-size: 36px;
+    top: 0;
+    color: #ff9c3d;
+    animation: winPopUp 1s;
+    opacity: 0; 
+}
+
+@keyframes winPopUp {
+    0% {
+        opacity: 1;
+        top: 0;
+    }    
+    100% {
+        opacity: 0;
+        top: -100px;
+    }
 }
