@@ -14,3 +14,11 @@ interface IWord {
   textMeaningTranslate:	string,
   textExampleTranslate:	string,
 }
+
+interface IAudiochallenge {
+  page: number;
+  group: number;
+  maxLine: number;
+  brokenLives: number;
+  questionNum: number;
+}

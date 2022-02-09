@@ -8,14 +8,14 @@ const maxPageNum = 30;
 
 //TODO сделать проверку на сложные и изученные и добавить стили при рендере
 
-async function getWords(): Promise<IWord[]> {
-  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words?group=${textbookSettings.group}&page=${textbookSettings.page}`);
+export async function getWords(group, page): Promise<IWord[]> {
+  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words?group=${group}&page=${page}`);
   const words: IWord[] = await response.json();
   return words;
 }
 
 async function createTextbookContent(): Promise<void> {
-  const words: IWord[] = await getWords();
+  const words: IWord[] = await getWords(textbookSettings.group, textbookSettings.page);
 
   const page: HTMLElement = document.querySelector('.page') as HTMLElement;
   page.innerHTML = '';
