@@ -194,11 +194,14 @@
   opacity: 0;
 }
 .next-question-btn {
+  opacity: 1;
   margin: 0 auto;
   background-color: #6ce0c0;
+  transition: 1s;
 }
 .answers-btn:hover,
 .next-question-btn:hover {
+  cursor: pointer;
   transform: scale(1.2);
 }
 .answers-btn.right {
@@ -210,4 +213,123 @@
   opacity: 1;
   transform: scale(1.2);
   background-color: rgb(252, 98, 98);
+}
+
+.next-question-btn.disable {
+  opacity: 0;
+  transition: 1s;
+}
+
+
+
+
+.results-container {
+  height: 600px;
+  width: 800px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #90ffdf;
+  overflow-y: auto;
+}
+.tabs-container {
+  display: flex;
+  height: 50px;
+  width: 100%;
+}
+.main-tab,
+.words-tab {
+  width: 50%;
+  height: 100%;
+  font-size: 32px;
+  text-align: center;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 50px;
+}
+.main-tab.disable,
+.words-tab.disable {
+  background-color: #00ffb7;
+}
+.main-tab:hover,
+.words-tab:hover {
+  background-color: #ff9c3d;
+}
+.words-container {
+  min-height: 250px;
+  display: flex;
+  justify-content: space-around;
+}
+.results-inf {
+  margin: 50px;
+  font-size: 32px;
+  font-weight: 500;
+  color: #ffffff;
+}
+.words-container.disable,
+.main-container.disable {
+  display: none;
+}
+.results-img {
+  width: 250px;
+  height: 250px;
+  margin: 0px auto 25px auto;
+  background-size: cover;
+}
+.good-result-img {
+  background-image: url(../assets/free-sticker-trophy-4852328.png);
+}
+.bad-result-img {
+  background-image: url(../assets/search.png);
+}
+.try-again-btn {
+  width: 200px;
+  height: 50px;
+  margin: 50px auto;
+  background: #ff9c3d;
+  color: white;
+  font-size: 32px;
+  line-height: 50px;
+  text-align: center;
+  transition: all .4s;
+  cursor: pointer;
+}
+
+.try-again-btn:hover {
+  transition: all .4s;
+  transform: scale(1.2);
+}
+
+.try-again-btn:active {
+  background: #ff9c3d;
+}
+.right-answers-result div,
+.wrong-answers-result div {
+  display: flex;
+  column-gap: 20px;
+  font-size: 28px;
+}
+.answer-subtitle-right,
+.answer-subtitle-wrong {
+  width: 50px;
+  height: 50px;
+  margin: 20px auto;
+  background-size: 100%;
+}
+.answer-subtitle-right {
+  background-image: url(../assets/icons8-done-100.png);
+}
+.answer-subtitle-wrong {
+  background-image: url(../assets/icons8-close-100.png);
+}
+.result-audio-btn {
+  width: 30px;
+  height: 30px;
+  background-image: url(../assets/icons8-audio-100.png);
+  background-size: cover;
+  cursor: pointer;
+}
+.result-audio-btn:hover {
+  transform: scale(1.2);
 }

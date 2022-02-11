@@ -2,6 +2,7 @@ import { startGameSprint } from '../sprint-game/sprint-game';
 import { sprintGame } from '../constants/sprint';
 import { audiochallengeSettings, maxQuestionCount } from '../constants/audiochallenge';
 import { getWords } from '../textbook-page/textbook-page';
+import { maxLives, averegeSprintGameScore, minScore, answersLength, sprint, audiochallenge } from '../constants/constants';
 
 import '../audiochallenge-page/audiochallenge-page.css';
 
@@ -28,7 +29,7 @@ export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<voi
         <div class="answers-btn-container">
 
         </div>
-        <div class="next-question-btn">NEXT</div>
+        <div class="next-question-btn disable">NEXT</div>
       </div>
     </div>`;
 
@@ -53,7 +54,7 @@ async function chooseDifficult(game: string): Promise<void> {
   const buttonContainer: HTMLElement = document.querySelector('.difficult-buttons-container') as HTMLElement;
   buttonContainer?.addEventListener('click', async (e: Event) => {
     const target = e.target as HTMLElement;
-    buttons.forEach((el, i) => {
+    buttons.forEach((el): void => {
       el.classList.remove('active')
     })
     target.classList.add('active');
@@ -62,14 +63,13 @@ async function chooseDifficult(game: string): Promise<void> {
       sprintGame.difficult = Number(target.dataset.group);
     } else {
       audiochallengeSettings.group = Number(target.dataset.group);
-      console.log(audiochallengeSettings.group);
     }
   })
 }
 
 function brokeHeart() {
   const hearts: NodeListOf<Element> = document.querySelectorAll('.heart') as NodeListOf<Element>;
-  for (let i = 0; i <= audiochallengeSettings.brokenLives; i++) {
+  for (let i = 0; i < audiochallengeSettings.lives; i++) {
     hearts[i].classList.remove('broken');
   }
 }
@@ -77,22 +77,48 @@ function brokeHeart() {
 async function chooseAnswer(result: string): Promise<void> {
   const buttons: NodeListOf<HTMLElement> = document.querySelectorAll('.answers-btn');
   const buttonContainer: HTMLElement = document.querySelector('.answers-btn-container') as HTMLElement;
-  buttonContainer.addEventListener('click', async (e: Event) => {
-    const target = e.target as HTMLElement;
-    buttons.forEach((el) => {
-      el.classList.remove('active');
-      el.classList.add('disable');
-    })
+  const nextBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
 
-    if (target.dataset.translate === result) {
-      target.classList.add('right');
-      ++audiochallengeSettings.maxLine;
-    } else {
-      target.classList.add('wrong');
-      audiochallengeSettings.maxLine = 0;
-      --audiochallengeSettings.brokenLives;
-    }
+  buttons.forEach((btn: HTMLElement) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((el) => {
+        el.classList.add('disable');
+      })
+      if (btn.dataset.translate === result) {
+        btn.classList.add('right');
+        ++audiochallengeSettings.maxLine;
+        audiochallengeSettings.results.push(true);
+      } else {
+        btn.classList.add('wrong');
+        audiochallengeSettings.maxLine = minScore;
+        --audiochallengeSettings.lives;
+        audiochallengeSettings.results.push(false);
+      }
+  
+      nextBTN.classList.remove('disable');
+    })
   })
+
+  // buttonContainer.addEventListener('click', async (e: Event) => {
+  //   const target = e.target as HTMLElement;
+  //   buttons.forEach((el) => {
+  //     el.classList.remove('active');
+  //     el.classList.add('disable');
+  //   })
+
+  //   if (target.dataset.translate === result) {
+  //     target.classList.add('right');
+  //     ++audiochallengeSettings.maxLine;
+  //     audiochallengeSettings.results.push(true);
+  //   } else {
+  //     target.classList.add('wrong');
+  //     audiochallengeSettings.maxLine = 0;
+  //     --audiochallengeSettings.lives;
+  //     audiochallengeSettings.results.push(false);
+  //   }
+
+  //   nextBTN.classList.remove('disable');
+  // })
 }
 
 export async function renderGroupSelectionPage(game: string): Promise<void> {
@@ -148,8 +174,8 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
     description.innerHTML = audiochallengeDescription;
 
     startBTN.addEventListener('click', async () => {
-      const newWordArr: IWord[] = await shuffleWords();
-      audiochallengeSettings.questionNum = 0;
+      const newWordArr: IWord[] = await shuffleWords() as IWord[];
+      audiochallengeSettings.questionNum = minScore;
       renderAudiochallengePage(newWordArr);
     });
     gameImg.classList.add('audiochallenge');
@@ -173,7 +199,7 @@ function getRandomNumAnsw(answersArr: number[]): number {
   }
 }
 
-function shuffleAnswers(answersArr: number[]): number[] {
+function shuffleArr(answersArr: number[]|IWord[]): number[]|IWord[] {
   let answers = answersArr;
   for (let i = answers.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * i);
@@ -185,52 +211,152 @@ function shuffleAnswers(answersArr: number[]): number[] {
 }
 
 async function shuffleWords(): Promise<IWord[]> {
-  console.log(audiochallengeSettings.group, audiochallengeSettings.page);
   const wordsArr: IWord[] = await getWords(audiochallengeSettings.group, audiochallengeSettings.page);
-  let words = wordsArr;
-  for (let i = words.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * i);
-    const temp = words[i];
-    words[i] = words[j];
-    words[j] = temp;
-  }
-  return words;
+  const newWordsArr: IWord[] = shuffleArr(wordsArr) as IWord[];
+  return newWordsArr;
 }
 
-function getAnswers(newWordArr: IWord[], questionNum: number) {
-  const answersLength = 5;
+function getAnswers(questionNum: number) {
   const answersArr: number[] = [];
 
   answersArr[0] = questionNum;
   for (let i = 1; i < answersLength; i++) {
     answersArr[i] = getRandomNumAnsw(answersArr);
   }
-  return shuffleAnswers(answersArr);
+  return shuffleArr(answersArr);
 }
 
 function playAudio(audio: HTMLAudioElement) {
   audio.play();
 }
 
+function createAydio(link: string): HTMLAudioElement {
+  const audio: HTMLAudioElement = new Audio();
+  audio.preload = 'auto';
+  audio.src = `https://react-rslang-example.herokuapp.com/${link}`;
+
+  return audio;
+} 
+
 async function createQuestion(newWordArr: IWord[], index: number): Promise<void> {
-  const wordAudio: HTMLAudioElement = new Audio();
-  wordAudio.preload = 'auto';
-
-
   const answersContainer = document.querySelector('.answers-btn-container') as HTMLElement;
   const listenBTN: HTMLElement = document.querySelector('.listen-btn') as HTMLElement;
 
-  if (index < maxQuestionCount) {
-    const answers = getAnswers(newWordArr, index);
-    answersContainer.innerHTML = renderAudiochallengeQuestion(newWordArr, answers);
-    wordAudio.src = `https://react-rslang-example.herokuapp.com/${newWordArr[index].audio}`;
+  if (index < maxQuestionCount && audiochallengeSettings.lives !== minScore) {
+    const answers = getAnswers(index);
+    answersContainer.innerHTML = renderAudiochallengeQuestion(newWordArr, answers as number[]);
+    const wordAudio: HTMLAudioElement = createAydio(newWordArr[index].audio);
+
     playAudio(wordAudio);
     listenBTN.addEventListener('click', () => playAudio(wordAudio));
   } else {
+    getResults(newWordArr, audiochallenge);
     console.log('вызов результатов');
   }
 }
 
-function checkQuestion() {
+function getResults(words: IWord[], game: string): void {
+  const main = document.querySelector('.main') as HTMLElement;
+  let rightAnswers: string = '';
+  let wrongAnswers: string = '';
 
+  const goodResults = 'Great job! Your score is: ';
+  const badResults = 'It will be better next time... Your score is: ';
+
+  for (let i = 0; i < audiochallengeSettings.results.length; i++) {
+    if (audiochallengeSettings.results[i]) {
+      rightAnswers += `<div>
+        <div class="result-audio-btn" data-index="${i}"></div>
+        <div>${words[i].word} - ${words[i].wordTranslate}</div>
+      </div>`;
+    } else if (!audiochallengeSettings.results[i]) {
+        wrongAnswers += `<div  data-index="${i}">
+        <div class="result-audio-btn" data-index="${i}"></div>
+        <div>${words[i].word} - ${words[i].wordTranslate}</div>
+      </div>`;
+    }
+  }
+
+  const content: string = `
+    <div class="results-container">
+      <div class="tabs-container">
+        <div class="main-tab">MAIN</div>
+        <div class="words-tab disable">RESULTS</div>
+      </div>
+      <div class="main-container">
+        <div class="results-inf"></div>
+        <div class="results-img"></div>
+        <div class="try-again-btn">Try again?</div>
+      </div>
+      <div class="words-container disable">
+        <div class="answers-container">
+          <div class="answer-subtitle-right"></div>
+          <ol class="right-answers-result">${rightAnswers}</ol>
+        </div>
+        <div class="answers-container">
+          <div class="answer-subtitle-wrong"></div>
+          <ol class="wrong-answers-result">${wrongAnswers}</ol>
+        </div>
+      </div>
+    </div>
+  `; 
+  main.innerHTML = content;
+
+  const tryAgainBtn = document.querySelector('.try-again-btn') as HTMLButtonElement;
+  tryAgainBtn.addEventListener('click', () => {
+      audiochallengeSettings.maxLine = minScore;
+      audiochallengeSettings.lives = maxLives;
+      audiochallengeSettings.questionNum = minScore;
+      audiochallengeSettings.results = [];
+      renderGroupSelectionPage('audiochallenge');
+  });
+
+  const mainTab: HTMLElement = main.querySelector('.main-tab') as HTMLElement;
+  const wordsTab: HTMLElement = main.querySelector('.words-tab') as HTMLElement;
+  const mainContainer: HTMLElement = main.querySelector('.main-container') as HTMLElement;
+  const wordsContainer: HTMLElement = main.querySelector('.words-container') as HTMLElement;
+
+  mainTab.addEventListener('click', () => {
+    console.log(1);
+    mainTab.classList.remove('disable');
+    wordsTab.classList.add('disable');
+    mainContainer.classList.remove('disable');
+    wordsContainer.classList.add('disable');
+  })
+  wordsTab.addEventListener('click', () => {
+    console.log(2);
+    mainTab.classList.add('disable');
+    wordsTab.classList.remove('disable');
+    mainContainer.classList.add('disable');
+    wordsContainer.classList.remove('disable');
+  })
+
+  const audioBTNS: NodeListOf<HTMLElement> = document.querySelectorAll('.result-audio-btn') as NodeListOf<HTMLElement>;
+
+  audioBTNS.forEach((audioBTN: HTMLElement) => {
+    audioBTN.addEventListener('click', () => {
+      const index: string = audioBTN.dataset.index as string;
+      const audio: HTMLAudioElement = createAydio(words[index].audio);
+      playAudio(audio);
+    })
+  })
+
+  const resultImg: HTMLElement = main.querySelector('.results-img') as HTMLElement;
+  const resultTitle: HTMLElement = main.querySelector('.results-inf') as HTMLElement;
+
+  if (game === audiochallenge && audiochallengeSettings.lives > minScore) {
+    resultTitle.innerHTML = goodResults + audiochallengeSettings.lives + ' lives left';
+    resultImg.classList.add('good-result-img');
+    console.log(game, audiochallengeSettings.lives);
+  } else if (game === audiochallenge && audiochallengeSettings.lives === minScore) {
+    resultTitle.innerHTML = badResults + audiochallengeSettings.lives + ' lives left';
+    resultImg.classList.add('bad-result-img');
+    console.log(game, audiochallengeSettings.lives);
+  } else if (game === sprint && sprintGame.score >= averegeSprintGameScore) {
+    resultTitle.innerHTML = goodResults + sprintGame.score + ' points';
+    resultImg.classList.add('good-result-img');
+  } else if (game === sprint && sprintGame.score < averegeSprintGameScore) {
+    resultTitle.innerHTML = badResults + sprintGame.score + ' points';
+    resultImg.classList.add('bad-result-img');
+  }
 }

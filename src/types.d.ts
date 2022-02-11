@@ -19,6 +19,7 @@ interface IAudiochallenge {
   page: number;
   group: number;
   maxLine: number;
-  brokenLives: number;
+  lives: number;
   questionNum: number;
+  results: boolean[];
 }

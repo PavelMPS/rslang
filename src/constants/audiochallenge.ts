@@ -2,8 +2,9 @@ export const audiochallengeSettings: IAudiochallenge = {
   page: 0,
   group: 0,
   maxLine: 0,
-  brokenLives: 4,
+  lives: 5,
   questionNum: 0,
+  results: [],
 }
 
 export const maxQuestionCount: number = 20;
