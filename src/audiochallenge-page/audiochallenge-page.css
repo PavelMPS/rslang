@@ -58,8 +58,9 @@
 }
 
 .answers-btn,
+.not-to-know-btn,
 .next-question-btn {
-  width: 150px;
+  width: 250px;
   height: 50px;
   cursor: pointer;
   color: #ffffff;
@@ -76,6 +77,7 @@
 .answers-btn.disable {
   opacity: 0;
 }
+.not-to-know-btn,
 .next-question-btn {
   opacity: 1;
   margin: 0 auto;
@@ -83,12 +85,13 @@
   transition: 1s;
 }
 .answers-btn:hover,
+.not-to-know-btn:hover,
 .next-question-btn:hover {
   cursor: pointer;
   transform: scale(1.2);
 }
 .answers-btn.right {
-  opacity: 1;
+  display: block;
   transform: scale(1.2);
   background-color: rgb(92, 255, 184);
 }
@@ -97,8 +100,8 @@
   transform: scale(1.2);
   background-color: rgb(252, 98, 98);
 }
-
+.not-to-know-btn.disable,
 .next-question-btn.disable {
-  opacity: 0;
+  display: none;
   transition: 1s;
 }

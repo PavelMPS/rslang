@@ -9,3 +9,6 @@ export const answersLength = 5;
 export const maxQuestionCount = 20;
 
 export const maxPageCount = 30;
+
+export const difficultWeak = 'weak';
+export const difficultHeavy = 'heavy';
