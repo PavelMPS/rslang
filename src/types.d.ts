@@ -52,3 +52,15 @@ interface ISignUser {
   email: string,
   password: string
 }
+
+interface IUserWord {
+  difficulty: string,
+  optional: IOptional,
+}
+
+interface IOptional {
+  isLerned: boolean,
+  rightAnswers: number,
+  allAnswers: number,
+  answersForIsLerned: number,
+}

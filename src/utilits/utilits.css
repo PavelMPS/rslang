@@ -21,6 +21,7 @@
   width: 250px;
   height: 250px;
   background-size: 100%;
+  background-repeat: no-repeat;
 }
 .game-img.audiochallenge {
   background-image: url(../assets/free-sticker-marketing-4850876.png);
@@ -161,7 +162,8 @@
   width: 250px;
   height: 250px;
   margin: 0px auto 25px auto;
-  background-size: cover;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 .good-result-img {
   background-image: url(../assets/free-sticker-trophy-4852328.png);
