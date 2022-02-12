@@ -1,15 +1,40 @@
 import { getWords } from '../api/api';
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
-import { startGameSprint } from '../sprint-game/sprint-game';
+import { startGameSprint, timerId } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage, shuffleWords } from '../audiochallenge-page/audiochallenge-page';
 import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount } from '../constants/constants';
 
 import '../utilits/utilits.css';
 
-export async function getQuestionArr(group: number): Promise<IWord[]> {
+export async function getQuestionArr(group: number, page?: number): Promise<IWord[]> {
   const pagesArr: number[] = [];
   const wordArr: Array<IWord[]> = [];
+  
+  // if (page) {
+  //   let userId: string | null = '';
+  //   if (localStorage.getItem('Your id')) {
+  //     userId = localStorage.getItem('Your id');
+  //   }
+  //   let wordArr: Array<IWord[]> = [];
+  //   while (page >= 0) {
+  //     const arr: IWord[] = await getWords(group, page);
+  //     wordArr.push(arr);
+  //     page--;
+  //   }
+  //   const wordArrNew: IWord[] = wordArr.flat();
+  //   const totalArr: Array<IWord> = [];
+  //   if (userId) {
+  //     for (let i = 0; i < wordArrNew.length; i++) {      
+  //       if ( await getWordInfo(userId, wordArrNew[i].id) !== true) {
+  //         totalArr.push(wordArrNew[i]);
+  //       }
+  //     }
+  //   }
+  //   console.log(totalArr);
+  //   return totalArr.slice(0, maxQuestionCount);
+  // }
+
   for (let i = 0; i < 4; i ++) {
     pagesArr[i] = getRandomPage(pagesArr);
     const arr: IWord[] = await getWords(group, pagesArr[i]);
@@ -251,8 +276,10 @@ function createResults(game: string) {
   } else if (game === sprint && sprintGame.score >= averegeSprintGameScore) {
     resultTitle.innerHTML = goodResults + sprintGame.score + ' points';
     resultImg.classList.add('good-result-img');
+    clearTimeout(timerId);
   } else if (game === sprint && sprintGame.score < averegeSprintGameScore) {
     resultTitle.innerHTML = badResults + sprintGame.score + ' points';
     resultImg.classList.add('bad-result-img');
+    clearTimeout(timerId);
   }
 }

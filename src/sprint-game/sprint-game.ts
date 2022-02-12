@@ -1,6 +1,7 @@
 import { GameWord, sprintGame } from '../constants/sprint';
 import '../sprint-game/sprint-game.css';
 import { setStatistic } from '../statistic-page/statistic-page';
+import { getQuestionArr, getResults } from '../utilits/utilits';
 
 export let timerId: NodeJS.Timer;
 
@@ -42,21 +43,18 @@ export async function startGameSprint(): Promise<void> {
 }
 
 async function formGameWords(): Promise<void> {
-    console.log('1forming game words');
     sprintGame.group = sprintGame.difficult;
-    const arr = await getWords();
-    console.log(arr);
+    const arr = await getQuestionArr(sprintGame.difficult);
     await formWordsArray(arr);
-    await formRandomWords(); 
+    await formRandomWords();
+    console.log(sprintGame.gameWords) 
 }
 
 async function formWordsArray(array): Promise<void> {
-    console.log('2forming words array');
     array.forEach((elem, index) => {
         const gameWord: GameWord = {id: elem.id, word: elem.word, answer: elem.wordTranslate, right: true, wordTranslate: elem.wordTranslate, userAnswer: true, audio: elem.audio}
         sprintGame.gameWords[index] = gameWord;
-    });
-    
+    });  
 }
 
 async function formRandomAnswers(): Promise<Array<string>> {
@@ -69,7 +67,6 @@ async function formRandomAnswers(): Promise<Array<string>> {
 
 async function formRandomWords(): Promise<void> {
     const randomAnswers = await formRandomAnswers();
-    console.log(randomAnswers);
     let count = randomAnswers.length - 1;
     sprintGame.gameWords.forEach((el, index) => {
         if (index % 2 !== 0) {
@@ -157,7 +154,6 @@ function getSprintScore(): void {
     }
     const scoreWindow = document.querySelector('.score-window') as HTMLElement;
     scoreWindow.innerHTML = sprintGame.score.toString();
-    console.log( sprintGame.answerSeries, sprintGame.seriesTotalStatistics);
 }
 
 function showWinMessage(message: string, addingScore: number): void {
@@ -172,10 +168,8 @@ function showWinMessage(message: string, addingScore: number): void {
 }
 
 async function renderQuestion(): Promise<void> {
-    console.log('5 render question');
-    console.log(sprintGame.gameWords);
     if (sprintGame.count === 20) { 
-        getResults();
+        getResults(sprintGame.gameWords, 'sprint');
         return;
     }      
     const questionNumber = `Question: ${sprintGame.count + 1}/${sprintGame.gameWords.length}`;
@@ -192,62 +186,8 @@ async function renderQuestion(): Promise<void> {
 }
 
 async function shuffle(array: Array<GameWord>): Promise<void> {
-    console.log('4 shuffle array');
     array.sort(() => Math.random() - 0.5);
     await renderQuestion();
-}
-
-function getResults(): void {
-    if (sprintGame.answerSeries === 19) {
-        sprintGame.seriesTotalStatistics += sprintGame.answerSeries;
-    }
-    clearInterval(timerId);
-    sprintGame.gameWords.length = sprintGame.count;
-    const main = document.querySelector('.main') as HTMLElement;
-    let rightAnswers: string = '';
-    let wrongAnswers: string = '';
-    sprintGame.gameWords.forEach(el => {
-        if (el.userAnswer) {
-            rightAnswers += `<li>${el.word} - ${el.wordTranslate}</li>`;
-        } else if (!el.userAnswer) {
-            wrongAnswers += `<li>${el.word} - ${el.wordTranslate}</li>`;
-        }
-    })
-    const content: string = `
-        <div class="results-container">
-            <div class="result-cat-right"></div>
-            <div class="sprint-results-area">
-                <p class="sprint-results">${sprintGame.answerSeries === 0 ?
-                    sprintGame.gameOver[0] : sprintGame.gameOver[1]}${sprintGame.gameOptions[3]}${sprintGame.score}</p>
-                <div class="area-results">
-                    <p class="answer-subtitle-right">Right answers:</p>
-                    <ol class="right-answers-result"></ol>
-                    <p class="answer-subtitle-wrong">Wrong answers:</p>
-                    <ol class="wrong-answers-result"></ol>
-                </div>          
-            </div>
-            <div class="result-button-container">
-                <button class="try-again-sprint">${sprintGame.gameOptions[4]}</button>
-                <div class="result-cat-left"></div>
-            </div>
-            
-        </div>        
-    `; 
-    main.innerHTML = content;
-    const rightAnswersResult = document.querySelector('.right-answers-result') as HTMLElement;
-    const wrongAnswersResult = document.querySelector('.wrong-answers-result') as HTMLElement;
-    const areaResult = document.querySelector('.area-results') as HTMLElement;
-    if (sprintGame.count === 1) {
-        areaResult.innerHTML = sprintGame.gameOver[2];
-    } else {
-        rightAnswersResult.innerHTML = rightAnswers;
-        wrongAnswersResult.innerHTML = wrongAnswers;      
-    }
-    setStatistic();//Количество новых слов, самая длинная серия правильных ответов, кол-во правильных ответов.
-    const tryAgainBtn = document.querySelector('.try-again-sprint') as HTMLButtonElement;
-    tryAgainBtn.addEventListener('click', () => {     
-        startGameSprint();
-    });
 }
 
 async function resetSprintGame(): Promise<void> {
@@ -270,7 +210,7 @@ function timer(value: number): void {
     timerId = setInterval(() => {
         if (value === 0) {
             clearInterval(timerId);       
-            getResults();
+            getResults(sprintGame.gameWords, 'sprint');
         }
         const timerWindow = document.querySelector('.timer-sprint') as HTMLElement;
         timerWindow.innerHTML = String(value).padStart(2, '0');
