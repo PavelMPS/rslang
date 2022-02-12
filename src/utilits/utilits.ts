@@ -1,9 +1,9 @@
-import { getWords } from '../api/api';
+import { getWords, getUserWord, updateUserWord, createUserWord } from '../api/api';
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint, timerId } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage, shuffleWords } from '../audiochallenge-page/audiochallenge-page';
-import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount } from '../constants/constants';
+import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak } from '../constants/constants';
 
 import '../utilits/utilits.css';
 
@@ -162,17 +162,27 @@ export function getResults(words: IWordQuestion[] | GameWord[], game: string): v
   let rightAnswers: string = '';
   let wrongAnswers: string = '';
 
-  words.forEach((word: IWordQuestion | GameWord, index: number): void => {
+  let token: string | null = '';
+
+  words.forEach(async (word: IWordQuestion | GameWord, index: number): Promise<void> => {
     if (word.userAnswer === true) {
       rightAnswers += `<div>
         <div class="result-audio-btn" data-index="${index}"></div>
         <div>${word.word} - ${word.wordTranslate}</div>
       </div>`;
+      if (localStorage.getItem('Your token')) {
+        token = localStorage.getItem('Your token');
+        await changeUserWords(word);
+      }
     } else if (word.userAnswer === false) {
         wrongAnswers += `<div>
         <div class="result-audio-btn" data-index="${index}"></div>
         <div>${word.word} - ${word.wordTranslate}</div>
       </div>`;
+      if (localStorage.getItem('Your token')) {
+        token = localStorage.getItem('Your token');
+        await changeUserWords(word);
+      }
     }
   })
   
@@ -208,6 +218,14 @@ export function getResults(words: IWordQuestion[] | GameWord[], game: string): v
   createResultsAydio(words);
 
   createResults(game);
+
+  // let token: string | null = '';
+  // if (localStorage.getItem('Your token')) {
+  //   token = localStorage.getItem('Your token');
+  //   words.forEach((word: IWordQuestion | GameWord) => {
+  //     changeUserWords(word);
+  //   })
+  // }
 }
 
 function createResultsAydio(words: IWordQuestion[] | GameWord[]): void {
@@ -281,5 +299,45 @@ function createResults(game: string) {
     resultTitle.innerHTML = badResults + sprintGame.score + ' points';
     resultImg.classList.add('bad-result-img');
     clearTimeout(timerId);
+  }
+}
+
+export async function changeUserWords(word: IWordQuestion | GameWord) {
+  let userId: string | null = '';
+  if (localStorage.getItem('Your id')) {
+    userId = localStorage.getItem('Your id');
+  }
+
+  const wordResponse: Response = await getUserWord(userId, word.id);
+
+  let learned: boolean = false;
+  let rightAnswers = 0;
+  let allAnswers = 0;
+  let answersForIsLerned = 0;
+  let maxCount: number = 3;
+
+  if (wordResponse.status === 200) {
+    const wordInf: IUserWord = await wordResponse.json();
+    if (word.userAnswer === true) {
+      rightAnswers = wordInf.optional.rightAnswers + 1;
+      allAnswers = wordInf.optional.allAnswers + 1;
+      answersForIsLerned = wordInf.optional.answersForIsLerned + 1;
+    } else if (word.userAnswer === false) {
+      allAnswers = wordInf.optional.allAnswers + 1;
+    }
+    if (wordInf.difficulty === difficultHeavy) {
+      maxCount = 5;
+    }
+    if (answersForIsLerned >= maxCount) {
+      learned = true;
+    } else {
+      learned = false;
+    }
+    await updateUserWord(userId, word.id, wordInf.difficulty, learned, rightAnswers, allAnswers, answersForIsLerned);
+  } else if (wordResponse.status === 404) {
+    rightAnswers = rightAnswers + 1;
+    allAnswers = allAnswers + 1;
+    answersForIsLerned = answersForIsLerned + 1;
+    await createUserWord(userId, word.id, difficultWeak, learned, rightAnswers, allAnswers, answersForIsLerned);
   }
 }
