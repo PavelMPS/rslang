@@ -53,7 +53,7 @@ async function formGameWords(): Promise<void> {
 async function formWordsArray(array): Promise<void> {
     console.log('2forming words array');
     array.forEach((elem, index) => {
-        const gameWord: GameWord = {id: elem.id, question: elem.word, answer: elem.wordTranslate, right: true, rightAnswer: elem.wordTranslate, userAnswer: true, audio: elem.audio}
+        const gameWord: GameWord = {id: elem.id, word: elem.word, answer: elem.wordTranslate, right: true, wordTranslate: elem.wordTranslate, userAnswer: true, audio: elem.audio}
         sprintGame.gameWords[index] = gameWord;
     });
     
@@ -180,7 +180,7 @@ async function renderQuestion(): Promise<void> {
     }      
     const questionNumber = `Question: ${sprintGame.count + 1}/${sprintGame.gameWords.length}`;
     const content = `
-    <div class="sprint-question">${sprintGame.gameWords[sprintGame.count].question}</div>
+    <div class="sprint-question">${sprintGame.gameWords[sprintGame.count].word}</div>
     <div class="sprint-meaning">this means?</div>
     <div class="sprint-answer">${sprintGame.gameWords[sprintGame.count].answer}</div>
     `;
@@ -208,9 +208,9 @@ function getResults(): void {
     let wrongAnswers: string = '';
     sprintGame.gameWords.forEach(el => {
         if (el.userAnswer) {
-            rightAnswers += `<li>${el.question} - ${el.rightAnswer}</li>`;
+            rightAnswers += `<li>${el.word} - ${el.wordTranslate}</li>`;
         } else if (!el.userAnswer) {
-            wrongAnswers += `<li>${el.question} - ${el.rightAnswer}</li>`;
+            wrongAnswers += `<li>${el.word} - ${el.wordTranslate}</li>`;
         }
     })
     const content: string = `

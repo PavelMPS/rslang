@@ -1,106 +1,124 @@
-import '../audiochallenge-page/audiochallenge-page.css';
-import { sprintGame } from '../constants/sprint';
-import { startGameSprint } from '../sprint-game/sprint-game';
+import { audiochallengeSettings } from '../constants/audiochallenge';
+import { shuffle, createAydio, playAudio, getResults, getQuestionArr } from '../utilits/utilits';
+import { getWords } from '../api/api';
+import { minScore, answersLength, maxQuestionCount, audiochallenge } from '../constants/constants';
 
-export async function renderAudiochallengePage() {
-  console.log('audiochallenge');
-  //TODO function
+import '../audiochallenge-page/audiochallenge-page.css';
+
+function renderAudiochallengeQuestion(words: IWord[], answers: number[]) {
+  let content = ``;
+  answers.forEach((answer: number) => {
+    content += `<div class="answers-btn" data-translate="${words[answer].wordTranslate}">${words[answer].wordTranslate}</div>`
+  });
+
+  return content;
+}
+
+export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<void> {
   const content: string = `    <div class="audiochallenge-container">
       <div class="hearts-container">
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
+        <div class="heart broken"></div>
+        <div class="heart broken"></div>
+        <div class="heart broken"></div>
+        <div class="heart broken"></div>
         <div class="heart broken"></div>
       </div>
       <div class="listen-btn"></div>
       <div class="btns-container">
         <div class="answers-btn-container">
-          <div class="answers-btn" id="one">one</div>
-          <div class="answers-btn" id="two">two</div>
-          <div class="answers-btn" id="three">three</div>
-          <div class="answers-btn" id="four">four</div>
-          <div class="answers-btn" id="five">five</div>
+
         </div>
-        <div class="next-question-btn">NEXT</div>
+        <div class="next-question-btn disable">NEXT</div>
       </div>
     </div>`;
 
   const main = document.querySelector('.main') as HTMLElement;
   main.innerHTML = content;
+
+  createQuestion(newWordArr, audiochallengeSettings.questionNum);
+
+  chooseAnswer(newWordArr[audiochallengeSettings.questionNum].wordTranslate, audiochallengeSettings.questionNum);
+
+  brokeHeart();
+
+  const nextBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
+  nextBTN.addEventListener('click', () => {
+    audiochallengeSettings.questionNum = audiochallengeSettings.questionNum + 1;
+    renderAudiochallengePage(newWordArr);
+  })
 }
 
-//в качестве переменной game в функцию передается название игры 'audiochallenge'/'sprint' от которой зависит текст, котик, листенер
-//реализовано получение номера группы при выборе сложности
+function brokeHeart() {
+  const hearts: NodeListOf<Element> = document.querySelectorAll('.heart') as NodeListOf<Element>;
+  for (let i = 0; i < audiochallengeSettings.lives; i++) {
+    hearts[i].classList.remove('broken');
+  }
+}
 
-export async function renderGroupSelectionPage(game: string): Promise<void> {
-    const content: string = ` <div class="group-select-page">
-      <div class="game-title-container">
-        <h3 class="game-page-title"></h3>
-      </div>
-      <div class="audiochallenge-main-inf">
-        <div class="audiochallenge-img"></div>
-        <div class="game-describe-container"></div>
-      </div>
+async function chooseAnswer(result: string, index: number): Promise<void> {
+  const buttons: NodeListOf<HTMLElement> = document.querySelectorAll('.answers-btn');
+  const nextBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
 
-      <div class="game-difficult-container">
-          <h4 class="difficult-subtitle">Choose the difficult of the game:</h4>
-          <div class="difficult-buttons-container">
-              <button class="btn difficult-btn" id="difficult-btn-1" data-group="0">I</button>
-              <button class="btn difficult-btn" id="difficult-btn-2" data-group="1">II</button>
-              <button class="btn difficult-btn" id="difficult-btn-3" data-group="2">III</button>
-              <button class="btn difficult-btn" id="difficult-btn-4" data-group="3">IV</button>
-              <button class="btn difficult-btn" id="difficult-btn-5" data-group="4">V</button>
-              <button class="btn difficult-btn" id="difficult-btn-6" data-group="5">VI</button>
-          </div>
-      </div>
-      <div class="btn start-btn">Let's start!</div>
-    </div>`;
-
-    const footer = document.querySelector('.footer') as HTMLElement;
-    const main = document.querySelector('.main') as HTMLElement;
-    footer.classList.add('disabled');
-    main.innerHTML = content;
-
-    const title: HTMLElement = main.querySelector('.game-page-title') as HTMLElement;
-    const description: HTMLElement = main.querySelector('.game-describe-container') as HTMLElement;
-
-    const sprintTitle = 'SPRINT';
-    const audiochallengeTitle = 'AUDIOCHALLENGE';
-    const sprintDescription = `In this game you must choose rihgt answer.
-        Click at that button you think right or press key left or right
-        for choosing answer`;
-    const audiochallengeDescription = `<h3 class="game-describe">"Audiochallenge" is a workout that improves listening comprehension.</h3>
-        <ul>
-          <li>Use the mouse to select.</li>
-          <li>Use number keys from 1 to 5 to select an answer.</li>
-          <li>Use a space to repeat a word.</li>
-          <li>Use the Enter key for a hint or to move to the next word.</li>
-        </ul>`;
-
-    const startBTN: HTMLElement = main.querySelector('.start-btn') as HTMLElement;
-    const difficultBTNs: NodeListOf<HTMLElement> = main.querySelectorAll('.difficult-btn') as NodeListOf<HTMLElement>;
-
-    let group: string|undefined = '0';
-
-    difficultBTNs.forEach((difficultBTN: HTMLElement): void => {
-      difficultBTN.addEventListener('click', () => {
-        difficultBTNs.forEach((btn: HTMLElement) => {
-          btn.classList.remove('active');
-        })
-        difficultBTN.classList.add('active');
-        group = difficultBTN.dataset.group;
-        if (group) sprintGame.difficult = +group;
+  buttons.forEach((btn: HTMLElement) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((el) => {
+        el.classList.add('disable');
       })
+      if (btn.dataset.translate === result) {
+        btn.classList.add('right');
+        ++audiochallengeSettings.answerSeries;
+        audiochallengeSettings.gameWords[index].userAnswer = true;
+      } else if (btn.dataset.translate !== result) {
+        btn.classList.add('wrong');
+        audiochallengeSettings.answerSeries = minScore;
+        --audiochallengeSettings.lives;
+        audiochallengeSettings.gameWords[index].userAnswer = false;
+      }
+  
+      nextBTN.classList.remove('disable');
     })
-
-    if (game === 'audiochallenge') {
-      title.innerHTML = audiochallengeTitle;
-      description.innerHTML = audiochallengeDescription;
-      startBTN.addEventListener('click', renderAudiochallengePage);
-    } else if (game === 'sprint') {
-      title.innerHTML = sprintTitle;
-      description.innerHTML = sprintDescription;
-      startBTN.addEventListener('click', startGameSprint);
-    }
+  })
 }
+
+function getRandomNum(arr: number[]): number {
+  let newNum = Math.floor(Math.random() * (maxQuestionCount - 1 + 1));
+  if (arr.includes(newNum)) {
+    return getRandomNum(arr);
+  } else {
+    return newNum;
+  }
+}
+
+export async function shuffleWords(): Promise<IWord[]> {
+  audiochallengeSettings.gameWords = await getQuestionArr(audiochallengeSettings.group);
+  shuffle(audiochallengeSettings.gameWords);
+  return audiochallengeSettings.gameWords;
+}
+
+function getAnswers(questionNum: number): number[] {
+  const answersArr: number[] = [];
+
+  answersArr[0] = questionNum;
+  for (let i = 1; i < answersLength; i++) {
+    answersArr[i] = getRandomNum(answersArr);
+  }
+  shuffle(answersArr);
+  return answersArr;
+}
+
+async function createQuestion(newWordArr: IWord[], index: number): Promise<void> {
+  const answersContainer = document.querySelector('.answers-btn-container') as HTMLElement;
+  const listenBTN: HTMLElement = document.querySelector('.listen-btn') as HTMLElement;
+
+  if (index < maxQuestionCount && audiochallengeSettings.lives !== minScore) {
+    const answers = getAnswers(index);
+    answersContainer.innerHTML = renderAudiochallengeQuestion(newWordArr, answers as number[]);
+    const wordAudio: HTMLAudioElement = createAydio(newWordArr[index].audio);
+    playAudio(wordAudio);
+    listenBTN.addEventListener('click', () => playAudio(wordAudio));
+  } else {
+    getResults(newWordArr, audiochallenge);
+  }
+}
+
+

@@ -1,9 +1,9 @@
 export type GameWord = {
     id: string;
-    question: string;
+    word: string;
     answer: string;
     right: boolean;
-    rightAnswer: string;
+    wordTranslate: string;
     userAnswer: boolean;
     audio: string;
 }
