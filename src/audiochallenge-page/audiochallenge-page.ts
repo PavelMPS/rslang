@@ -66,11 +66,11 @@ async function chooseAnswer(result: string, index: number): Promise<void> {
       })
       if (btn.dataset.translate === result) {
         btn.classList.add('right');
-        ++audiochallengeSettings.maxLine;
+        ++audiochallengeSettings.answerSeries;
         audiochallengeSettings.gameWords[index].userAnswer = true;
       } else if (btn.dataset.translate !== result) {
         btn.classList.add('wrong');
-        audiochallengeSettings.maxLine = minScore;
+        audiochallengeSettings.answerSeries = minScore;
         --audiochallengeSettings.lives;
         audiochallengeSettings.gameWords[index].userAnswer = false;
       }

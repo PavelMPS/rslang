@@ -14,11 +14,25 @@
     color: white;
 }
 
+.sprint-info-table {
+    display: flex;
+    width: 56%;
+    justify-content: space-evenly;
+}
+
+.question-number {
+   font-size: 36px;
+   font-weight: bold;
+   color: #6ce0c0;
+   padding-top: 90px;
+   text-shadow: 2px 2px 3px grey;
+}
+
 .sprint-game-area {
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 200px;
+    margin-top: 60px;
     width: 50%;
     min-width: 400px;
     height: 50%;
@@ -34,6 +48,7 @@
 .sprint-score,
 .sprint-difficult-info {
     width: 30%;
+    height: 53px;
     font-size: 28px;
     padding: 10px 0px 0px 10px;
     color: white;
@@ -76,9 +91,8 @@
     width: 80%;
 }
 
-.right-btn,
-.wrong-btn {
-    width: 25%;
+.right-btn {
+    /* width: 25%;
     height: 10%;
     min-height: 30px;
     background: #ff9c3d;
@@ -87,7 +101,26 @@
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
-    transition: all .4s;
+    transition: all .4s; */
+    width: 200px;
+    height: 200px;
+    background: url("../assets/free-sticker-yes-message-4850764.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: all .6s;
+    border: none;
+    cursor: pointer;
+}
+
+.wrong-btn {
+    width: 200px;
+    height: 200px;
+    background: url("../assets/free-sticker-no-message-4850764.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: all .6s;
+    border: none;
+    cursor: pointer;
 }
 
 .right-btn:hover {
@@ -96,7 +129,7 @@
 }
 
 .right-btn:active {
-    background: #6ce0c0;
+    transform: translateY(20px);
 }
 
 .wrong-btn:hover {
@@ -105,14 +138,42 @@
 }
 
 .wrong-btn:active {
-    background: #6ce0c0;
+    transform: translateY(20px);
 }
 
-/* .sprint-results-area {
+.results-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.result-cat-right {
+    width: 200px;
+    height: 200px;
+    margin-top: 35px;
+    background: url("../assets/free-sticker-pencil-5720777.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.result-cat-left {
+    width: 200px;
+    height: 200px;
+    background: url("../assets/free-sticker-highlight-5720922.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.result-button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sprint-results-area {
     width: 50%;
     height: 100%;
     min-height: 250px;
-    margin-top: 150px;
+    margin-top: 35px;
     border-radius: 10px;
     border: 4px solid #ff9c3d;
     margin-bottom: 15px;
@@ -126,6 +187,12 @@
     text-align: center;
     font-size: 24px;
     text-transform: uppercase;
+}
+
+.area-results {
+    font-size: 26px;
+    margin: auto;
+    color: #ff9c3d;
 }
 
 .try-again-sprint {
@@ -165,7 +232,7 @@
     padding: 10px;
     background: #ff9c3d;
     color: #84fc80;
-    text-shadow: 2px 2px 4px black;
+    text-shadow: 2px 2px 4px #6ce0c0;
 }
 
 .wrong-answers-result li {
@@ -173,8 +240,8 @@
     font-size: 18px;
     padding: 10px;
     background: #ff9c3d;
-    color: #f87c66;
-    text-shadow: 2px 2px 4px black;
+    color: #fa2904;
+    text-shadow: 2px 2px 4px white;
 }
 
 .answer-subtitle-wrong {
@@ -186,4 +253,76 @@
     background: #f87c66;
     border-top: 4px solid #ff9c3d;
     border-bottom: 4px solid #ff9c3d;
-} */
+}
+
+.win-message-container {
+    position: relative;
+    font-size: 36px;
+    top: 0;
+    color: #ff9c3d;
+    animation: winPopUp 2s;
+    opacity: 0; 
+}
+
+@keyframes winPopUp {
+    0% {
+        opacity: 1;
+        top: 0;
+    }    
+    100% {
+        opacity: 0;
+        top: -100px;
+    }
+}
+
+.pop-up-window-score {
+    margin-top: -19px;
+}
+
+.active-area-red {
+    transition: all 1s;
+    border: 5px solid red;
+    animation: redanswer 1s;
+}
+
+.active-area-green {
+    transition: all 1s;
+    border: 5px solid green;
+    animation: greenanswer 1s;
+}
+
+@keyframes redanswer {
+    0%{
+        box-shadow: none;
+    }
+    25%{        
+        box-shadow: red 0px 5px 6px, red 0px -7px 5px, red 0px 4px 20px, red 0px 2px 3px, red 0px -3px 5px;
+    }
+    50%{
+        box-shadow: none;  
+    }
+    75%{
+        box-shadow: red 0px 5px 6px, red 0px -7px 5px, red 0px 4px 20px, red 0px 2px 3px, red 0px -3px 5px;
+    }
+    100%{
+        box-shadow: none;
+    }
+}
+
+@keyframes greenanswer {
+    0%{
+        box-shadow: none;
+    }
+    25%{        
+        box-shadow: green 0px 5px 6px, green 0px -7px 5px, green 0px 4px 20px, green 0px 2px 3px, green 0px -3px 5px;
+    }
+    50%{
+        box-shadow: none;  
+    }
+    75%{
+        box-shadow: green 0px 5px 6px, green 0px -7px 5px, green 0px 4px 20px, green 0px 2px 3px, green 0px -3px 5px;
+    }
+    100%{
+        box-shadow: none;
+    }
+}

@@ -108,12 +108,12 @@ export function createAydio(link: string): HTMLAudioElement {
   return audio;
 }
 
-export function getResults(words: IWordQuestion[], game: string): void {
+export function getResults(words: IWordQuestion[] | GameWord[], game: string): void {
   const main = document.querySelector('.main') as HTMLElement;
   let rightAnswers: string = '';
   let wrongAnswers: string = '';
 
-  words.forEach((word: IWordQuestion, index: number): void => {
+  words.forEach((word: IWordQuestion | GameWord, index: number): void => {
     if (word.userAnswer === true) {
       rightAnswers += `<div>
         <div class="result-audio-btn" data-index="${index}"></div>
@@ -140,11 +140,11 @@ export function getResults(words: IWordQuestion[], game: string): void {
       </div>
       <div class="words-container disable">
         <div class="answers-container">
-          <div class="answer-subtitle-right"></div>
+          <div class="answer-title-right"></div>
           <ol class="right-answers-result">${rightAnswers}</ol>
         </div>
         <div class="answers-container">
-          <div class="answer-subtitle-wrong"></div>
+          <div class="answer-title-wrong"></div>
           <ol class="wrong-answers-result">${wrongAnswers}</ol>
         </div>
       </div>
@@ -161,7 +161,7 @@ export function getResults(words: IWordQuestion[], game: string): void {
   createResults(game);
 }
 
-function createResultsAydio(words: IWordQuestion[]): void {
+function createResultsAydio(words: IWordQuestion[] | GameWord[]): void {
   const audioBTNS: NodeListOf<HTMLElement> = document.querySelectorAll('.result-audio-btn') as NodeListOf<HTMLElement>;
 
   audioBTNS.forEach((audioBTN: HTMLElement) => {
@@ -177,7 +177,7 @@ function tryAgain(game: string): void {
   const tryAgainBtn = document.querySelector('.try-again-btn') as HTMLButtonElement;
   tryAgainBtn.addEventListener('click', () => {
     if (game === audiochallenge) {
-      audiochallengeSettings.maxLine = minScore;
+      audiochallengeSettings.answerSeries = minScore;
       audiochallengeSettings.lives = maxLives;
       audiochallengeSettings.questionNum = minScore;
       audiochallengeSettings.results = [];

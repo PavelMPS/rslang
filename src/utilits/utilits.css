@@ -110,12 +110,13 @@
 /* results */
 .results-container {
   height: 600px;
-  width: 800px;
+  min-width: 800px;
+  display: block;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #90ffdf;
+  background-color: #cffff1;
   overflow-y: auto;
 }
 .tabs-container {
@@ -130,7 +131,7 @@
   font-size: 32px;
   text-align: center;
   font-weight: 700;
-  color: #ffffff;
+  color: #000000;
   line-height: 50px;
 }
 .main-tab.disable,
@@ -150,7 +151,7 @@
   margin: 50px;
   font-size: 32px;
   font-weight: 500;
-  color: #ffffff;
+  color: #000000;
 }
 .words-container.disable,
 .main-container.disable {
@@ -200,17 +201,17 @@
   font-size: 28px;
   margin: 5px 0px;
 }
-.answer-subtitle-right,
-.answer-subtitle-wrong {
+.answer-title-right,
+.answer-title-wrong {
   width: 50px;
   height: 50px;
   margin: 20px auto;
   background-size: 100%;
 }
-.answer-subtitle-right {
+.answer-title-right {
   background-image: url(../assets/icons8-done-100.png);
 }
-.answer-subtitle-wrong {
+.answer-title-wrong {
   background-image: url(../assets/icons8-close-100.png);
 }
 .result-audio-btn {

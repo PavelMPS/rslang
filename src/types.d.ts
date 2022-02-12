@@ -1,18 +1,18 @@
 interface IWord {
   id: string,
   group: number,
-  page:	number,
-  word:	string,
-  image:	string,
-  audio:	string,
-  audioMeaning:	string,
-  audioExample:	string,
+  page: number,
+  word: string,
+  image: string,
+  audio: string,
+  audioMeaning: string,
+  audioExample: string,
   textMeaning: string,
-  textExample:	string,
-  transcription:	string,
-  wordTranslate:	string,
-  textMeaningTranslate:	string,
-  textExampleTranslate:	string,
+  textExample: string,
+  transcription: string,
+  wordTranslate: string,
+  textMeaningTranslate: string,
+  textExampleTranslate: string,
 }
 
 interface IWordQuestion {
@@ -36,9 +36,19 @@ interface IWordQuestion {
 interface IAudiochallenge {
   page: number;
   group: number;
-  maxLine: number;
+  answerSeries: number;
   lives: number;
   questionNum: number;
   results: boolean[];
   gameWords: IWordQuestion[],
+}
+interface IRegisterUser {
+  name: string,
+  email: string,
+  password: string
+}
+
+interface ISignUser {
+  email: string,
+  password: string
 }
