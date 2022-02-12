@@ -1,9 +1,11 @@
 export type GameWord = {
+    id: string;
     question: string;
     answer: string;
     right: boolean;
     rightAnswer: string;
     userAnswer: boolean;
+    audio: string;
 }
 
 type Sprint = {

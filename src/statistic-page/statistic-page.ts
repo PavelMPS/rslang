@@ -1,4 +1,3 @@
-import { renderStartPage } from '../start-page/start-page';
 import '../statistic-page/statistic-page.css';
 
 export async function renderStatisticPage(): Promise<void> {
@@ -69,4 +68,12 @@ export async function renderStatisticPage(): Promise<void> {
 
     const main = document.querySelector('.main') as HTMLElement;
     main.innerHTML = content;
+}
+
+export async function setStatistic (): Promise<void> {
+    // Записать на сервер статистические данные
+} 
+
+export async function getStatistic(): Promise<void> {
+    //Получить статистику с сервака
 }
