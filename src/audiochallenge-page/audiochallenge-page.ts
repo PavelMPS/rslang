@@ -28,6 +28,7 @@ export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<voi
         <div class="answers-btn-container">
 
         </div>
+        <div class="not-to-know-btn">I don't know</div>
         <div class="next-question-btn disable">NEXT</div>
       </div>
     </div>`;
@@ -57,11 +58,12 @@ function brokeHeart() {
 
 async function chooseAnswer(result: string, index: number): Promise<void> {
   const buttons: NodeListOf<HTMLElement> = document.querySelectorAll('.answers-btn');
-  const nextBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
+  const nextBTN: HTMLElement = document.querySelector('.not-to-know-btn') as HTMLElement;
+  const notToKnowBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
 
   buttons.forEach((btn: HTMLElement) => {
     btn.addEventListener('click', () => {
-      buttons.forEach((el) => {
+      buttons.forEach((el: HTMLElement) => {
         el.classList.add('disable');
       })
       if (btn.dataset.translate === result) {
@@ -74,9 +76,23 @@ async function chooseAnswer(result: string, index: number): Promise<void> {
         --audiochallengeSettings.lives;
         audiochallengeSettings.gameWords[index].userAnswer = false;
       }
-  
-      nextBTN.classList.remove('disable');
+      
+      nextBTN.classList.add('disable');
+      notToKnowBTN.classList.remove('disable');
     })
+  })
+  nextBTN.addEventListener('click', () => {
+    buttons.forEach((btn: HTMLElement) => {
+      btn.classList.add('disable');
+      if (btn.dataset.translate === result) {
+        btn.classList.add('right');
+      }
+    })
+    audiochallengeSettings.answerSeries = minScore;
+    --audiochallengeSettings.lives;
+    audiochallengeSettings.gameWords[index].userAnswer = false;
+    nextBTN.classList.add('disable');
+    notToKnowBTN.classList.remove('disable');
   })
 }
 
