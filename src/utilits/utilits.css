@@ -1,0 +1,225 @@
+/* choose-dificult */
+.group-select-page {
+  margin: 50px auto;
+}
+.game-title-container {
+  margin: 0px auto;
+}
+.game-page-title {
+  font-size: 40px;
+  margin-bottom: 25px;
+  font-weight: 900;
+  text-align: center;
+}
+.audiochallenge-main-inf {
+  width: 100%;
+  margin: 50px auto;
+  display: flex;
+  column-gap: 50px;
+}
+.game-img {
+  width: 250px;
+  height: 250px;
+  background-size: 100%;
+}
+.game-img.audiochallenge {
+  background-image: url(../assets/free-sticker-marketing-4850876.png);
+}
+.game-img.sprint {
+  background-image: url(../assets/free-sticker-busy-4850894.png);
+}
+.game-describe-container {
+  margin-top: 50px;
+  font-size: 28px;
+}
+.game-difficult-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.difficult-subtitle {
+  padding-bottom: 20px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+}
+.difficult-buttons-container {
+  display: flex;
+  column-gap: 20px;
+  width: 80%;
+  margin: 25px auto 50px auto;
+  justify-content: space-between;
+}
+.difficult-btn {
+  width: 60px;
+  height: 60px;
+  font-size: 32px;
+  line-height: 60px;
+  background: black;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+}
+.difficult-btn:hover,
+.difficult-btn.active {
+  transform: scale(1.2);
+}
+.difficult-btn:active {
+  transform: scale(1.2) translateY(5px);
+}
+
+.difficult-btn:nth-child(1) {
+  background-color: #ffd900;
+}
+.difficult-btn:nth-child(2) {
+  background-color: #ffb700;
+}
+.difficult-btn:nth-child(3) {
+  background-color: #ff9100;
+}
+.difficult-btn:nth-child(4) {
+  background-color: #ff6f00;
+}
+.difficult-btn:nth-child(5) {
+  background-color: #ff5900;
+}
+.difficult-btn:nth-child(6) {
+  background-color: #ff4400;
+}
+.start-btn {
+  background: #6ce0c0;
+  border: none;
+  color: white;
+  width: 200px;
+  height: 50px;
+  margin: 0px auto;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 50px;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.4s;
+}
+.start-btn:hover {
+  transform: scale(1.1);
+  transition: all 0.4s;
+}
+
+
+/* results */
+.results-container {
+  height: 600px;
+  width: 800px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #90ffdf;
+  overflow-y: auto;
+}
+.tabs-container {
+  display: flex;
+  height: 50px;
+  width: 100%;
+}
+.main-tab,
+.words-tab {
+  width: 50%;
+  height: 100%;
+  font-size: 32px;
+  text-align: center;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 50px;
+}
+.main-tab.disable,
+.words-tab.disable {
+  background-color: #00ffb7;
+}
+.main-tab:hover,
+.words-tab:hover {
+  background-color: #ff9c3d;
+}
+.words-container {
+  min-height: 250px;
+  display: flex;
+  justify-content: space-around;
+}
+.results-inf {
+  margin: 50px;
+  font-size: 32px;
+  font-weight: 500;
+  color: #ffffff;
+}
+.words-container.disable,
+.main-container.disable {
+  display: none;
+}
+.results-img {
+  width: 250px;
+  height: 250px;
+  margin: 0px auto 25px auto;
+  background-size: cover;
+}
+.good-result-img {
+  background-image: url(../assets/free-sticker-trophy-4852328.png);
+}
+.bad-result-img {
+  background-image: url(../assets/search.png);
+}
+.try-again-btn {
+  width: 200px;
+  height: 50px;
+  margin: 50px auto;
+  background: #ff9c3d;
+  color: white;
+  font-size: 32px;
+  line-height: 50px;
+  text-align: center;
+  transition: all .4s;
+  cursor: pointer;
+}
+
+.try-again-btn:hover {
+  transition: all .4s;
+  transform: scale(1.2);
+}
+
+.try-again-btn:active {
+  background: #ff9c3d;
+}
+.right-answers-result,
+.wrong-answers-result {
+  margin-bottom: 25px;
+}
+.right-answers-result div,
+.wrong-answers-result div {
+  display: flex;
+  column-gap: 20px;
+  font-size: 28px;
+  margin: 5px 0px;
+}
+.answer-subtitle-right,
+.answer-subtitle-wrong {
+  width: 50px;
+  height: 50px;
+  margin: 20px auto;
+  background-size: 100%;
+}
+.answer-subtitle-right {
+  background-image: url(../assets/icons8-done-100.png);
+}
+.answer-subtitle-wrong {
+  background-image: url(../assets/icons8-close-100.png);
+}
+.result-audio-btn {
+  width: 30px;
+  height: 30px;
+  background-image: url(../assets/icons8-audio-100.png);
+  background-size: cover;
+  cursor: pointer;
+}
+.result-audio-btn:hover {
+  transform: scale(1.2);
+}

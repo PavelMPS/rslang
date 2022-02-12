@@ -1,4 +1,4 @@
-import { renderGroupSelectionPage } from "../audiochallenge-page/audiochallenge-page";
+import { renderGroupSelectionPage } from "../utilits/utilits";
 
 export async function startPageListen(): Promise<void> {
     const btnGameSprint = document.querySelector('.game1') as HTMLButtonElement;
