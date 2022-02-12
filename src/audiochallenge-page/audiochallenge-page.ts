@@ -1,7 +1,7 @@
-import { audiochallengeSettings, maxQuestionCount } from '../constants/audiochallenge';
-import { shuffle, createAydio, playAudio, getResults } from '../utilits/utilits';
-import { getWords } from '../textbook-page/textbook-page';
-import { minScore, answersLength, sprint, audiochallenge } from '../constants/constants';
+import { audiochallengeSettings } from '../constants/audiochallenge';
+import { shuffle, createAydio, playAudio, getResults, getQuestionArr } from '../utilits/utilits';
+import { getWords } from '../api/api';
+import { minScore, answersLength, maxQuestionCount, audiochallenge } from '../constants/constants';
 
 import '../audiochallenge-page/audiochallenge-page.css';
 
@@ -80,17 +80,17 @@ async function chooseAnswer(result: string, index: number): Promise<void> {
   })
 }
 
-function getRandomNumAnsw(answersArr: number[]): number {
+function getRandomNum(arr: number[]): number {
   let newNum = Math.floor(Math.random() * (maxQuestionCount - 1 + 1));
-  if (answersArr.includes(newNum)) {
-    return getRandomNumAnsw(answersArr);
+  if (arr.includes(newNum)) {
+    return getRandomNum(arr);
   } else {
     return newNum;
   }
 }
 
 export async function shuffleWords(): Promise<IWord[]> {
-  audiochallengeSettings.gameWords = await getWords(audiochallengeSettings.group, audiochallengeSettings.page);
+  audiochallengeSettings.gameWords = await getQuestionArr(audiochallengeSettings.group);
   shuffle(audiochallengeSettings.gameWords);
   return audiochallengeSettings.gameWords;
 }
@@ -100,7 +100,7 @@ function getAnswers(questionNum: number): number[] {
 
   answersArr[0] = questionNum;
   for (let i = 1; i < answersLength; i++) {
-    answersArr[i] = getRandomNumAnsw(answersArr);
+    answersArr[i] = getRandomNum(answersArr);
   }
   shuffle(answersArr);
   return answersArr;

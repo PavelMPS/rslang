@@ -1,3 +1,5 @@
+import { getWords } from '../api/api';
+
 import '../textbook-page/textbook-page.css';
 
 const textbookSettings: { page: number, group: number } = {
@@ -7,12 +9,6 @@ const textbookSettings: { page: number, group: number } = {
 const maxPageNum = 30;
 
 //TODO сделать проверку на сложные и изученные и добавить стили при рендере
-
-export async function getWords(group, page): Promise<IWord[]> {
-  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words?group=${group}&page=${page}`);
-  const words: IWord[] = await response.json();
-  return words;
-}
 
 async function createTextbookContent(): Promise<void> {
   const words: IWord[] = await getWords(textbookSettings.group, textbookSettings.page);

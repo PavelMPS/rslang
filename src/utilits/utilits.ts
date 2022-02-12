@@ -1,10 +1,34 @@
+import { getWords } from '../api/api';
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage, shuffleWords } from '../audiochallenge-page/audiochallenge-page';
-import { maxLives, averegeSprintGameScore, minScore, answersLength, sprint, audiochallenge } from '../constants/constants';
+import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount } from '../constants/constants';
 
 import '../utilits/utilits.css';
+
+export async function getQuestionArr(group: number): Promise<IWord[]> {
+  const pagesArr: number[] = [];
+  const wordArr: Array<IWord[]> = [];
+  for (let i = 0; i < 4; i ++) {
+    pagesArr[i] = getRandomPage(pagesArr);
+    const arr: IWord[] = await getWords(group, pagesArr[i]);
+    wordArr.push(arr);
+  }
+
+  const totalArr: IWord[] = wordArr.flat();
+  shuffle(totalArr);
+  return totalArr.slice(0, maxQuestionCount);
+}
+
+function getRandomPage(arr: number[]) {
+  let newNum = Math.floor(Math.random() * (maxPageCount));
+  if (arr.includes(newNum)) {
+    return getRandomPage(arr);
+  } else {
+    return newNum;
+  }
+}
 
 export async function chooseDifficult(game: string): Promise<void> {
   const buttons: NodeListOf<HTMLElement> = document.querySelectorAll('.difficult-btn');
