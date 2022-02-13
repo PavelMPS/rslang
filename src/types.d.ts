@@ -64,3 +64,15 @@ interface IOptional {
   allAnswers: number,
   answersForIsLerned: number,
 }
+
+interface IStatisticGame {
+  newWords: number;
+  allAnswers: number;
+  rightAnswers: number;
+  maxSerieAnswers: number;
+}
+
+interface IStatistic {
+  learnedWords: number;
+  optional: Object<IStatisticGame>;
+}

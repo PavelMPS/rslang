@@ -101,7 +101,7 @@ async function verifyAnswer(e: Event): Promise<void> {
             renderQuestion(); 
         } else {
             sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
-            sprintGame.answerSeries = 0;
+            sprintGame.currentAnswerSerie = 0;
             highlightAnswer('red');
             renderQuestion();
         }
@@ -112,7 +112,7 @@ async function verifyAnswer(e: Event): Promise<void> {
             renderQuestion();
         } else {
             sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
-            sprintGame.answerSeries = 0;
+            sprintGame.currentAnswerSerie = 0;
             highlightAnswer('red');
             renderQuestion();
         }
@@ -120,7 +120,7 @@ async function verifyAnswer(e: Event): Promise<void> {
 }
 
 function getSprintScore(): void {
-    switch (sprintGame.answerSeries) {
+    switch (sprintGame.currentAnswerSerie) {
         case 2: 
             sprintGame.score += sprintGame.advanceScore[0];
             showWinMessage('nice!', sprintGame.advanceScore[0]);
@@ -151,13 +151,13 @@ function getSprintScore(): void {
             break;  
     }
     sprintGame.score += sprintGame.advanceScore[0];
-    sprintGame.answerSeries++;
-    if (sprintGame.answerSeries > sprintGame.seriesTotalStatistics) {
-        sprintGame.seriesTotalStatistics = sprintGame.answerSeries
+    sprintGame.currentAnswerSerie++;
+    if (sprintGame.currentAnswerSerie > sprintGame.maxSerie) {
+        sprintGame.maxSerie = sprintGame.currentAnswerSerie
     }
     const scoreWindow = document.querySelector('.score-window') as HTMLElement;
     scoreWindow.innerHTML = sprintGame.score.toString();
-    console.log( sprintGame.answerSeries, sprintGame.seriesTotalStatistics);
+    console.log( sprintGame.currentAnswerSerie, sprintGame.maxSerie);
 }
 
 function showWinMessage(message: string, addingScore: number): void {
@@ -198,9 +198,6 @@ async function shuffle(array: Array<GameWord>): Promise<void> {
 }
 
 function getResults(): void {
-    if (sprintGame.answerSeries === 19) {
-        sprintGame.seriesTotalStatistics += sprintGame.answerSeries;
-    }
     clearInterval(timerId);
     sprintGame.gameWords.length = sprintGame.count;
     const main = document.querySelector('.main') as HTMLElement;
@@ -217,7 +214,7 @@ function getResults(): void {
         <div class="results-container">
             <div class="result-cat-right"></div>
             <div class="sprint-results-area">
-                <p class="sprint-results">${sprintGame.answerSeries === 0 ?
+                <p class="sprint-results">${sprintGame.currentAnswerSerie === 0 ?
                     sprintGame.gameOver[0] : sprintGame.gameOver[1]}${sprintGame.gameOptions[3]}${sprintGame.score}</p>
                 <div class="area-results">
                     <p class="answer-subtitle-right">Right answers:</p>
@@ -243,7 +240,7 @@ function getResults(): void {
         rightAnswersResult.innerHTML = rightAnswers;
         wrongAnswersResult.innerHTML = wrongAnswers;      
     }
-    setStatistic();//Количество новых слов, самая длинная серия правильных ответов, кол-во правильных ответов.
+    // setStatistic();Количество новых слов, самая длинная серия правильных ответов, кол-во правильных ответов.
     const tryAgainBtn = document.querySelector('.try-again-sprint') as HTMLButtonElement;
     tryAgainBtn.addEventListener('click', () => {     
         startGameSprint();
@@ -253,7 +250,7 @@ function getResults(): void {
 async function resetSprintGame(): Promise<void> {
     sprintGame.count = 0;
     sprintGame.score = 0;
-    sprintGame.answerSeries = 0;
+    sprintGame.currentAnswerSerie = 0;
     sprintGame.group = sprintGame.difficult;
     sprintGame.page = 0;
 }

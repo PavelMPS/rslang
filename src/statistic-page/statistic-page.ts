@@ -1,3 +1,4 @@
+import { Sprint } from '../constants/sprint';
 import '../statistic-page/statistic-page.css';
 
 export async function renderStatisticPage(): Promise<void> {
@@ -70,8 +71,31 @@ export async function renderStatisticPage(): Promise<void> {
     main.innerHTML = content;
 }
 
-export async function setStatistic (): Promise<void> {
-    // Записать на сервер статистические данные
+export async function setStatistic (userId: string, game: string, array: Sprint ): Promise<void> {
+    let token: string | null = '';
+  if (localStorage.getItem('Your token')) {
+    token = localStorage.getItem('Your token');
+  }
+  
+    let learnedWords: number = array.learnedWords;
+    let newWords: number = array.newWords;
+    let allAnswers: number = array.allAnswers;
+    let rightAnswers: number = array.rightAnswers;
+    let maxSerie: number = array.maxSerie;      
+    const userStatistic: IStatistic = { "learnedWords": learnedWords, "optional": {"newWords": 
+    newWords, "allAnswers": allAnswers, "rightAnswers": rightAnswers, "maxSeriesAnswers": 
+    maxSerie}};
+    const rawResponse = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/statistics/`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userStatistic)
+    });
+    const content = await rawResponse.json();
+    return content;
 } 
 
 export async function getStatistic(): Promise<void> {

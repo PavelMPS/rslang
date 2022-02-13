@@ -8,7 +8,7 @@ export type GameWord = {
     audio: string;
 }
 
-type Sprint = {
+export type Sprint = {
     gameOptions: Array<string>;
     gameOver: Array<string>;
     difficult: number;
@@ -17,8 +17,12 @@ type Sprint = {
     group: number;
     count: number;
     score: number;
-    answerSeries: number;
-    seriesTotalStatistics: number;
+    newWords: number;
+    allAnswers: number;
+    rightAnswers: number;
+    learnedWords: number;
+    currentAnswerSerie: number;
+    maxSerie: number;
     advanceScore: Array<number>;
 }
 
@@ -31,7 +35,11 @@ export const sprintGame: Sprint = {
     group: 0,
     count: 0,
     score: 0,
-    answerSeries: 0,
-    seriesTotalStatistics: 0,
+    newWords: 0,
+    allAnswers: 0,
+    rightAnswers: 0,
+    learnedWords: 0,
+    currentAnswerSerie: 0,
+    maxSerie: 0,
     advanceScore: [10, 20, 30, 40, 50, 60, 70],
 }
