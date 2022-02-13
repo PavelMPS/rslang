@@ -79,7 +79,7 @@
 }
 .not-to-know-btn,
 .next-question-btn {
-  opacity: 1;
+  display: block;
   margin: 0 auto;
   background-color: #6ce0c0;
   transition: 1s;
@@ -91,7 +91,7 @@
   transform: scale(1.2);
 }
 .answers-btn.right {
-  display: block;
+  opacity: 1;
   transform: scale(1.2);
   background-color: rgb(92, 255, 184);
 }
