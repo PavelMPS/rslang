@@ -184,7 +184,7 @@ async function renderQuestion(): Promise<void> {
     }
     // await getUserWord(userId, sprintGame.gameWords[sprintGame.count].id);
     console.log(sprintGame.count)
-    if (sprintGame.count === 20) { 
+    if (sprintGame.count === sprintGame.gameWords.length) { 
         getResults(sprintGame.gameWords, 'sprint');
         return;
     }      
