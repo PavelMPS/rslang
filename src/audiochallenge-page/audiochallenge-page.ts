@@ -1,7 +1,7 @@
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { shuffle, createAydio, playAudio, getResults, getQuestionArr } from '../utilits/utilits';
 import { getWords } from '../api/api';
-import { minScore, answersLength, maxQuestionCount, audiochallenge } from '../constants/constants';
+import { minScore, answersLength, audiochallenge } from '../constants/constants';
 
 import '../audiochallenge-page/audiochallenge-page.css';
 
@@ -36,6 +36,8 @@ export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<voi
   const main = document.querySelector('.main') as HTMLElement;
   main.innerHTML = content;
 
+  audiochallengeSettings.allAnswers = newWordArr.length;
+
   createQuestion(newWordArr, audiochallengeSettings.questionNum);
 
   chooseAnswer(newWordArr[audiochallengeSettings.questionNum].wordTranslate, audiochallengeSettings.questionNum);
@@ -58,8 +60,8 @@ function brokeHeart() {
 
 async function chooseAnswer(result: string, index: number): Promise<void> {
   const buttons: NodeListOf<HTMLElement> = document.querySelectorAll('.answers-btn');
-  const nextBTN: HTMLElement = document.querySelector('.not-to-know-btn') as HTMLElement;
-  const notToKnowBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
+  const notToKnowBTN: HTMLElement = document.querySelector('.not-to-know-btn') as HTMLElement;
+  const nextBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
 
   buttons.forEach((btn: HTMLElement) => {
     btn.addEventListener('click', () => {
@@ -68,7 +70,8 @@ async function chooseAnswer(result: string, index: number): Promise<void> {
       })
       if (btn.dataset.translate === result) {
         btn.classList.add('right');
-        ++audiochallengeSettings.answerSeries;
+        audiochallengeSettings.answerSeries = audiochallengeSettings.answerSeries + 1;
+        audiochallengeSettings.rightAnswers = audiochallengeSettings.rightAnswers + 1;
         audiochallengeSettings.gameWords[index].userAnswer = true;
       } else if (btn.dataset.translate !== result) {
         btn.classList.add('wrong');
@@ -77,11 +80,11 @@ async function chooseAnswer(result: string, index: number): Promise<void> {
         audiochallengeSettings.gameWords[index].userAnswer = false;
       }
       
-      nextBTN.classList.add('disable');
-      notToKnowBTN.classList.remove('disable');
+      nextBTN.classList.remove('disable');
+      notToKnowBTN.classList.add('disable');
     })
   })
-  nextBTN.addEventListener('click', () => {
+  notToKnowBTN.addEventListener('click', () => {
     buttons.forEach((btn: HTMLElement) => {
       btn.classList.add('disable');
       if (btn.dataset.translate === result) {
@@ -91,13 +94,13 @@ async function chooseAnswer(result: string, index: number): Promise<void> {
     audiochallengeSettings.answerSeries = minScore;
     --audiochallengeSettings.lives;
     audiochallengeSettings.gameWords[index].userAnswer = false;
-    nextBTN.classList.add('disable');
-    notToKnowBTN.classList.remove('disable');
+    nextBTN.classList.remove('disable');
+    notToKnowBTN.classList.add('disable');
   })
 }
 
 function getRandomNum(arr: number[]): number {
-  let newNum = Math.floor(Math.random() * (maxQuestionCount - 1 + 1));
+  let newNum = Math.floor(Math.random() * (audiochallengeSettings.allAnswers - 1 + 1));
   if (arr.includes(newNum)) {
     return getRandomNum(arr);
   } else {
@@ -126,7 +129,7 @@ async function createQuestion(newWordArr: IWord[], index: number): Promise<void>
   const answersContainer = document.querySelector('.answers-btn-container') as HTMLElement;
   const listenBTN: HTMLElement = document.querySelector('.listen-btn') as HTMLElement;
 
-  if (index < maxQuestionCount && audiochallengeSettings.lives !== minScore) {
+  if (index < audiochallengeSettings.allAnswers && audiochallengeSettings.lives !== minScore) {
     const answers = getAnswers(index);
     answersContainer.innerHTML = renderAudiochallengeQuestion(newWordArr, answers as number[]);
     const wordAudio: HTMLAudioElement = createAydio(newWordArr[index].audio);

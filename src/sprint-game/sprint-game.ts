@@ -1,3 +1,4 @@
+import { getUserWord } from '../api/api';
 import { GameWord, sprintGame } from '../constants/sprint';
 import '../sprint-game/sprint-game.css';
 import { getQuestionArr, getResults } from '../utilits/utilits';
@@ -182,8 +183,8 @@ async function renderQuestion(): Promise<void> {
     if (localStorage.getItem('Your id')) {
         userId = localStorage.getItem('Your id') as string;
     }
-    // await getUserWord(userId, sprintGame.gameWords[sprintGame.count].id);
-    console.log(sprintGame.count)
+    await getUserWord(userId, sprintGame.gameWords[sprintGame.count].id);
+    console.log(sprintGame.count, sprintGame.gameWords.length)
     if (sprintGame.count === sprintGame.gameWords.length) { 
         getResults(sprintGame.gameWords, 'sprint');
         return;
