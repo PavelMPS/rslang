@@ -1,4 +1,4 @@
-import { getWords, getUserWord, updateUserWord, createUserWord, getAllUserWords } from '../api/api';
+import { getWords, getUserWord, updateUserWord, createUserWord, getAllUserWords, getUserAggregatedWords } from '../api/api';
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint, timerId } from '../sprint-game/sprint-game';
@@ -12,26 +12,36 @@ export async function getQuestionArr(group: number, page?: number): Promise<IWor
   const wordArr: Array<IWord[]> = [];
 
   if (page) {
-
+    
     let userId: string | null = '';
     if (localStorage.getItem('Your userId')) {
       userId = localStorage.getItem('Your userId');
     }  
+    // if(userId) {
+    //   await getUserAggregatedWords(userId, 0, 0, 'hard');
+    // }
+    
     let totalArr: Array<IWord> = [];
-    if (userId) {   
+
+    if (userId) {    
       const userWords: Array<IUserWord> = await getAllUserWords(userId);
+      console.log(userWords)
       while (page >= 0) {
         const arr: IWord[] = await getWords(group, page);          
         arr.forEach((elem, index) => {
           let isVisited: boolean = false;
-          userWords.forEach(el => {
-            if (el.id !== elem.id && isVisited === false) {
-              totalArr.push(arr[index]);
-              isVisited = true;
-            } else if (el.id === elem.id && !el.optional.isLerned) {
-              totalArr.push(arr[index]);
-            }
-          });
+          if (userWords.length > 0) {
+            userWords.forEach(el => {
+              if (el.id !== elem.id && isVisited === false) {
+                totalArr.push(arr[index]);
+                isVisited = true;
+              } else if (el.id === elem.id && !el.optional.isLerned) {
+                totalArr.push(arr[index]);
+              }
+            });
+          }else {
+            totalArr.push(arr[index])
+          }         
           return;         
         });
         page--;
@@ -50,6 +60,7 @@ export async function getQuestionArr(group: number, page?: number): Promise<IWor
   
     const totalArr: IWord[] = wordArr.flat();
     shuffle(totalArr);
+    console.log(totalArr);
     return totalArr.slice(0, maxQuestionCount);
   }
 }

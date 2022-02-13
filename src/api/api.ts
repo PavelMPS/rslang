@@ -88,3 +88,30 @@ export async function getAllUserWords(userId: string): Promise<Array<IUserWord>>
   });
   return await res.json();
 }
+
+export async function getUserAggregatedWords(userId: string, page: number, group: number, filterOption: string ) {
+  let token: string | null = '';
+  let filter: string = '';
+  if (localStorage.getItem('Your token')) {
+    token = localStorage.getItem('Your token');
+  }
+  if (filterOption === 'learned') {
+    console.log('1');
+    filter = `{"$and":{"userWord.optional.isLerned": true}}}`;
+  } else if (filterOption === 'hard') {
+    console.log('2');
+    filter = `{"$and":[{"userWord.difficulty":"hard"}]}`;
+  }
+  const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/aggregatedWords?group=${group}&page=${page}${filter}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  });
+  
+  const content = await res.json();
+  console.log(content)
+  return content;
+}
