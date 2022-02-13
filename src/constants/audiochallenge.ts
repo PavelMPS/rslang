@@ -6,6 +6,8 @@ export const audiochallengeSettings: IAudiochallenge = {
   questionNum: 0,
   results: [],
   gameWords: [],
+  rightAnswers: 0,
+  allAnswers: 0,
 }
 
 export const maxQuestionCount: number = 20;
