@@ -18,7 +18,7 @@ type Sprint = {
     count: number;
     score: number;
     answerSeries: number;
-    seriesTotalStatistics: number;
+    maxSeries: number;
     advanceScore: Array<number>;
 }
 
@@ -32,6 +32,6 @@ export const sprintGame: Sprint = {
     count: 0,
     score: 0,
     answerSeries: 0,
-    seriesTotalStatistics: 0,
+    maxSeries: 0,
     advanceScore: [10, 20, 30, 40, 50, 60, 70],
 }

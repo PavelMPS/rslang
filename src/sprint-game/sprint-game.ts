@@ -1,6 +1,5 @@
 import { GameWord, sprintGame } from '../constants/sprint';
 import '../sprint-game/sprint-game.css';
-import { setStatistic } from '../statistic-page/statistic-page';
 import { getQuestionArr, getResults } from '../utilits/utilits';
 
 export let timerId: NodeJS.Timer;
@@ -11,7 +10,10 @@ async function getWords(): Promise<IWord[]> {
     return words;
 }
 
-export async function startGameSprint(): Promise<void> {
+export async function startGameSprint(group?:number, page?: number): Promise<void> {
+    if (group) {
+        sprintGame.difficult = group;
+    }
     await resetSprintGame();
     const content: string = `
     <div class="timer-sprint"></div>
@@ -35,19 +37,27 @@ export async function startGameSprint(): Promise<void> {
     `;
     const main = document.querySelector('.main') as HTMLElement;
     main.innerHTML = content;
-    await formGameWords();
+    if(page) {
+        await formGameWords(page);
+    } else {
+        await formGameWords();
+    }   
     timer(60);
     const btnAnswer = document.querySelector('.answer-btn') as HTMLElement;   
     btnAnswer.addEventListener('click', async (e: Event): Promise<void> => {
     await verifyAnswer(e)});      
 }
 
-async function formGameWords(): Promise<void> {
+async function formGameWords(page?: number): Promise<void> {
     sprintGame.group = sprintGame.difficult;
-    const arr = await getQuestionArr(sprintGame.difficult);
+    let arr: Array<IWord>;
+    if (page) {
+        arr = await getQuestionArr(sprintGame.difficult, page);
+    } else {
+        arr = await getQuestionArr(sprintGame.difficult);
+    }   
     await formWordsArray(arr);
     await formRandomWords();
-    console.log(sprintGame.gameWords) 
 }
 
 async function formWordsArray(array): Promise<void> {
@@ -149,8 +159,8 @@ function getSprintScore(): void {
     }
     sprintGame.score += sprintGame.advanceScore[0];
     sprintGame.answerSeries++;
-    if (sprintGame.answerSeries > sprintGame.seriesTotalStatistics) {
-        sprintGame.seriesTotalStatistics = sprintGame.answerSeries
+    if (sprintGame.answerSeries > sprintGame.maxSeries) {
+        sprintGame.maxSeries = sprintGame.answerSeries;
     }
     const scoreWindow = document.querySelector('.score-window') as HTMLElement;
     scoreWindow.innerHTML = sprintGame.score.toString();
@@ -168,6 +178,12 @@ function showWinMessage(message: string, addingScore: number): void {
 }
 
 async function renderQuestion(): Promise<void> {
+    let userId: string = '';
+    if (localStorage.getItem('Your id')) {
+        userId = localStorage.getItem('Your id') as string;
+    }
+    // await getUserWord(userId, sprintGame.gameWords[sprintGame.count].id);
+    console.log(sprintGame.count)
     if (sprintGame.count === 20) { 
         getResults(sprintGame.gameWords, 'sprint');
         return;

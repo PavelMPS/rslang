@@ -1,6 +1,8 @@
 import { getWords } from '../api/api';
+import { startGameSprint } from '../sprint-game/sprint-game';
 
 import '../textbook-page/textbook-page.css';
+import { getQuestionArr } from '../utilits/utilits';
 
 const textbookSettings: { page: number, group: number } = {
   page: 1,
@@ -158,7 +160,7 @@ export function renderTextbookPage(): void {
 
   const sprintBTN: HTMLElement = document.querySelector('.sprint-btn') as HTMLElement;
   sprintBTN.addEventListener(('click'), () => {
-    //TODO функция спринта
+    startGameSprint(textbookSettings.group, textbookSettings.page);
   });
 
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;

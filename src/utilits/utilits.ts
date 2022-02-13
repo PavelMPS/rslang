@@ -1,4 +1,4 @@
-import { getWords, getUserWord, updateUserWord, createUserWord } from '../api/api';
+import { getWords, getUserWord, updateUserWord, createUserWord, getAllUserWords } from '../api/api';
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint, timerId } from '../sprint-game/sprint-game';
@@ -10,40 +10,48 @@ import '../utilits/utilits.css';
 export async function getQuestionArr(group: number, page?: number): Promise<IWord[]> {
   const pagesArr: number[] = [];
   const wordArr: Array<IWord[]> = [];
+
+  if (page) {
+
+    let userId: string | null = '';
+    if (localStorage.getItem('Your userId')) {
+      userId = localStorage.getItem('Your userId');
+    }  
+    let totalArr: Array<IWord> = [];
+    if (userId) {   
+      const userWords: Array<IUserWord> = await getAllUserWords(userId);
+      while (page >= 0) {
+        const arr: IWord[] = await getWords(group, page);          
+        arr.forEach((elem, index) => {
+          let isVisited: boolean = false;
+          userWords.forEach(el => {
+            if (el.id !== elem.id && isVisited === false) {
+              totalArr.push(arr[index]);
+              isVisited = true;
+            } else if (el.id === elem.id && !el.optional.isLerned) {
+              totalArr.push(arr[index]);
+            }
+          });
+          return;         
+        });
+        page--;
+        if (totalArr.length > maxQuestionCount) {
+          return totalArr.slice(0, maxQuestionCount);
+        }
+      }     
+    } else { throw new Error('User not found') }
+    return totalArr.slice(0, maxQuestionCount);
+  } else {
+    for (let i = 0; i < 4; i ++) {
+      pagesArr[i] = getRandomPage(pagesArr);
+      const arr: IWord[] = await getWords(group, pagesArr[i]);
+      wordArr.push(arr);
+    }
   
-  // if (page) {
-  //   let userId: string | null = '';
-  //   if (localStorage.getItem('Your id')) {
-  //     userId = localStorage.getItem('Your id');
-  //   }
-  //   let wordArr: Array<IWord[]> = [];
-  //   while (page >= 0) {
-  //     const arr: IWord[] = await getWords(group, page);
-  //     wordArr.push(arr);
-  //     page--;
-  //   }
-  //   const wordArrNew: IWord[] = wordArr.flat();
-  //   const totalArr: Array<IWord> = [];
-  //   if (userId) {
-  //     for (let i = 0; i < wordArrNew.length; i++) {      
-  //       if ( await getWordInfo(userId, wordArrNew[i].id) !== true) {
-  //         totalArr.push(wordArrNew[i]);
-  //       }
-  //     }
-  //   }
-  //   console.log(totalArr);
-  //   return totalArr.slice(0, maxQuestionCount);
-  // }
-
-  for (let i = 0; i < 4; i ++) {
-    pagesArr[i] = getRandomPage(pagesArr);
-    const arr: IWord[] = await getWords(group, pagesArr[i]);
-    wordArr.push(arr);
+    const totalArr: IWord[] = wordArr.flat();
+    shuffle(totalArr);
+    return totalArr.slice(0, maxQuestionCount);
   }
-
-  const totalArr: IWord[] = wordArr.flat();
-  shuffle(totalArr);
-  return totalArr.slice(0, maxQuestionCount);
 }
 
 function getRandomPage(arr: number[]) {
@@ -134,7 +142,9 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
   } else if (game === 'sprint') {
     title.innerHTML = sprintTitle;
     description.innerHTML = sprintDescription;
-    startBTN.addEventListener('click', startGameSprint);
+    startBTN.addEventListener('click', () => {
+      startGameSprint();
+    });
     gameImg.classList.add('sprint');
   }
 
@@ -163,7 +173,7 @@ export function getResults(words: IWordQuestion[] | GameWord[], game: string): v
   let wrongAnswers: string = '';
 
   let token: string | null = '';
-
+  if (game === 'sprint') { words.length = sprintGame.count };
   words.forEach(async (word: IWordQuestion | GameWord, index: number): Promise<void> => {
     if (word.userAnswer === true) {
       rightAnswers += `<div>

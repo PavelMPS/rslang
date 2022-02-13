@@ -16,7 +16,6 @@ export async function getUserWord(userId: string | null, wordId: string): Promis
       'Accept': 'application/json',
     }
   });
-  console.log(response);
   return response;
 }
 
@@ -73,3 +72,19 @@ export async function getUser(user) {
 
   return content;
 };
+
+export async function getAllUserWords(userId: string): Promise<Array<IUserWord>> {
+  let token: string | null = '';
+  if (localStorage.getItem('Your token')) {
+    token = localStorage.getItem('Your token');
+  }
+  const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/words`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  });
+  return await res.json();
+}
