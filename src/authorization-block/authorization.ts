@@ -15,54 +15,76 @@ const signSuccessText = 'Success!' as string;
 const signPasswordEmailError = 'Incorrect e-mail or password' as string;
 const serverUrl = `https://react-rslang-example.herokuapp.com` as string;
 
+export async function renderAuthorizationBlock(): Promise<void> {
+  const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
+  authorizationBlock.innerHTML = `
+  <div class="authorization-border">
+  <div class="register-sign__button-wrap">
+    <div class="register-open__button">Register</div>
+    <div class="sign-open__button">Sign in</div>
+  </div>
+  <div class="register-sign__block-wrap"> 
+    <div class="register-block"></div>
+    <div class="sign-block"></div>
+  </div>
+  </div>`;
+}
+
 export async function renderRegistrationBlock(): Promise<void> {
   const registerBlock = document.querySelector('.register-block') as HTMLElement;
   registerBlock.innerHTML = `
-  <div class="form-border__wrap">
-  <img class="close-form" src="./assets/cross.svg" alt="Close">
     <form class="register-form">
         <div class="form-block">
-          <input class="form-input" type="text" name="register-name" id="register-name" required placeholder="Name">
+          <div class="placeholder-container">
+            <input class="form-input" type="text" name="register-name" id="register-name" placeholder="Name">
+            <label>Name</label>
+          </div>
           <div class="register-error__name"></div>
         </div>
         <div class="form-block">
-          <input class="form-input" type="email" name="register-email" id="register-email" required placeholder="Email">
+          <div class="placeholder-container">
+            <input class="form-input" type="email" name="register-email" id="register-email" placeholder="Email">
+            <label>Email</label>
+          </div>
           <div class="register-error__email"></div>
         </div>
         <div class="form-block">
-          <input class="form-input" type="password" name="register-password" id="register-password" required placeholder="Password">
-          <div class="register-error__password"></div>
+          <div class="placeholder-container">
+              <input class="form-input" type="password" name="register-password" id="register-password" placeholder="Password">
+              <label>Password</label>
+            </div>
+            <div class="register-error__password"></div>
         </div>
         <div class="form-block">
           <input class="register-submit" type="button" value="Register">
           <div class="registration-success"></div>
         </div>
-    </form>
-    </div>`;
+    </form>`;
 }
-
-export const registerSubmit = document.querySelector('.register-submit') as HTMLElement;
 
 export async function renderSignBlock(): Promise<void> {
   const signBlock = document.querySelector('.sign-block') as HTMLElement;
   signBlock.innerHTML = `
-  <div class="form-border__wrap">
-  <img class="close-form" src="./assets/cross.svg" alt="Close">
   <form class="sign-form">
     <div class="form-block">
-      <input class="form-input" type="email" name="sign-email" id="sign-email" required placeholder="Email">
+      <div class="placeholder-container">
+        <input class="form-input" type="email" name="sign-email" id="sign-email" required placeholder="">
+        <label>Email</label>
+      </div>
       <div class="sign-error__email"></div>
     </div>
     <div class="form-block">
-      <input class="form-input" type="password" name="sign-password" id="sign-password" required placeholder="Password">
-      <div class="sign-error__password"></div>
+      <div class="placeholder-container">
+        <input class="form-input" type="password" name="sign-password" id="sign-password" required placeholder="">
+        <label>Password</label>
+      </div>
+        <div class="sign-error__password"></div>
     </div>
     <div class="form-block">
       <input class="sign-submit" type="button" value="Sign in">
       <div class="sign-success"></div>
     </div>
-  </form>
-  </div>`;
+  </form>`;
 }
 
 export const createUser = async (user: IRegisterUser): Promise<void> => {
@@ -75,7 +97,6 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
     body: JSON.stringify(user)
   });
 
-  const registerBlock = document.querySelector('.register-block') as HTMLElement;
   const registerErrorName = document.querySelector('.register-error__name') as HTMLElement;
   const registerErrorEmail = document.querySelector('.register-error__email') as HTMLElement;
   const registerErrorPassword = document.querySelector('.register-error__password') as HTMLElement;
@@ -97,7 +118,6 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
       localStorage.setItem('Your name', goodResult.name);
       localStorage.setItem('Your id', goodResult.id);
       localStorage.setItem('Your email', goodResult.email);
-      setTimeout((): void => { registerBlock.innerHTML = '' }, 2000);
       break;
 
     case 417:
@@ -117,7 +137,6 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
   };
 };
 
-
 export const loginUser = async (user: ISignUser): Promise<void> => {
   const rawResponse: Response = await fetch(`${serverUrl}/signin`, {
     method: 'POST',
@@ -133,7 +152,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
     signErrorPassword.innerHTML = '';
   }
 
-  const signBlock = document.querySelector('.sign-block') as HTMLElement;
+  const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
   const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
   const signErrorEmail = document.querySelector('.sign-error__email') as HTMLElement;
   const signErrorPassword = document.querySelector('.sign-error__password') as HTMLElement;
@@ -150,7 +169,8 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       localStorage.setItem('Your token', content.token);
       localStorage.setItem('Your refreshToken', content.refreshToken);
       localStorage.setItem('Your userId', content.userId);
-      setTimeout((): void => { signBlock.innerHTML = '' }, 2000);
+      setTimeout(() => { authorizationBlock.innerHTML = '' }, 2000);
+      authorizationBlock.dataset.open = 'false';
       break;
 
     case 403:

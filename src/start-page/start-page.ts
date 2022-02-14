@@ -27,10 +27,8 @@ export function renderStartPage(): void {
   </nav>
 </div>
       <div class="register-sign__block">
-          <button class="register-open__button">Register</button>
-          <div class="register-block"></div>
-          <button class="sign-open__button">Sign in</button>
-          <div class="sign-block"></div>
+          <button class="authorization-open__button">Authorize</button>
+          <div class="authorization-block"></div>
       </div>
   </nav>
 </header>
