@@ -152,6 +152,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
     signErrorPassword.innerHTML = '';
   }
 
+  const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
   const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
   const signErrorEmail = document.querySelector('.sign-error__email') as HTMLElement;
   const signErrorPassword = document.querySelector('.sign-error__password') as HTMLElement;
@@ -168,6 +169,8 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       localStorage.setItem('Your token', content.token);
       localStorage.setItem('Your refreshToken', content.refreshToken);
       localStorage.setItem('Your userId', content.userId);
+      setTimeout(() => { authorizationBlock.innerHTML = '' }, 2000);
+      authorizationBlock.dataset.open = 'false';
       break;
 
     case 403:
@@ -184,5 +187,5 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
         signSuccess.innerHTML = `${notRegisteredEmailText}`;
       }
       break;
-  };
+  }
 };

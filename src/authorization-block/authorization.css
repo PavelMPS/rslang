@@ -88,7 +88,7 @@
   border: 1.5px solid black;
   color: white;
   background-color: black;
-  padding: 7px 10px;
+  padding: 15px;
   margin-bottom: 10px;
   font-size: 15px;
   font-family: sans-serif;
@@ -104,7 +104,6 @@
 .placeholder-container {
   position: relative;
   width: 100%;
-  margin-bottom: 20px;
 }
 
 .placeholder-container input {
@@ -114,9 +113,8 @@
   color: #000;
   font-size: 16px;
   line-height: 16px;
-  height: 50px;
   outline: 0;
-  padding: 0 20px;
+  padding: 15px;
   width: 100%;
 }
 
