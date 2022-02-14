@@ -1,3 +1,4 @@
+import { createStatistic } from '../utilits/utilits';
 import './authorization.css';
 
 const emailExistsError = 'User with this e-mail exists' as string;
@@ -150,6 +151,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       localStorage.setItem('Your token', content.token);
       localStorage.setItem('Your refreshToken', content.refreshToken);
       localStorage.setItem('Your userId', content.userId);
+      await createStatistic(content.userId);
       setTimeout((): void => { signBlock.innerHTML = '' }, 2000);
       break;
 

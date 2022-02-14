@@ -41,6 +41,8 @@ interface IAudiochallenge {
   questionNum: number;
   results: boolean[];
   gameWords: IWordQuestion[],
+  rightAnswers: number,
+  allAnswers: number,
 }
 interface IRegisterUser {
   name: string,
@@ -65,14 +67,19 @@ interface IOptional {
   answersForIsLerned: number,
 }
 
-interface IStatisticGame {
-  newWords: number;
-  allAnswers: number;
-  rightAnswers: number;
-  maxSerieAnswers: number;
+interface IStatistics {
+  learnedWords: number,
+  optional: IStatisticsOptional,
 }
 
-interface IStatistic {
-  learnedWords: number;
-  optional: Object<IStatisticGame>;
+interface IStatisticsOptional {
+  sprint: IGameStatistic;
+  audiochallenge: IGameStatistic;
+}
+
+interface IGameStatistic {
+  newWords: number;
+  rightAnswers: number;
+  allAnswers: number;  
+  maxLine: number;
 }
