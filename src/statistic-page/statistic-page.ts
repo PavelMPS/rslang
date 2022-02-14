@@ -25,10 +25,13 @@ export async function renderStatisticPage(): Promise<void> {
         const totalNewWords: number = sprintNewWords + audiochallengeNewWords;      
         if (sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent === 0) {
             totalRightPercent = 0;
+        } else if (sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent > 0){
+            totalRightPercent = audiochallengeRightAnswersPercent;
+        } else if (sprintRightAnswersPercent > 0 && audiochallengeRightAnswersPercent === 0) {
+            totalRightPercent = sprintRightAnswersPercent;
         } else {
             totalRightPercent = (sprintRightAnswersPercent + audiochallengeRightAnswersPercent) / 2;
-        }
-        
+        }      
         const content: string = `
         <div class="statistic-page__title">
             <h2 class="games-statistic-title">Statistics</h2>

@@ -63,7 +63,7 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
   return content;
 };
 
-export async function getStatistics(userId: string | null): Promise<IStatistics | void> {
+export async function getStatistics(userId: string | null) {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');

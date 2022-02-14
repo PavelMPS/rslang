@@ -156,7 +156,6 @@ function getSprintScore(): void {
     }
     const scoreWindow = document.querySelector('.score-window') as HTMLElement;
     scoreWindow.innerHTML = sprintGame.score.toString();
-    console.log( sprintGame.answerSeries, sprintGame.seriesTotalStatistics);
 }
 
 function showWinMessage(message: string, addingScore: number): void {
@@ -173,7 +172,7 @@ function showWinMessage(message: string, addingScore: number): void {
 async function renderQuestion(): Promise<void> {
     if (sprintGame.count === sprintGame.gameWords.length) {
         clearTimeout(timerId); 
-        sprintGame.allAnswers = sprintGame.count;
+        sprintGame.allAnswers = sprintGame.gameWords.length;
         getResults(sprintGame.gameWords, 'sprint');
         return;
     }      
@@ -267,7 +266,8 @@ function highlightAnswer(color: string): void {
 function timer(value: number): void {
     timerId = setInterval(() => {
         if (value === 0) {
-            clearInterval(timerId);       
+            clearInterval(timerId);
+            sprintGame.allAnswers = sprintGame.gameWords.length;       
             getResults(sprintGame.gameWords, 'sprint');
         }
         const timerWindow = document.querySelector('.timer-sprint') as HTMLElement;

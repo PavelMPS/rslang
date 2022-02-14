@@ -142,7 +142,7 @@ export async function getResults(words: IWordQuestion[] | GameWord[], game: stri
     token = localStorage.getItem('Your token');
     await changeUserWords(words, game);
   }
-
+  if (game === sprint) { words.length = sprintGame.allAnswers - 1}
   words.forEach((word: IWordQuestion | GameWord, index: number): void => {
     if (word.userAnswer === true) {
       rightAnswers += `<div>
