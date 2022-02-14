@@ -121,6 +121,7 @@ function checkAnswer(buttons: NodeListOf<HTMLElement>, btn: HTMLElement, result:
     audiochallengeSettings.gameWords[index].userAnswer = true;
   } else if (btn.dataset.translate !== result) {
     btn.classList.add('wrong');
+    if (audiochallengeSettings.answerSeries > audiochallengeSettings.maxLine) audiochallengeSettings.maxLine = audiochallengeSettings.answerSeries;
     audiochallengeSettings.answerSeries = minScore;
     audiochallengeSettings.lives = audiochallengeSettings.lives - 1;
     audiochallengeSettings.gameWords[index].userAnswer = false;
@@ -171,7 +172,8 @@ async function createQuestion(newWordArr: IWord[], index: number): Promise<void>
     const addListenetToListenBTN: (event) => void = (event) => {
       if (event.code == 'Space') {
         playAudio(wordAudio);
-        console.log('play');
+        listenBTN.classList.add('active');
+        setTimeout(() => listenBTN.classList.remove('active'), 500);
       }
     }
     listener[2] = addListenetToListenBTN;
@@ -179,6 +181,8 @@ async function createQuestion(newWordArr: IWord[], index: number): Promise<void>
 
     chooseAnswer(newWordArr[audiochallengeSettings.questionNum].wordTranslate, audiochallengeSettings.questionNum, newWordArr);
   } else {
+    const main = document.querySelector('.main') as HTMLElement;
+    main.innerHTML = '';
     getResults(newWordArr, audiochallenge);
   }
 }
