@@ -1,12 +1,13 @@
 import { getStatistics } from '../api/api';
 import '../statistic-page/statistic-page.css';
+import { createStatistic } from '../utilits/utilits';
 
 export async function renderStatisticPage(): Promise<void> {
     const main = document.querySelector('.main') as HTMLElement;
     let userId: string = '';
     if (localStorage.getItem('Your userId')) {
         userId = localStorage.getItem('Your userId') as string;
-    } 
+    }   
         const statisticInfo: IStatistics = await getStatistics(userId);
         let sprintRightAnswersPercent: number = 0;
         let audiochallengeRightAnswersPercent: number = 0;

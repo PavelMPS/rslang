@@ -63,7 +63,7 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
   return content;
 };
 
-export async function getStatistics(userId: string | null): Promise<IStatistics>  {
+export async function getStatistics(userId: string | null): Promise<IStatistics | void> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
@@ -75,8 +75,14 @@ export async function getStatistics(userId: string | null): Promise<IStatistics>
       'Accept': 'application/json',
     }
   });
-  const content = await response.json();
-  return content;
+  if (response.status === 404 && userId) {
+    await createStatistic(userId);
+
+  } else {
+    const content = await response.json();
+    console.log('create', content);
+    return content;
+  }
 };
 
 export async function updateStatistics(userId: string | null, lernedWords: number, sprintStatistics: IGameStatistic, audiochallengeStatistics: IGameStatistic): Promise<IStatistics> {
