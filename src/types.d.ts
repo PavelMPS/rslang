@@ -37,6 +37,7 @@ interface IAudiochallenge {
   page: number;
   group: number;
   answerSeries: number;
+  maxLine: number;
   lives: number;
   questionNum: number;
   results: boolean[];

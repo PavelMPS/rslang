@@ -38,7 +38,8 @@
   cursor: pointer;
   transition: 0.3s;
 }
-.listen-btn:hover {
+.listen-btn:hover,
+.listen-btn.active {
   width: 175px;
   height: 175px;
   background-color: rgb(255, 77, 77);
