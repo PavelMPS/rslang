@@ -18,8 +18,29 @@ export async function getUserWord(userId: string | null, wordId: string): Promis
       'Accept': 'application/json',
     }
   });
-  // console.log('Response getUserWord is: ',response);
+  
   return response;
+}
+
+export async function getUserWords(): Promise<IUserWord[]> {
+  let token: string | null = '';
+  if (localStorage.getItem('Your token')) {
+    token = localStorage.getItem('Your token');
+  }
+  let userId: string | null = '';
+  if (localStorage.getItem('Your userId')) {
+    userId = localStorage.getItem('Your userId');
+  }
+  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/words`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    }
+  });
+  const content = await response.json();
+
+  return content;
 }
 
 export async function createUserWord(userId: string | null, wordId: string, difficult: string, lerned: boolean, rightAnswers: number, allAnswers: number, answersForIsLerned: number): Promise<IUserWord> {
@@ -119,29 +140,32 @@ export async function updateStatistics(userId: string | null, lernedWords: numbe
 //   return content;
 // };
 
-// export async function getUserAggregatedWords(userId: string, page: number, group: number, filterOption: string ) {
-//   let token: string | null = '';
-//   let filter: string = '';
-//   if (localStorage.getItem('Your token')) {
-//     token = localStorage.getItem('Your token');
-//   }
-//   if (filterOption === 'learned') {
-//     console.log('1');
-//     filter = `{"$and":{"userWord.optional.isLerned": true}}}`;
-//   } else if (filterOption === 'hard') {
-//     console.log('2');
-//     filter = `{"$and":{"userWord.difficulty": "hard"}}`;
-//   }
-//   const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/aggregatedWords?group=${group}&page=${page}${filter}`, {
-//     method: 'GET',
-//     headers: {
-//       'Authorization': `Bearer ${token}`,
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//   });
+export async function getUserAggregatedWords(page: number, wordsPerPage: number, filterOption: string ) {
+  let token: string | null = '';
+  let filter: string = '';
+  if (localStorage.getItem('Your token')) {
+    token = localStorage.getItem('Your token');
+  }
+  let userId: string | null = '';
+  if (localStorage.getItem('Your userId')) {
+    userId = localStorage.getItem('Your userId');
+  }
+  console.log(userId, token);
+  if (filterOption === 'learned') {
+    filter = `{"$and":{"userWord.optional.isLerned": true}}}`;
+  } else if (filterOption === 'hard') {
+    filter = `{"$and":{"userWord.difficulty": "hard"}}`;
+  }
+  const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/aggregatedWords?page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  });
   
-//   const content = await res.json();
-//   console.log(content)
-//   return content;
-// }
+  const content = await res.json();
+  console.log(content)
+  return content;
+}
