@@ -1,12 +1,13 @@
 import { getWords } from '../api/api';
+import { createAydio, playAudio } from '../utilits/utilits';
 
 import '../textbook-page/textbook-page.css';
 
 const textbookSettings: { page: number, group: number } = {
-  page: 1,
-  group: 1,
+  page: 0,
+  group: 0,
 }
-const maxPageNum = 30;
+const maxPageNum = 29;
 
 //TODO сделать проверку на сложные и изученные и добавить стили при рендере
 
@@ -19,7 +20,7 @@ async function createTextbookContent(): Promise<void> {
   let textForInput: string = '' as string;
 
   words.forEach((word: IWord): void => {
-    textForInput += `<div class="word-card" data-wordId="${word.id}">
+    textForInput += `<div class="word-card" data-id="${word.id}">
       <div class="word-img" style="background-image: url('https://react-rslang-example.herokuapp.com/${word.image}');"></div>
       <div class="word-inf">
         <div class="word">${word.word} - ${word.transcription} - ${word.wordTranslate}</div>
@@ -49,11 +50,10 @@ async function createTextbookContent(): Promise<void> {
   wordCards.forEach((card: HTMLElement) => {
     const audioBTN: HTMLElement = card.querySelector('.audio-btn') as HTMLElement;
     audioBTN.addEventListener(('click'), (): void => {
-      //TODO проигрывание звука
+      playTextbookAudio(words, card);
     });
 
     const heavyBTN: HTMLElement = card.querySelector('.heavy-btn') as HTMLElement;
-    console.log(heavyBTN);
     heavyBTN.addEventListener(('click'), (): void => {
       heavyBTN.classList.toggle('active');
       card.classList.toggle('heavy-word');
@@ -66,6 +66,23 @@ async function createTextbookContent(): Promise<void> {
       card.classList.toggle('learned-word');
     });
   })
+}
+
+function playTextbookAudio(words: IWord[], card: HTMLElement) {
+  const id = card.dataset.id;
+  const word: IWord = words.find((word: IWord) => word.id === id) as IWord;
+  const wordAudio = createAydio(word.audio);
+  const wordMeaning = createAydio(word.audioMeaning);
+  const wordExample = createAydio(word.audioExample);
+
+  playAudio(wordAudio);
+
+  wordAudio.onended = function () {
+    playAudio(wordMeaning);
+    wordMeaning.onended = function () {
+      playAudio(wordExample);
+    }
+  }
 }
 
 export function createTextbookStructyre(): void {
