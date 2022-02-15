@@ -8,7 +8,17 @@ export async function renderStatisticPage(): Promise<void> {
     if (localStorage.getItem('Your userId')) {
         userId = localStorage.getItem('Your userId') as string;
     }   
-        const statisticInfo: IStatistics = await getStatistics(userId);
+        let statisticInfo = await getStatistics(userId) as IStatistics;
+        if (statisticInfo === undefined) {
+            const currentDate: Date = new Date();        
+            const day =  currentDate.getDate();
+            const month = currentDate.getMonth();
+            const year = currentDate.getFullYear();          
+            console.log('undefind');          
+            await createStatistic(userId, year, month, day);
+            statisticInfo = await getStatistics(userId) as IStatistics;
+        }
+        console.log('here',statisticInfo)
         let sprintRightAnswersPercent: number = 0;
         let audiochallengeRightAnswersPercent: number = 0;
         let totalRightPercent: number = 0;

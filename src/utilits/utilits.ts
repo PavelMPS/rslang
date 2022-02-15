@@ -285,7 +285,6 @@ async function checkWords(words: IWordQuestion[] | GameWord[], userId: string | 
       let allWordAnswers: number = 0;
       let answersForIsLerned: number = 0;
       let maxCount: number = 3;
-
       if (wordResponse.ok) {
         const wordInf: IUserWord = await wordResponse.json();
         if (word.userAnswer === true) {
@@ -321,7 +320,7 @@ async function checkWords(words: IWordQuestion[] | GameWord[], userId: string | 
 }
 
 async function updateStatisticsByResults(userId: string | null, game: string, wordsInf: {newWords: number, learnedWords: number}) {
-  const statisticInf = await getStatistics(userId);
+  const statisticInf = await getStatistics(userId) as IStatistics;
   const newLearnedWords = wordsInf.learnedWords + statisticInf.learnedWords;
   if (game === sprint) {
     let maxLine: number = sprintGame.seriesTotalStatistics;
@@ -336,7 +335,7 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
       maxLine: maxLine,
     }
    
-    await updateStatistics(userId, newLearnedWords, sprintStatistic, statisticInf.optional.audiochallenge);
+    await updateStatistics(userId, newLearnedWords, sprintStatistic, statisticInf.optional.audiochallenge, statisticInf.optional.year, statisticInf.optional.month, statisticInf.optional.day);
   } else if (game === audiochallenge) {
     let maxLine: number = audiochallengeSettings.answerSeries;
     if (audiochallengeSettings.answerSeries < statisticInf.optional.audiochallenge.maxLine) {
@@ -349,11 +348,11 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
       allAnswers: statisticInf.optional.audiochallenge.allAnswers + audiochallengeSettings.allAnswers, 
       maxLine: maxLine,
     }
-    await updateStatistics(userId, newLearnedWords, statisticInf.optional.sprint, audiochallengeStatistic);
+    await updateStatistics(userId, newLearnedWords, statisticInf.optional.sprint, audiochallengeStatistic, statisticInf.optional.year, statisticInf.optional.month, statisticInf.optional.day);
   }
 }
 
-export async function createStatistic(id: string): Promise<void> {
+export async function createStatistic(id: string, year: number, month: number, day: number): Promise<void> {
   const sprintStatistic: IGameStatistic = {
     newWords: 0,
     rightAnswers: 0,
@@ -366,5 +365,5 @@ export async function createStatistic(id: string): Promise<void> {
     allAnswers: 0, 
     maxLine: 0,
   }
-  await updateStatistics(id, 0, sprintStatistic, audiochallengeStatistic);
+  await updateStatistics(id, 0, sprintStatistic, audiochallengeStatistic, year, month, day); 
 }
