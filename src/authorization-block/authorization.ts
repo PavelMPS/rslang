@@ -1,3 +1,5 @@
+import { getStatistics } from '../api/api';
+import { createStatistic } from '../utilits/utilits';
 import './authorization.css';
 
 const emailExistsError = 'User with this e-mail exists' as string;
@@ -51,6 +53,7 @@ export async function renderRegistrationBlock(): Promise<void> {
         <div class="form-block">
           <div class="placeholder-container">
               <input class="form-input" type="password" name="register-password" id="register-password" placeholder="Password">
+              <a href="#" class="password-control"></a>
               <label>Password</label>
             </div>
             <div class="register-error__password"></div>
@@ -75,7 +78,8 @@ export async function renderSignBlock(): Promise<void> {
     </div>
     <div class="form-block">
       <div class="placeholder-container">
-        <input class="form-input" type="password" name="sign-password" id="sign-password" required placeholder="">
+        <input class="form-input" type="password" name="sign-password" id="sign-password" required placeholder="Password">
+        <a href="#" class="password-control"></a>
         <label>Password</label>
       </div>
         <div class="sign-error__password"></div>
@@ -168,9 +172,10 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       localStorage.setItem('Message', content.message);
       localStorage.setItem('Your token', content.token);
       localStorage.setItem('Your refreshToken', content.refreshToken);
-      localStorage.setItem('Your userId', content.userId);
+      localStorage.setItem('Your userId', content.userId);     
       setTimeout(() => { authorizationBlock.innerHTML = '' }, 2000);
       authorizationBlock.dataset.open = 'false';
+      await getStatistics(content.userId);
       break;
 
     case 403:
