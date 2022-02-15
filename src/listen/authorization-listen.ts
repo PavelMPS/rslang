@@ -1,7 +1,5 @@
 import { renderAuthorizationBlock, renderRegistrationBlock, renderSignBlock, createUser, loginUser } from "../authorization-block/authorization";
 
-
-
 export async function authorizationListen(): Promise<void> {
 
   const authorizationOpenButton = document.querySelector('.authorization-open__button') as HTMLElement;
@@ -13,8 +11,8 @@ export async function authorizationListen(): Promise<void> {
       e.composedPath().every(element => authorizationBlock.contains((element as Node))
         ? false
         : (authorizationBlock.innerHTML = '', authorizationBlock.dataset.open = 'false'));
-    }
-  }
+    };
+  };
 
   document.removeEventListener('click', handler, true);
 
@@ -22,6 +20,7 @@ export async function authorizationListen(): Promise<void> {
 
     renderAuthorizationBlock();
     renderRegistrationBlock();
+    showHidePassword();
 
     if (authorizationBlock.dataset.open == 'true') {
       authorizationBlock.dataset.open = 'false';
@@ -35,7 +34,22 @@ export async function authorizationListen(): Promise<void> {
       signSubmitCall(document.querySelector('.register-block') as HTMLElement);
       registerSubmitCall(document.querySelector('.sign-block') as HTMLElement);
       document.addEventListener('click', handler, true);
+      showHidePassword();
     }
+
+    function showHidePassword(): void {
+      const passwordControl = document.querySelector('.password-control') as HTMLInputElement;
+      passwordControl.addEventListener('click', (): Boolean => {
+        if (passwordControl.previousElementSibling?.getAttribute('type') == 'password') {
+          passwordControl.classList.add('view');
+          passwordControl.previousElementSibling?.setAttribute('type', 'text');
+        } else {
+          passwordControl.classList.remove('view');
+          passwordControl.previousElementSibling?.setAttribute('type', 'password');
+        }
+        return false;
+      });
+    };
 
     function switchAuthorizeBlock(args: Array<HTMLElement>): void {
       args[0].classList.add('active');
@@ -66,6 +80,7 @@ export async function authorizationListen(): Promise<void> {
         element.innerHTML = '';
         renderRegistrationBlock();
         sendRegistrationInfo();
+        showHidePassword();
       });
     };
 
@@ -74,6 +89,7 @@ export async function authorizationListen(): Promise<void> {
       signOpenButton.addEventListener('click', (): void => {
         element.innerHTML = '';
         renderSignBlock();
+        showHidePassword();
         const signSubmit = document.querySelector('.sign-submit') as HTMLInputElement;
         signSubmit.addEventListener('click', (): void => {
           const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
