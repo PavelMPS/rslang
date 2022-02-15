@@ -1,3 +1,5 @@
+import { createStatistic } from "../utilits/utilits";
+
 export async function getWords(group: number, page: number): Promise<IWord[]> {
   const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words?group=${group}&page=${page}`);
   const words: IWord[] = await response.json();
@@ -16,7 +18,7 @@ export async function getUserWord(userId: string | null, wordId: string): Promis
       'Accept': 'application/json',
     }
   });
-  console.log(response);
+  // console.log('Response getUserWord is: ',response);
   return response;
 }
 
@@ -61,7 +63,7 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
   return content;
 };
 
-export async function getStatistics(userId: string | null): Promise<IStatistics> {
+export async function getStatistics(userId: string | null) {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
@@ -73,9 +75,14 @@ export async function getStatistics(userId: string | null): Promise<IStatistics>
       'Accept': 'application/json',
     }
   });
-  const content = await response.json();
-  console.log('create', content);
-  return content;
+  if (response.status === 404 && userId) {
+    await createStatistic(userId);
+
+  } else {
+    const content = await response.json();
+    console.log('create', content);
+    return content;
+  }
 };
 
 export async function updateStatistics(userId: string | null, lernedWords: number, sprintStatistics: IGameStatistic, audiochallengeStatistics: IGameStatistic): Promise<IStatistics> {
