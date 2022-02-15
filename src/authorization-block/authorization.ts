@@ -1,3 +1,5 @@
+import { getStatistics } from '../api/api';
+import { createStatistic } from '../utilits/utilits';
 import './authorization.css';
 
 const emailExistsError = 'User with this e-mail exists' as string;
@@ -170,9 +172,10 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       localStorage.setItem('Message', content.message);
       localStorage.setItem('Your token', content.token);
       localStorage.setItem('Your refreshToken', content.refreshToken);
-      localStorage.setItem('Your userId', content.userId);
+      localStorage.setItem('Your userId', content.userId);     
       setTimeout(() => { authorizationBlock.innerHTML = '' }, 2000);
       authorizationBlock.dataset.open = 'false';
+      await getStatistics(content.userId);
       break;
 
     case 403:

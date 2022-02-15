@@ -36,6 +36,6 @@ export const sprintGame: Sprint = {
     answerSeries: 0,
     seriesTotalStatistics: 0,
     advanceScore: [10, 20, 30, 40, 50, 60, 70],
-    rightAnswers: 20,
+    rightAnswers: 0,
     allAnswers: 0,
 }
