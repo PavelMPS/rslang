@@ -53,6 +53,7 @@ export async function renderRegistrationBlock(): Promise<void> {
         <div class="form-block">
           <div class="placeholder-container">
               <input class="form-input" type="password" name="register-password" id="register-password" placeholder="Password">
+              <a href="#" class="password-control"></a>
               <label>Password</label>
             </div>
             <div class="register-error__password"></div>
@@ -77,7 +78,8 @@ export async function renderSignBlock(): Promise<void> {
     </div>
     <div class="form-block">
       <div class="placeholder-container">
-        <input class="form-input" type="password" name="sign-password" id="sign-password" required placeholder="">
+        <input class="form-input" type="password" name="sign-password" id="sign-password" required placeholder="Password">
+        <a href="#" class="password-control"></a>
         <label>Password</label>
       </div>
         <div class="sign-error__password"></div>

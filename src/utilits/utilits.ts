@@ -208,6 +208,7 @@ function tryAgain(game: string): void {
   tryAgainBtn.addEventListener('click', () => {
     if (game === audiochallenge) {
       audiochallengeSettings.answerSeries = minScore;
+      audiochallengeSettings.maxLine = minScore;
       audiochallengeSettings.lives = maxLives;
       audiochallengeSettings.questionNum = minScore;
       audiochallengeSettings.results = [];
@@ -337,8 +338,8 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
    
     await updateStatistics(userId, newLearnedWords, sprintStatistic, statisticInf.optional.audiochallenge, statisticInf.optional.year, statisticInf.optional.month, statisticInf.optional.day);
   } else if (game === audiochallenge) {
-    let maxLine: number = audiochallengeSettings.answerSeries;
-    if (audiochallengeSettings.answerSeries < statisticInf.optional.audiochallenge.maxLine) {
+    let maxLine: number = audiochallengeSettings.maxLine;
+    if (audiochallengeSettings.maxLine < statisticInf.optional.audiochallenge.maxLine) {
       maxLine = statisticInf.optional.audiochallenge.maxLine;
     }
 
