@@ -1,4 +1,4 @@
-import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics } from '../api/api';
+import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords } from '../api/api';
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint } from '../sprint-game/sprint-game';
@@ -7,13 +7,20 @@ import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, max
 
 import '../utilits/utilits.css';
 
-export async function getQuestionArr(group: number): Promise<IWord[]> {
-  const pagesArr: number[] = [];
-  const wordArr: Array<IWord[]> = [];
-  for (let i = 0; i < 4; i ++) {
-    pagesArr[i] = getRandomPage(pagesArr);
-    const arr: IWord[] = await getWords(group, pagesArr[i]);
-    wordArr.push(arr);
+export async function getQuestionArr(group: number, page?: number): Promise<IWord[]> {
+  let wordArr: Array<IWord[]> = [];
+  if (page && localStorage.getItem('Your token')) {
+    console.log('if token ok', group, page);
+    const arr = await getUserAggregatedWords(page, 20, 'learned')
+    console.log('arr=', arr)
+  } else {
+    console.log('else token no')
+    const pagesArr: number[] = []; 
+    for (let i = 0; i < 4; i ++) {
+      pagesArr[i] = getRandomPage(pagesArr);
+      const arr: IWord[] = await getWords(group, pagesArr[i]);
+      wordArr.push(arr);
+  }
   }
 
   const totalArr: IWord[] = wordArr.flat();
@@ -109,7 +116,9 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
   } else if (game === 'sprint') {
     title.innerHTML = sprintTitle;
     description.innerHTML = sprintDescription;
-    startBTN.addEventListener('click', startGameSprint);
+    startBTN.addEventListener('click', () => {
+      startGameSprint();
+    } );
     gameImg.classList.add('sprint');
   }
 

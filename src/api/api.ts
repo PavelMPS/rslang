@@ -1,3 +1,4 @@
+import { filters, optionFilter } from "../constants/constants";
 import { createStatistic } from "../utilits/utilits";
 
 export async function getWords(group: number, page: number): Promise<IWord[]> {
@@ -163,11 +164,12 @@ export async function getUserAggregatedWords(page: number, wordsPerPage: number,
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
   }
-  console.log(userId, token);
-  if (filterOption === 'learned') {
-    filter = `{"$and":{"userWord.optional.isLerned": true}}}`;
-  } else if (filterOption === 'hard') {
-    filter = `{"$and":{"userWord.difficulty": "hard"}}`;
+  if (filterOption === optionFilter.learned) {
+    filter = filters.learned;
+  } else if (filterOption === optionFilter.hard) {
+    filter = filters.hard;
+  } else if (filterOption === optionFilter.noLearned) {
+    filter = filters.noLearned;
   }
   const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/aggregatedWords?page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`, {
     method: 'GET',

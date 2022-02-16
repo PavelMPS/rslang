@@ -3,6 +3,7 @@ import { createAydio, playAudio } from '../utilits/utilits';
 import { difficultHeavy } from '../constants/constants';
 
 import '../textbook-page/textbook-page.css';
+import { startGameSprint } from '../sprint-game/sprint-game';
 
 const textbookSettings: { page: number, group: number } = {
   page: 0,
@@ -202,8 +203,8 @@ export function renderTextbookPage(): void {
   })
 
   const sprintBTN: HTMLElement = document.querySelector('.sprint-btn') as HTMLElement;
-  sprintBTN.addEventListener(('click'), () => {
-    //TODO функция спринта
+  sprintBTN.addEventListener(('click'), async (): Promise<void> => {
+    await startGameSprint(textbookSettings.group, textbookSettings.page);
   });
 
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;

@@ -10,7 +10,7 @@ async function getWords(): Promise<IWord[]> {
     return words;
 }
 
-export async function startGameSprint(): Promise<void> {
+export async function startGameSprint(group?: number, page?: number): Promise<void> {
     sprintGame.seriesTotalStatistics = sprintGame.gameWords.length;
     const content: string = `
     <div class="timer-sprint"></div>
@@ -34,16 +34,16 @@ export async function startGameSprint(): Promise<void> {
     `;
     const main = document.querySelector('.main') as HTMLElement;
     main.innerHTML = content;
-    await formGameWords();
+    await formGameWords(group, page);
     timer(60);
     const btnAnswer = document.querySelector('.answer-btn') as HTMLElement;   
     btnAnswer.addEventListener('click', async (e: Event): Promise<void> => {
     await verifyAnswer(e)});      
 }
 
-async function formGameWords(): Promise<void> {
-    sprintGame.group = sprintGame.difficult;
-    const arr = await getQuestionArr(sprintGame.group);
+async function formGameWords(group?: number, page?: number): Promise<void> {
+    group ? sprintGame.group = group : sprintGame.group = sprintGame.difficult;
+    const arr = await getQuestionArr(sprintGame.group, page);
     console.log(arr);
     await formWordsArray(arr);
     await formRandomWords(); 

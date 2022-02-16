@@ -12,3 +12,15 @@ export const maxPageCount = 30;
 
 export const difficultWeak = 'hard';
 export const difficultHeavy = 'easy';
+
+export const filters = {
+    learned: `{"$and":[{"userWord.optional.isLerned": true}]}`,
+    noLearned: `{"$and":[{"userWord.optional.isLerned": false}]}`,
+    hard: `{"$and":[{"userWord.difficulty": "hard"}]}`,
+}
+
+export const optionFilter = {
+    learned: 'learned',
+    noLearned: 'noLearned',
+    hard: 'hard',
+}

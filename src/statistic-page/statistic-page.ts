@@ -7,7 +7,15 @@ export async function renderStatisticPage(): Promise<void> {
     let userId: string = '';
     if (localStorage.getItem('Your userId')) {
         userId = localStorage.getItem('Your userId') as string;
-    }   
+    } 
+    if (!localStorage.getItem('Your id') && !userId){ 
+        main.innerHTML = `<h2>Please register</h2>`
+        return;
+    }
+    if ((localStorage.getItem('Your id') || userId) && !localStorage.getItem('Your token')) {
+        main.innerHTML = `<h2>Please login</h2>`;
+        return;
+    } else {
         let statisticInfo = await getStatistics(userId) as IStatistics;
         if (statisticInfo === undefined) {
             const currentDate: Date = new Date();        
@@ -107,4 +115,5 @@ export async function renderStatisticPage(): Promise<void> {
         </div>
     `;  
     main.innerHTML = content;
+    }
 }   
