@@ -57,6 +57,7 @@ interface ISignUser {
 }
 
 interface IUserWord {
+  id?: string,
   difficulty: string,
   optional: IOptional,
 }

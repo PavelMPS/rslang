@@ -243,23 +243,25 @@ function listenTabs() {
 }
 
 function createResults(game: string) {
-  const goodResults = 'Great job! Your score is: ';
-  const badResults = 'It will be better next time... Your score is: ';
+  const goodResultsSprint = 'Great job! Your score is: ' + sprintGame.score + ' points';
+  const badResultsSprint = 'It will be better next time... Your score is: ' + + sprintGame.score + ' points';
+  const goodResultsAudio = 'You have ' + audiochallengeSettings.lives + ' lives left';
+  const badResultsAudio = 'It will be better next time... Unfortunately there are no lives left...';
 
   const resultImg: HTMLElement = document.querySelector('.results-img') as HTMLElement;
   const resultTitle: HTMLElement = document.querySelector('.results-inf') as HTMLElement;
 
   if (game === audiochallenge && audiochallengeSettings.lives > minScore) {
-    resultTitle.innerHTML = goodResults + audiochallengeSettings.lives + ' lives left';
+    resultTitle.innerHTML = goodResultsAudio;
     resultImg.classList.add('good-result-img');
   } else if (game === audiochallenge && audiochallengeSettings.lives === minScore) {
-    resultTitle.innerHTML = badResults + audiochallengeSettings.lives + ' lives left';
+    resultTitle.innerHTML = badResultsAudio;
     resultImg.classList.add('bad-result-img');
   } else if (game === sprint && sprintGame.score >= averegeSprintGameScore) {
-    resultTitle.innerHTML = goodResults + sprintGame.score + ' points';
+    resultTitle.innerHTML = goodResultsSprint;
     resultImg.classList.add('good-result-img');
   } else if (game === sprint && sprintGame.score < averegeSprintGameScore) {
-    resultTitle.innerHTML = badResults + sprintGame.score + ' points';
+    resultTitle.innerHTML = badResultsSprint;
     resultImg.classList.add('bad-result-img');
   }
 }
