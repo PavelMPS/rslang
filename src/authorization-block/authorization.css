@@ -1,4 +1,5 @@
-.authorization-border {
+.authorization-border,
+.logout-border {
   display: block;
   width: fit-content;
   height: fit-content;
@@ -83,7 +84,9 @@
 }
 
 .register-submit,
-.sign-submit {
+.sign-submit,
+.logout-button {
+  text-align: center;
   width: 100%;
   border: 1.5px solid black;
   color: white;
@@ -151,4 +154,34 @@
 
 .register-sign__button-wrap {
   cursor: pointer;
+}
+
+.password-control {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(../assets/view.svg) 0 0 no-repeat;
+}
+
+.password-control.view {
+  background: url(../assets/no-view.svg) 0 0 no-repeat;
+}
+
+.logout__block-wrap {
+  margin: 70px;
+}
+
+.logout-buttons__wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.logout-text {
+  font-size: 20px;
+  font-family: sans-serif;
+  margin-bottom: 50px;
 }

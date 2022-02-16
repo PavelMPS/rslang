@@ -1,106 +1,188 @@
-import '../audiochallenge-page/audiochallenge-page.css';
-import { sprintGame } from '../constants/sprint';
-import { startGameSprint } from '../sprint-game/sprint-game';
+import { audiochallengeSettings } from '../constants/audiochallenge';
+import { shuffle, createAydio, playAudio, getResults, getQuestionArr } from '../utilits/utilits';
+import { minScore, answersLength, audiochallenge } from '../constants/constants';
 
-export async function renderAudiochallengePage() {
-  console.log('audiochallenge');
-  //TODO function
+import '../audiochallenge-page/audiochallenge-page.css';
+
+function renderAudiochallengeQuestion(words: IWord[], answers: number[]) {
+  let content = ``;
+  answers.forEach((answer: number) => {
+    content += `<div class="answers-btn" data-translate="${words[answer].wordTranslate}">${words[answer].wordTranslate}</div>`
+  });
+
+  return content;
+}
+
+export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<void> {
   const content: string = `    <div class="audiochallenge-container">
       <div class="hearts-container">
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
+        <div class="heart broken"></div>
+        <div class="heart broken"></div>
+        <div class="heart broken"></div>
+        <div class="heart broken"></div>
         <div class="heart broken"></div>
       </div>
       <div class="listen-btn"></div>
       <div class="btns-container">
         <div class="answers-btn-container">
-          <div class="answers-btn" id="one">one</div>
-          <div class="answers-btn" id="two">two</div>
-          <div class="answers-btn" id="three">three</div>
-          <div class="answers-btn" id="four">four</div>
-          <div class="answers-btn" id="five">five</div>
+
         </div>
-        <div class="next-question-btn">NEXT</div>
+        <div class="not-to-know-btn">I don't know</div>
+        <div class="next-question-btn disable">NEXT</div>
       </div>
     </div>`;
 
   const main = document.querySelector('.main') as HTMLElement;
   main.innerHTML = content;
+
+  audiochallengeSettings.allAnswers = newWordArr.length;
+
+  createQuestion(newWordArr, audiochallengeSettings.questionNum);
+
+  brokeHeart();
 }
 
-//в качестве переменной game в функцию передается название игры 'audiochallenge'/'sprint' от которой зависит текст, котик, листенер
-//реализовано получение номера группы при выборе сложности
+function brokeHeart() {
+  const hearts: NodeListOf<Element> = document.querySelectorAll('.heart') as NodeListOf<Element>;
+  for (let i = 0; i < audiochallengeSettings.lives; i++) {
+    hearts[i].classList.remove('broken');
+  }
+}
 
-export async function renderGroupSelectionPage(game: string): Promise<void> {
-    const content: string = ` <div class="group-select-page">
-      <div class="game-title-container">
-        <h3 class="game-page-title"></h3>
-      </div>
-      <div class="audiochallenge-main-inf">
-        <div class="audiochallenge-img"></div>
-        <div class="game-describe-container"></div>
-      </div>
+const listener: Array<(event) => void> = [];
 
-      <div class="game-difficult-container">
-          <h4 class="difficult-subtitle">Choose the difficult of the game:</h4>
-          <div class="difficult-buttons-container">
-              <button class="btn difficult-btn" id="difficult-btn-1" data-group="0">I</button>
-              <button class="btn difficult-btn" id="difficult-btn-2" data-group="1">II</button>
-              <button class="btn difficult-btn" id="difficult-btn-3" data-group="2">III</button>
-              <button class="btn difficult-btn" id="difficult-btn-4" data-group="3">IV</button>
-              <button class="btn difficult-btn" id="difficult-btn-5" data-group="4">V</button>
-              <button class="btn difficult-btn" id="difficult-btn-6" data-group="5">VI</button>
-          </div>
-      </div>
-      <div class="btn start-btn">Let's start!</div>
-    </div>`;
+async function chooseAnswer(result: string, index: number, newWordArr: IWord[]): Promise<void> {
+  const buttons: NodeListOf<HTMLElement> = document.querySelectorAll('.answers-btn');
+  const notToKnowBTN: HTMLElement = document.querySelector('.not-to-know-btn') as HTMLElement;
+  const nextBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
 
-    const footer = document.querySelector('.footer') as HTMLElement;
-    const main = document.querySelector('.main') as HTMLElement;
-    footer.classList.add('disabled');
-    main.innerHTML = content;
-
-    const title: HTMLElement = main.querySelector('.game-page-title') as HTMLElement;
-    const description: HTMLElement = main.querySelector('.game-describe-container') as HTMLElement;
-
-    const sprintTitle = 'SPRINT';
-    const audiochallengeTitle = 'AUDIOCHALLENGE';
-    const sprintDescription = `In this game you must choose rihgt answer.
-        Click at that button you think right or press key left or right
-        for choosing answer`;
-    const audiochallengeDescription = `<h3 class="game-describe">"Audiochallenge" is a workout that improves listening comprehension.</h3>
-        <ul>
-          <li>Use the mouse to select.</li>
-          <li>Use number keys from 1 to 5 to select an answer.</li>
-          <li>Use a space to repeat a word.</li>
-          <li>Use the Enter key for a hint or to move to the next word.</li>
-        </ul>`;
-
-    const startBTN: HTMLElement = main.querySelector('.start-btn') as HTMLElement;
-    const difficultBTNs: NodeListOf<HTMLElement> = main.querySelectorAll('.difficult-btn') as NodeListOf<HTMLElement>;
-
-    let group: string|undefined = '0';
-
-    difficultBTNs.forEach((difficultBTN: HTMLElement): void => {
-      difficultBTN.addEventListener('click', () => {
-        difficultBTNs.forEach((btn: HTMLElement) => {
-          btn.classList.remove('active');
-        })
-        difficultBTN.classList.add('active');
-        group = difficultBTN.dataset.group;
-        if (group) sprintGame.difficult = +group;
-      })
-    })
-
-    if (game === 'audiochallenge') {
-      title.innerHTML = audiochallengeTitle;
-      description.innerHTML = audiochallengeDescription;
-      startBTN.addEventListener('click', renderAudiochallengePage);
-    } else if (game === 'sprint') {
-      title.innerHTML = sprintTitle;
-      description.innerHTML = sprintDescription;
-      startBTN.addEventListener('click', startGameSprint);
+  document.removeEventListener('keydown', listener[0]);
+  const listeners: (event) => void = (event) => {
+    if (event.code == 'Digit1') {
+      checkAnswer(buttons, buttons[0], result, index, notToKnowBTN, nextBTN);      
+    } else if (event.code == 'Digit2') {
+      checkAnswer(buttons, buttons[1], result, index, notToKnowBTN, nextBTN);      
+    } else if (event.code == 'Digit3') {
+      checkAnswer(buttons, buttons[2], result, index, notToKnowBTN, nextBTN);      
+    } else if (event.code == 'Digit4') {
+      checkAnswer(buttons, buttons[3], result, index, notToKnowBTN, nextBTN);      
+    } else if (event.code == 'Digit5') {
+      checkAnswer(buttons, buttons[4], result, index, notToKnowBTN, nextBTN);      
+    } else if (event.code == 'Enter' && !notToKnowBTN.classList.contains('disable')) {
+      chooseNotToKnowBTN(buttons, index, result, notToKnowBTN, nextBTN);
+    } else if (event.code == 'Enter' && !nextBTN.classList.contains('disable')) {
+      showNextQuestion(newWordArr);
+      console.log('next', audiochallengeSettings);
     }
+  }
+  listener[0] = listeners;
+  document.addEventListener('keydown', listeners);
+
+  buttons.forEach((btn: HTMLElement) => {
+    btn.addEventListener('click', () => {
+      checkAnswer(buttons, btn, result, index, notToKnowBTN, nextBTN);      
+    })
+  })
+  notToKnowBTN.addEventListener('click', () => {
+    chooseNotToKnowBTN(buttons, index, result, notToKnowBTN, nextBTN);
+  })
+  nextBTN.addEventListener('click', () => {
+    showNextQuestion(newWordArr);
+  })
+}
+
+function chooseNotToKnowBTN(buttons: NodeListOf<HTMLElement>, index: number, result: string, notToKnowBTN: HTMLElement, nextBTN: HTMLElement) {
+  buttons.forEach((btn: HTMLElement) => {
+    btn.classList.add('disable');
+    if (btn.dataset.translate === result) {
+      btn.classList.remove('disable');
+    }
+  })
+  audiochallengeSettings.answerSeries = minScore;
+  audiochallengeSettings.lives = audiochallengeSettings.lives - 1;
+  audiochallengeSettings.gameWords[index].userAnswer = false;
+  nextBTN.classList.remove('disable');
+  notToKnowBTN.classList.add('disable');
+}
+
+function showNextQuestion(newWordArr: IWord[]) {
+  audiochallengeSettings.questionNum = audiochallengeSettings.questionNum + 1;
+  renderAudiochallengePage(newWordArr);
+}
+
+function checkAnswer(buttons: NodeListOf<HTMLElement>, btn: HTMLElement, result: string, index: number, notToKnowBTN: HTMLElement, nextBTN: HTMLElement) {
+  buttons.forEach((el: HTMLElement) => {
+    el.classList.add('disable');
+  })
+  if (btn.dataset.translate === result) {
+    btn.classList.add('right');
+    audiochallengeSettings.answerSeries = audiochallengeSettings.answerSeries + 1;
+    audiochallengeSettings.rightAnswers = audiochallengeSettings.rightAnswers + 1;
+    audiochallengeSettings.gameWords[index].userAnswer = true;
+  } else if (btn.dataset.translate !== result) {
+    btn.classList.add('wrong');
+    if (audiochallengeSettings.answerSeries > audiochallengeSettings.maxLine) audiochallengeSettings.maxLine = audiochallengeSettings.answerSeries;
+    audiochallengeSettings.answerSeries = minScore;
+    audiochallengeSettings.lives = audiochallengeSettings.lives - 1;
+    audiochallengeSettings.gameWords[index].userAnswer = false;
+  }
+  nextBTN.classList.remove('disable');
+  notToKnowBTN.classList.add('disable');
+  console.log('check', audiochallengeSettings);
+}
+
+function getRandomNum(arr: number[]): number {
+  let newNum = Math.floor(Math.random() * (audiochallengeSettings.allAnswers - 1 + 1));
+  if (arr.includes(newNum)) {
+    return getRandomNum(arr);
+  } else {
+    return newNum;
+  }
+}
+
+export async function shuffleWords(): Promise<IWord[]> {
+  audiochallengeSettings.gameWords = await getQuestionArr(audiochallengeSettings.group);
+  shuffle(audiochallengeSettings.gameWords);
+  return audiochallengeSettings.gameWords;
+}
+
+function getAnswers(questionNum: number): number[] {
+  const answersArr: number[] = [];
+
+  answersArr[0] = questionNum;
+  for (let i = 1; i < answersLength; i++) {
+    answersArr[i] = getRandomNum(answersArr);
+  }
+  shuffle(answersArr);
+  return answersArr;
+}
+
+async function createQuestion(newWordArr: IWord[], index: number): Promise<void> {
+  const answersContainer = document.querySelector('.answers-btn-container') as HTMLElement;
+  const listenBTN: HTMLElement = document.querySelector('.listen-btn') as HTMLElement;
+
+  if (index < audiochallengeSettings.allAnswers && audiochallengeSettings.lives > minScore) {
+    const answers = getAnswers(index);
+    answersContainer.innerHTML = renderAudiochallengeQuestion(newWordArr, answers as number[]);
+    const wordAudio: HTMLAudioElement = createAydio(newWordArr[index].audio);
+    playAudio(wordAudio);
+    listenBTN.addEventListener('click', () => playAudio(wordAudio));
+
+    document.removeEventListener('keydown', listener[2]);
+    const addListenetToListenBTN: (event) => void = (event) => {
+      if (event.code == 'Space') {
+        playAudio(wordAudio);
+        listenBTN.classList.add('active');
+        setTimeout(() => listenBTN.classList.remove('active'), 500);
+      }
+    }
+    listener[2] = addListenetToListenBTN;
+    document.addEventListener('keydown', addListenetToListenBTN);
+
+    chooseAnswer(newWordArr[audiochallengeSettings.questionNum].wordTranslate, audiochallengeSettings.questionNum, newWordArr);
+  } else {
+    const main = document.querySelector('.main') as HTMLElement;
+    main.innerHTML = '';
+    getResults(newWordArr, audiochallenge);
+  }
 }

@@ -1,19 +1,43 @@
-import { renderAuthorizationBlock, renderRegistrationBlock, renderSignBlock, createUser, loginUser } from "../authorization-block/authorization";
+import { renderAuthorizationBlock, renderRegistrationBlock, renderSignBlock, renderLogoutBlock, createUser, loginUser, userGreeting } from "../authorization-block/authorization";
 
 export async function authorizationListen(): Promise<void> {
-
   const authorizationOpenButton = document.querySelector('.authorization-open__button') as HTMLElement;
   const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
+  const logoutOpenButton = document.querySelector('.logout-open__button') as HTMLElement;
+  const logoutBlock = document.querySelector('.logout-block') as HTMLElement;
   authorizationBlock.dataset.open = 'false';
+  logoutBlock.dataset.open = 'false';
+
+  const authorizationHandler = function closeForm(e: MouseEvent): void {
+    if (e.target !== authorizationOpenButton) {
+      e.composedPath().every((element: any) => authorizationBlock.contains((element as Node))
+        ? false
+        : (authorizationBlock.innerHTML = '', authorizationBlock.dataset.open = 'false'));
+    };
+  };
+
+  const logoutHandler = function close(e: MouseEvent): void {
+    if (e.target !== logoutOpenButton) {
+      e.composedPath().every(element => logoutBlock.contains((element as Node))
+        ? false
+        : (logoutBlock.innerHTML = '', logoutBlock.dataset.open = 'false'));
+    };
+  };
+
+  document.removeEventListener('click', authorizationHandler, true);
+  document.removeEventListener('click', logoutHandler, true);
 
   authorizationOpenButton.addEventListener('click', (): void => {
 
     renderAuthorizationBlock();
     renderRegistrationBlock();
+    showHidePassword();
+    document.removeEventListener('click', logoutHandler, true);
 
     if (authorizationBlock.dataset.open == 'true') {
       authorizationBlock.dataset.open = 'false';
       authorizationBlock.innerHTML = '';
+      document.removeEventListener('click', authorizationHandler, true);
     } else {
       authorizationBlock.dataset.open = 'true';
       renderAuthorizationBlock();
@@ -21,7 +45,22 @@ export async function authorizationListen(): Promise<void> {
       switchAuthorizeBlock([document.querySelector('.register-open__button') as HTMLElement, document.querySelector('.sign-open__button') as HTMLElement]);
       signSubmitCall(document.querySelector('.register-block') as HTMLElement);
       registerSubmitCall(document.querySelector('.sign-block') as HTMLElement);
-    }
+      document.addEventListener('click', authorizationHandler, true);
+    };
+
+    function showHidePassword(): void {
+      const passwordControl = document.querySelector('.password-control') as HTMLInputElement;
+      passwordControl.addEventListener('click', (): Boolean => {
+        if (passwordControl.previousElementSibling?.getAttribute('type') == 'password') {
+          passwordControl.classList.add('view');
+          passwordControl.previousElementSibling?.setAttribute('type', 'text');
+        } else {
+          passwordControl.classList.remove('view');
+          passwordControl.previousElementSibling?.setAttribute('type', 'password');
+        };
+        return false;
+      });
+    };
 
     function switchAuthorizeBlock(args: Array<HTMLElement>): void {
       args[0].classList.add('active');
@@ -52,6 +91,7 @@ export async function authorizationListen(): Promise<void> {
         element.innerHTML = '';
         renderRegistrationBlock();
         sendRegistrationInfo();
+        showHidePassword();
       });
     };
 
@@ -60,6 +100,7 @@ export async function authorizationListen(): Promise<void> {
       signOpenButton.addEventListener('click', (): void => {
         element.innerHTML = '';
         renderSignBlock();
+        showHidePassword();
         const signSubmit = document.querySelector('.sign-submit') as HTMLInputElement;
         signSubmit.addEventListener('click', (): void => {
           const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
@@ -69,4 +110,49 @@ export async function authorizationListen(): Promise<void> {
       });
     };
   });
+
+  logoutOpenButton.addEventListener('click', (): void => {
+
+    renderLogoutBlock();
+    document.removeEventListener('click', authorizationHandler, true);
+    const logoutStayButton = document.querySelector('#logout-stay') as HTMLElement;
+    const logoutExitButton = document.querySelector('#logout-exit') as HTMLElement;
+
+    if (logoutBlock.dataset.open == 'true') {
+      logoutBlock.dataset.open = 'false';
+      logoutBlock.innerHTML = '';
+      document.removeEventListener('click', logoutHandler, true);
+    } else {
+      logoutBlock.dataset.open = 'true';
+      document.addEventListener('click', logoutHandler, true);
+    };
+
+    logoutStayButton.addEventListener('click', (): void => {
+      logoutBlock.innerHTML = '';
+      logoutBlock.dataset.open = 'false';
+    });
+
+    logoutExitButton.addEventListener('click', (): void => {
+      localStorage.clear();
+      showHideAuthButtons();
+      userGreeting();
+      logoutBlock.innerHTML = '';
+      logoutBlock.dataset.open = 'false';
+    });
+  });
+
+  userGreeting();
+  showHideAuthButtons();
+};
+
+export function showHideAuthButtons(): void {
+  const logoutOpenButton = document.querySelector('.logout-open__button') as HTMLElement;
+  const authorizationOpenButton = document.querySelector('.authorization-open__button') as HTMLElement;
+  if (localStorage.getItem('Name')) {
+    logoutOpenButton.style.display = 'block';
+    authorizationOpenButton.style.display = 'none';
+  } else {
+    logoutOpenButton.style.display = 'none';
+    authorizationOpenButton.style.display = 'block';
+  };
 };

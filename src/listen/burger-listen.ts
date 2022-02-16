@@ -1,7 +1,7 @@
 import { renderStartPage } from "../start-page/start-page";
 import { renderStatisticPage } from "../statistic-page/statistic-page";
 import { renderTextbookPage } from "../textbook-page/textbook-page";
-import { renderGroupSelectionPage } from "../audiochallenge-page/audiochallenge-page";
+import { renderGroupSelectionPage } from "../utilits/utilits";
 import { timerId } from "../sprint-game/sprint-game";
 
 export function burgerListen(): void {
