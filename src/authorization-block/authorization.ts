@@ -15,6 +15,8 @@ export async function renderAuthorizationBlock(): Promise<void> {
   const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
   authorizationBlock.innerHTML = `
   <div class="authorization-border">
+  <img class="close-form" src="../assets/cross.svg" alt="Close">
+  <div class="auth"> 
   <div class="register-sign__button-wrap">
     <div class="register-open__button">Register</div>
     <div class="sign-open__button">Sign in</div>
@@ -23,6 +25,7 @@ export async function renderAuthorizationBlock(): Promise<void> {
     <div class="register-block"></div>
     <div class="sign-block"></div>
   </div>
+  </div> 
   </div>`;
 };
 
@@ -89,11 +92,14 @@ export async function renderLogoutBlock(): Promise<void> {
   const logoutBlock = document.querySelector('.logout-block') as HTMLElement;
   logoutBlock.innerHTML = `
   <div class="logout-border">
+  <img class="close-form" src="../assets/cross.svg" alt="Close">
+  <div class="auth"> 
   <div class="logout__block-wrap"> 
   <div class="logout-text">Are you sure you want to go out?</div>
     <div class="logout-buttons__wrap">
       <div class="logout-button" id="logout-exit">Yes</div>
       <div class="logout-button" id="logout-stay">No</div>
+  </div>
   </div>
   </div>`;
 };
