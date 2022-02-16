@@ -1,4 +1,4 @@
-import { renderAuthorizationBlock, renderRegistrationBlock, renderSignBlock, renderLogoutBlock, createUser, loginUser, deleteUser, userGreeting } from "../authorization-block/authorization";
+import { renderAuthorizationBlock, renderRegistrationBlock, renderSignBlock, renderLogoutBlock, createUser, loginUser, userGreeting } from "../authorization-block/authorization";
 
 export async function authorizationListen(): Promise<void> {
   const authorizationOpenButton = document.querySelector('.authorization-open__button') as HTMLElement;
@@ -133,10 +133,9 @@ export async function authorizationListen(): Promise<void> {
     });
 
     logoutExitButton.addEventListener('click', (): void => {
-      console.log(localStorage.getItem('Your userId'))
-      deleteUser({
-        "id": `${localStorage.getItem('Your userId')}`
-      });
+      localStorage.clear();
+      showHideAuthButtons();
+      userGreeting();
       logoutBlock.innerHTML = '';
       logoutBlock.dataset.open = 'false';
     });

@@ -24,7 +24,7 @@ export async function renderAuthorizationBlock(): Promise<void> {
     <div class="sign-block"></div>
   </div>
   </div>`;
-}
+};
 
 export async function renderRegistrationBlock(): Promise<void> {
   const registerBlock = document.querySelector('.register-block') as HTMLElement;
@@ -57,7 +57,7 @@ export async function renderRegistrationBlock(): Promise<void> {
           <div class="registration-success"></div>
         </div>
     </form>`;
-}
+};
 
 export async function renderSignBlock(): Promise<void> {
   const signBlock = document.querySelector('.sign-block') as HTMLElement;
@@ -83,7 +83,7 @@ export async function renderSignBlock(): Promise<void> {
       <div class="sign-success"></div>
     </div>
   </form>`;
-}
+};
 
 export async function renderLogoutBlock(): Promise<void> {
   const logoutBlock = document.querySelector('.logout-block') as HTMLElement;
@@ -96,7 +96,7 @@ export async function renderLogoutBlock(): Promise<void> {
       <div class="logout-button" id="logout-stay">No</div>
   </div>
   </div>`;
-}
+};
 
 export const createUser = async (user: IRegisterUser): Promise<void> => {
   const rawResponse: Response = await fetch(`${serverUrl}/users`, {
@@ -161,7 +161,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
   function emptySignCaptions(): void {
     signErrorEmail.innerHTML = '';
     signErrorPassword.innerHTML = '';
-  }
+  };
 
   const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
   const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
@@ -204,34 +204,6 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       }
       break;
   };
-};
-
-export const deleteUser = async (user: { id: string }): Promise<void> => {
-  const rawResponse: Response = await fetch(`${serverUrl}/users/${localStorage.getItem('Your userId')}`, {
-    method: 'DELETE',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(user)
-  });
-
-  switch (rawResponse.status as number) {
-
-    case 204:
-      const goodRes = await rawResponse.text();
-      console.log(goodRes)
-      break;
-
-    case 401:
-      const badRes = await rawResponse.text();
-      console.log(badRes)
-      break;
-  }
-
-  localStorage.clear();
-  showHideAuthButtons();
-  userGreeting();
 };
 
 export function userGreeting(): void {
