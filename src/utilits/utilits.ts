@@ -142,7 +142,7 @@ export async function getResults(words: IWordQuestion[] | GameWord[], game: stri
     token = localStorage.getItem('Your token');
     await changeUserWords(words, game);
   }
-
+  if (game === sprint) { words.length = sprintGame.allAnswers - 1}
   words.forEach((word: IWordQuestion | GameWord, index: number): void => {
     if (word.userAnswer === true) {
       rightAnswers += `<div>
@@ -208,6 +208,7 @@ function tryAgain(game: string): void {
   tryAgainBtn.addEventListener('click', () => {
     if (game === audiochallenge) {
       audiochallengeSettings.answerSeries = minScore;
+      audiochallengeSettings.maxLine = minScore;
       audiochallengeSettings.lives = maxLives;
       audiochallengeSettings.questionNum = minScore;
       audiochallengeSettings.results = [];
@@ -242,35 +243,37 @@ function listenTabs() {
 }
 
 function createResults(game: string) {
-  const goodResults = 'Great job! Your score is: ';
-  const badResults = 'It will be better next time... Your score is: ';
+  const goodResultsSprint = 'Great job! Your score is: ' + sprintGame.score + ' points';
+  const badResultsSprint = 'It will be better next time... Your score is: ' + + sprintGame.score + ' points';
+  const goodResultsAudio = 'You have ' + audiochallengeSettings.lives + ' lives left';
+  const badResultsAudio = 'It will be better next time... Unfortunately there are no lives left...';
 
   const resultImg: HTMLElement = document.querySelector('.results-img') as HTMLElement;
   const resultTitle: HTMLElement = document.querySelector('.results-inf') as HTMLElement;
 
   if (game === audiochallenge && audiochallengeSettings.lives > minScore) {
-    resultTitle.innerHTML = goodResults + audiochallengeSettings.lives + ' lives left';
+    resultTitle.innerHTML = goodResultsAudio;
     resultImg.classList.add('good-result-img');
   } else if (game === audiochallenge && audiochallengeSettings.lives === minScore) {
-    resultTitle.innerHTML = badResults + audiochallengeSettings.lives + ' lives left';
+    resultTitle.innerHTML = badResultsAudio;
     resultImg.classList.add('bad-result-img');
   } else if (game === sprint && sprintGame.score >= averegeSprintGameScore) {
-    resultTitle.innerHTML = goodResults + sprintGame.score + ' points';
+    resultTitle.innerHTML = goodResultsSprint;
     resultImg.classList.add('good-result-img');
   } else if (game === sprint && sprintGame.score < averegeSprintGameScore) {
-    resultTitle.innerHTML = badResults + sprintGame.score + ' points';
+    resultTitle.innerHTML = badResultsSprint;
     resultImg.classList.add('bad-result-img');
   }
 }
 
 export async function changeUserWords(words: IWordQuestion[] | GameWord[], game: string) {
   let userId: string | null = '';
-  if (localStorage.getItem('Your id')) {
-    userId = localStorage.getItem('Your id');
+  if (localStorage.getItem('Your userId')) {
+    userId = localStorage.getItem('Your userId');
   }
-
+  console.log('user id is: ', userId)
   const wordsInf = await checkWords(words, userId);
-  
+ 
   await updateStatisticsByResults(userId, game, wordsInf);
 }
 
@@ -280,7 +283,6 @@ async function checkWords(words: IWordQuestion[] | GameWord[], userId: string | 
   words.forEach(async (word: IWordQuestion | GameWord) => {
     if (word.userAnswer === true || word.userAnswer === false) {
       const wordResponse: Response = await getUserWord(userId, word.id);
-
       let learned: boolean = false;
       let rightWordAnswers: number = 0;
       let allWordAnswers: number = 0;
@@ -323,9 +325,7 @@ async function checkWords(words: IWordQuestion[] | GameWord[], userId: string | 
 
 async function updateStatisticsByResults(userId: string | null, game: string, wordsInf: {newWords: number, learnedWords: number}) {
   const statisticInf = await getStatistics(userId);
-
   const newLearnedWords = wordsInf.learnedWords + statisticInf.learnedWords;
-
   if (game === sprint) {
     let maxLine: number = sprintGame.seriesTotalStatistics;
     if (sprintGame.seriesTotalStatistics < statisticInf.optional.sprint.maxLine) {
@@ -338,11 +338,11 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
       allAnswers: statisticInf.optional.sprint.allAnswers + sprintGame.allAnswers, 
       maxLine: maxLine,
     }
-
+   
     await updateStatistics(userId, newLearnedWords, sprintStatistic, statisticInf.optional.audiochallenge);
   } else if (game === audiochallenge) {
-    let maxLine: number = audiochallengeSettings.answerSeries;
-    if (audiochallengeSettings.answerSeries < statisticInf.optional.audiochallenge.maxLine) {
+    let maxLine: number = audiochallengeSettings.maxLine;
+    if (audiochallengeSettings.maxLine < statisticInf.optional.audiochallenge.maxLine) {
       maxLine = statisticInf.optional.audiochallenge.maxLine;
     }
 
@@ -352,7 +352,22 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
       allAnswers: statisticInf.optional.audiochallenge.allAnswers + audiochallengeSettings.allAnswers, 
       maxLine: maxLine,
     }
-
     await updateStatistics(userId, newLearnedWords, statisticInf.optional.sprint, audiochallengeStatistic);
   }
+}
+
+export async function createStatistic(id: string): Promise<void> {
+  const sprintStatistic: IGameStatistic = {
+    newWords: 0,
+    rightAnswers: 0,
+    allAnswers: 0, 
+    maxLine: 0,
+  }
+  const audiochallengeStatistic: IGameStatistic = {
+    newWords: 0,
+    rightAnswers: 0,
+    allAnswers: 0, 
+    maxLine: 0,
+  }
+  await updateStatistics(id, 0, sprintStatistic, audiochallengeStatistic);
 }

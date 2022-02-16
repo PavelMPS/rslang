@@ -47,11 +47,11 @@
 }
 .prev-page.disable,
 .next-page.disable {
-  opacity: 0.2;
+  opacity: 0;
 }
 .prev-page.disable:hover,
 .next-page.disable:hover {
-  opacity: 0.2;
+  opacity: 0;
 }
 .game-container {
   width: 100px;
@@ -99,7 +99,6 @@
   width: calc(100% - 50px);
   min-height: 300px;
   box-shadow: 0px 0px 20px -1px rgba(34, 60, 80, 0.27);
-  background-color: #e9fcfd;
 }
 .bookmarks {
   position: relative;
@@ -113,9 +112,6 @@
   color: #ffffff;
   text-align: center;
   line-height: 50px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border: 2px solid #3a3a3a;
   border-right: none;
   cursor: pointer;
 }
@@ -128,63 +124,63 @@
 }
 .bookmark:nth-child(1) {
   top: 0px;
-  background-color: #00bf76;
+  background-color: #ffd900;
 }
 .bookmark:nth-child(2) {
   top: 50px;
-  background-color: #00b3ba;
+  background-color: #ffb700;
 }
 .bookmark:nth-child(3) {
   top: 100px;
-  background-color: #0081af;
+  background-color: #ff9100;
 }
 .bookmark:nth-child(4) {
   top: 150px;
-  background-color: #003daf;
+  background-color: #ff6f00;
 }
 .bookmark:nth-child(5) {
   top: 200px;
-  background-color: #57009e;
+  background-color: #ff5900;
 }
 .bookmark:nth-child(6) {
   top: 250px;
-  background-color: #970086;
+  background-color: #ff4400;
 }
 .bookmark:nth-child(7) {
   top: 300px;
-  background-color: #b83100;
-  background-image: url(../assets/icons8-bookmark-100.png);
+  background-color: #dd3b00;
+  background-image: url(../assets/icons8-flash-on-100.png);
   background-size: 50px 50px;
 }
 
 .bookmark.active:nth-child(1),
 .bookmark:nth-child(1):hover {
   top: 5px;
-  background-color: #00ff9d;
+  background-color: #ffd900;
 }
 .bookmark.active:nth-child(2),
 .bookmark:nth-child(2):hover {
-  background-color: #00f7ff;
+  background-color: #ffb700;
 }
 .bookmark.active:nth-child(3),
 .bookmark:nth-child(3):hover {
-  background-color: #00bbff;
+  background-color: #ff9100;
 }
 .bookmark.active:nth-child(4),
 .bookmark:nth-child(4):hover {
-  background-color: #0059ff;
+  background-color: #ff6f00;
 }
 .bookmark.active:nth-child(5),
 .bookmark:nth-child(5):hover {
-  background-color: #8c00ff;
+  background-color: #ff5900;
 }
 .bookmark.active:nth-child(6),
 .bookmark:nth-child(6):hover {
-  background-color: #ff00e1;
+  background-color: #ff4400;
 }
 .bookmark.active:nth-child(7),
 .bookmark:nth-child(7):hover {
-  background-color: #ff4400;
+  background-color: #dd3b00;
 }
 
 .word-card {
@@ -196,19 +192,20 @@
   column-gap: 20px;
   font-size: 25px;
   line-height: 35px;
-  background-color: #d9f9fa;
+  box-shadow: 0px 0px 20px -1px rgba(34, 60, 80, 0.27);
 }
 .word-card.heavy-word {
-  box-shadow: 0px 0px 9px 4px rgba(255, 133, 170, 0.7);
+  background: rgba(252, 122, 0, 0.2);
 }
 .word-card.learned-word {
-  opacity: 0.5;
+  background: rgba(0, 252, 206, 0.2);
 }
 .word-img {
   height: 200px;
   width: 200px;
   background-size: cover;
   border-radius: 50%;
+  box-shadow: 0px 0px 15px 0px rgba(34, 60, 80, 0.7) inset;
 }
 .word {
   font-size: 35px;
@@ -243,19 +240,21 @@
 .heavy-btn,
 .learned-btn {
   background-size: 50px 50px;
-  opacity: 0.6;
   cursor: pointer;
 }
 .audio-btn {
   background-image: url(../assets/icons8-audio-100.png);
   top: 10px;
 }
+.audio-btn.disable {
+  opacity: 0;
+}
 .heavy-btn {
-  background-image: url(../assets/icons8-high-priority-100.png);
+  background-image: url(../assets/icons8-flash-on-100.png);
   top: 80px;
 }
 .learned-btn {
-  background-image: url(../assets/icons8-ok-100.png);
+  background-image: url(../assets/icons8-double-tick-100.png);
   top: 150px;
 }
 .audio-btn:hover,
@@ -265,5 +264,4 @@
 .learned-btn.active {
   transform: scale(1.4);
   transition: 0.3s;
-  opacity: 1;
 }

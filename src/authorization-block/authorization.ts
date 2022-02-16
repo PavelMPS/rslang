@@ -1,3 +1,5 @@
+import { getStatistics } from '../api/api';
+import { createStatistic } from '../utilits/utilits';
 import './authorization.css';
 import { showHideAuthButtons } from '../listen/authorization-listen';
 
@@ -184,6 +186,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
         showHideAuthButtons();
       }, 2000);
       authorizationBlock.dataset.open = 'false';
+      await getStatistics(content.userId);
       break;
 
     case 403:
