@@ -26,9 +26,13 @@ export function renderStartPage(): void {
     </ul>
   </nav>
 </div>
+
+      <div class="greet-block"></div>
       <div class="register-sign__block">
           <button class="authorization-open__button">Authorize</button>
           <div class="authorization-block"></div>
+          <button class="logout-open__button">Log out</button>
+          <div class="logout-block"></div>
       </div>
   </nav>
 </header>
@@ -65,6 +69,7 @@ export function renderStartPage(): void {
   const burger = document.querySelector('.burger') as HTMLElement;
   const burgerMenu = document.querySelector('.burger-menu') as HTMLElement;
   const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a, .burger');
+  const greetBlock = document.querySelector('.greet-block') as HTMLElement;
 
   const openBurgerMenu = () => {
     burgerMenu.classList.toggle('active');

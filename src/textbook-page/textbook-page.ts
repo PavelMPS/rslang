@@ -1,9 +1,10 @@
-import { getWords, getUserWords, getUserAggregatedWords } from '../api/api';
-import { createAydio, playAudio } from '../utilits/utilits';
-import { difficultHeavy } from '../constants/constants';
+import { getWord, getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics } from '../api/api';
+import { createAydio, getQuestionArr, playAudio } from '../utilits/utilits';
+import { difficultHeavy, difficultWeak } from '../constants/constants';
 
 import '../textbook-page/textbook-page.css';
 import { startGameSprint } from '../sprint-game/sprint-game';
+import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 
 const textbookSettings: { page: number, group: number } = {
   page: 0,
@@ -11,10 +12,9 @@ const textbookSettings: { page: number, group: number } = {
 }
 const maxPageNum = 29;
 
-async function getUserWordsParam(word: IWord, index: number, userWords: IUserWord[]) {
+async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]) {
   userWords.find((elem: IUserWord) => {
-    if (elem.id === word.id) {
-      const card: HTMLElement = document.querySelector(`#word${index}`) as HTMLElement;
+    if (elem.wordId === card.dataset.id) {
       const heavyBTN: HTMLElement = card.querySelector('.heavy-btn') as HTMLElement;
       const learnedBTN: HTMLElement = card.querySelector('.learned-btn') as HTMLElement;
       if (elem.difficulty === 'hard') {
@@ -27,58 +27,143 @@ async function getUserWordsParam(word: IWord, index: number, userWords: IUserWor
       }
       const statistics: HTMLElement = card.querySelector('.word-statistic') as HTMLElement;
       statistics.innerHTML = `${elem.optional.rightAnswers} / ${elem.optional.allAnswers}`;
+      return;
     }
   });
 }
 
-async function createTextbookContent(): Promise<void> {
-  const words: IWord[] = await getWords(textbookSettings.group, textbookSettings.page);
+async function makeLearned(id: string, btn: HTMLElement) {
+  let userId: string | null = '';
+  if (localStorage.getItem('Your userId')) {
+    userId = localStorage.getItem('Your userId');
+  }
+  const statistic = await getStatistics(userId);
+
+  const wordResponse: Response = await getUserWord(userId, id);
+  let learnedWords = 0;
+  let learned: boolean = false;
+
+  if (wordResponse.ok && statistic) {
+    const wordInf: IUserWord = await wordResponse.json();
+    if (btn.classList.contains('active')) {
+      learned = true;
+      learnedWords = statistic.learnedWords + 1;
+    } else {
+      learned = false;
+      learnedWords = statistic.learnedWords - 1;
+    }
+    await updateUserWord(userId, id, wordInf.difficulty, learned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, wordInf.optional.answersForIsLerned);
+    await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
+  } else {
+    let rightWordAnswers: number = 0;
+    let allWordAnswers: number = 0;
+    let answersForIsLerned: number = 0;
+    if (statistic) {
+      if (btn.classList.contains('active')) {
+        learned = true;
+        statistic.learnedWords = statistic.learnedWords + 1;
+      } else {
+        learned = false;
+        if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1;}
+      }
+      await createUserWord(userId, id, difficultWeak, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
+    await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
+    }
+    
+    
+  }
+}
+
+async function chooseDifficult(id: string, btn: HTMLElement) {
+  let userId: string | null = '';
+  if (localStorage.getItem('Your userId')) {
+    userId = localStorage.getItem('Your userId');
+  }
+
+  const wordResponse: Response = await getUserWord(userId, id);
+
+  if (wordResponse.ok) {
+    const wordInf: IUserWord = await wordResponse.json();
+    if (btn.classList.contains('active')) {
+      await updateUserWord(userId, id, difficultHeavy, wordInf.optional.isLerned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers,  wordInf.optional.answersForIsLerned);
+    } else {
+      await updateUserWord(userId, id, difficultWeak, wordInf.optional.isLerned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers,  wordInf.optional.answersForIsLerned);
+    }    
+  } else {
+    let learned: boolean = false;
+    let rightWordAnswers: number = 0;
+    let allWordAnswers: number = 0;
+    let answersForIsLerned: number = 0;
   
-  const page: HTMLElement = document.querySelector('.page') as HTMLElement;
-  page.innerHTML = '';
+    await createUserWord(userId, id, difficultHeavy, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
+  }
+}
 
+function createTextbookContent(words: IWord[]): string {
   let textForInput: string = '' as string;
-
-  words.forEach((word: IWord, index: number): void => {
-    textForInput += `<div class="word-card" id="word${index}" data-id="${word.id}">
-      <div class="word-img" style="background-image: url('https://react-rslang-example.herokuapp.com/${word.image}');"></div>
-      <div class="word-inf">
-        <div class="word">${word.word} - ${word.transcription} - ${word.wordTranslate}</div>
-        <div class="word-meaning">
-          <div class="english"><b>${word.textMeaning}</b></div>
-          <div class="translation">${word.textMeaningTranslate}</div>
-        </div>
-        <div class="word-example">
-          <div class="english">${word.textExample}</div>
-          <div class="translation">${word.textExampleTranslate}</div>
+  words.forEach((word: IWord): void => {
+    textForInput += `<div class="word-card" data-id="${word.id}">
+      <div class="word-wrapper">
+        <div class="word-img" style="background-image: url('https://react-rslang-example.herokuapp.com/${word.image}');"></div>
+        <div class="word-inf">
+          <div class="word">${word.word} - ${word.transcription} - ${word.wordTranslate}</div>
+          <div class="word-meaning">
+            <div class="english"><b>${word.textMeaning}</b></div>
+            <div class="translation">${word.textMeaningTranslate}</div>
+          </div>
+          <div class="word-example">
+            <div class="english">${word.textExample}</div>
+            <div class="translation">${word.textExampleTranslate}</div>
+          </div>
         </div>
       </div>
       <div class="word-settings-container">
+        <div class="word-statistic disable"></div>
         <div class="audio-btn"></div>
-        <div class="heavy-btn"></div>
-        <div class="learned-btn"></div>
-        <div class="word-statistic"></div>
-        <div class="word-statistic">
-          <div class="learned-count"></div>
-        </div>
+        <div class="heavy-btn disable"></div>
+        <div class="learned-btn disable"></div>
       </div>
     </div>`;
   })
+  return textForInput;
+}
 
-  page.innerHTML = textForInput;
+async function getDifficultWords(): Promise<IWord[]> {
+  const userWords = await getUserWords();
+  const newWords: IWord[] = [];
+  userWords.forEach(async (userWord: IUserWord) => {
+    if (userWord.difficulty === difficultHeavy) {
+      const word: IWord = await getWord(userWord.wordId as string);
+      newWords.push(word);
+    }
+  });
+  return newWords;
+}
 
+async function renderTextbookContent(): Promise<void> {
+  const page: HTMLElement = document.querySelector('.page') as HTMLElement;
+  page.innerHTML = '';
 
+  let words: IWord[] = [];
 
+  let userWords: IUserWord[];
   if (localStorage.getItem('Your token')) {
-    let userWords: IUserWord[] = await getUserWords();
-
-    words.forEach((word: IWord, index: number) => {
-      getUserWordsParam(word, index, userWords);
-    })
+    userWords = await getUserWords();
   }
 
+  if (textbookSettings.group !== 6) {
+    words = await getWords(textbookSettings.group, textbookSettings.page);
+    page.innerHTML = createTextbookContent(words);
+  } else {
+    const difficultWords: IWord[] = await getDifficultWords();
+    console.log(createTextbookContent(difficultWords));
+    // page.innerHTML = createTextbookContent(difficultWords);
+  }
+
+
+
   const wordCards: NodeListOf<HTMLElement> = document.querySelectorAll('.word-card') as  NodeListOf<HTMLElement>;
-  wordCards.forEach((card: HTMLElement) => {
+  wordCards.forEach((card: HTMLElement, index: number) => {
     const audioBTN: HTMLElement = card.querySelector('.audio-btn') as HTMLElement;
     audioBTN.addEventListener(('click'), (): void => {
       playTextbookAudio(words, card);
@@ -88,14 +173,24 @@ async function createTextbookContent(): Promise<void> {
     heavyBTN.addEventListener(('click'), (): void => {
       heavyBTN.classList.toggle('active');
       card.classList.toggle('heavy-word');
-      //TODO функция добавления в сложные
+      chooseDifficult(card.dataset.id as string, heavyBTN);
     });
 
     const learnedBTN: HTMLElement = card.querySelector('.learned-btn') as HTMLElement;
     learnedBTN.addEventListener(('click'), (): void => {
       learnedBTN.classList.toggle('active');
       card.classList.toggle('learned-word');
+      makeLearned(card.dataset.id as string, learnedBTN);
     });
+
+    const wordStatistic: HTMLElement = card.querySelector('.word-statistic') as HTMLElement;
+
+    if (localStorage.getItem('Your token')) {
+      getUserWordsParam(card, userWords);
+      heavyBTN.classList.remove('disable');
+      learnedBTN.classList.remove('disable');
+      wordStatistic.classList.remove('disable');
+    }
   })
 }
 
@@ -130,7 +225,7 @@ export function createTextbookStructyre(): void {
             <div class="bookmark" data-group="3">IV</div>
             <div class="bookmark" data-group="4">V</div>
             <div class="bookmark" data-group="5">VI</div>
-            <div class="bookmark" data-group="6"></div>
+            <div class="bookmark disable" data-group="6"></div>
           </div>
 
           <div class="page-nav">
@@ -150,21 +245,6 @@ export function createTextbookStructyre(): void {
     </div>`;
 
     main.innerHTML = content;
-
-    const bookmarks: NodeListOf<HTMLElement> = document.querySelectorAll('.bookmark');
-
-    bookmarks.forEach((bookmarkEl: HTMLElement) => {
-      if (Number(bookmarkEl.dataset.group) === textbookSettings.group) {
-        bookmarkEl.classList.add('active');
-      }
-    })
-
-    if (textbookSettings.page === 0) {
-      document.querySelector('.prev-page')?.classList.add('disable');
-    }
-    if (textbookSettings.page === maxPageNum) {
-      document.querySelector('.next-page')?.classList.add('disable');
-    }
 }
 
 function toPrevPage(): void {
@@ -179,13 +259,26 @@ function toNextPage(): void {
 
 function goToGroup(bookmark: HTMLElement): void {
   textbookSettings.group = Number(bookmark.dataset.group);
-  textbookSettings.page = 1;
+  textbookSettings.page = 0;
   renderTextbookPage();
 }
 
 export function renderTextbookPage(): void {
   createTextbookStructyre();
-  createTextbookContent();
+  renderTextbookContent();
+  
+  const bookmarks: NodeListOf<HTMLElement> = document.querySelectorAll('.bookmark');
+
+  if (localStorage.getItem('Your token')) {
+    bookmarks[6].classList.remove('disable');
+  }
+
+  bookmarks.forEach((bookmarkEl: HTMLElement) => {
+    if (Number(bookmarkEl.dataset.group) === textbookSettings.group) {
+      bookmarkEl.classList.add('active');
+    }
+    bookmarkEl.addEventListener(('click'), (): void => goToGroup(bookmarkEl));
+  })
 
   const prevBTN: HTMLElement = document.querySelector('.prev-page') as HTMLElement;
   if (!prevBTN.classList.contains('disable')) {
@@ -197,18 +290,22 @@ export function renderTextbookPage(): void {
     nextBTN.addEventListener(('click'), toNextPage);
   }
 
-  const bookmarks: NodeListOf<HTMLElement> = document.querySelectorAll('.bookmark') as  NodeListOf<HTMLElement>;
-  bookmarks.forEach((bookmarkEl: HTMLElement): void => {
-    bookmarkEl.addEventListener(('click'), (): void => goToGroup(bookmarkEl));
-  })
+  if (textbookSettings.page === 0) {
+    prevBTN.classList.add('disable');
+  }
+  if (textbookSettings.page === maxPageNum) {
+    nextBTN.classList.add('disable');
+  }
 
   const sprintBTN: HTMLElement = document.querySelector('.sprint-btn') as HTMLElement;
   sprintBTN.addEventListener(('click'), async (): Promise<void> => {
+    console.log(textbookSettings)
     await startGameSprint(textbookSettings.group, textbookSettings.page);
   });
 
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;
-  audiocallBTN.addEventListener(('click'), () => {
-    //TODO функция аудиовызова
+  audiocallBTN.addEventListener(('click'), async (): Promise<void> => {
+    const arr = await getQuestionArr(textbookSettings.group, textbookSettings.page)
+    renderAudiochallengePage(arr);
   });
 }

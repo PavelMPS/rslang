@@ -32,11 +32,11 @@
 .register-sign__block {
     display: flex;
     flex-direction: row;
-    gap: 20px;
 }
 
 .authorization-open__button,
-.about-us__button {
+.about-us__button,
+.logout-open__button {
     width: fit-content;
     cursor: pointer;
     font-size: 20px;
@@ -204,4 +204,10 @@
 
 .disabled {
     display: none;
+}
+
+.greet-block {
+    margin-left: auto;
+    font-family: sans-serif;
+    font-size: 20px;
 }

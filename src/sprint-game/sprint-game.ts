@@ -1,6 +1,7 @@
+import { sprint } from '../constants/constants';
 import { GameWord, sprintGame } from '../constants/sprint';
 import '../sprint-game/sprint-game.css';
-import { getQuestionArr, getResults } from '../utilits/utilits';
+import { getQuestionArr, getResults, resetGame } from '../utilits/utilits';
 
 export let timerId: NodeJS.Timer;
 
@@ -11,7 +12,8 @@ async function getWords(): Promise<IWord[]> {
 }
 
 export async function startGameSprint(group?: number, page?: number): Promise<void> {
-    sprintGame.seriesTotalStatistics = sprintGame.gameWords.length;
+    await resetGame(sprint);
+    // sprintGame.seriesTotalStatistics = sprintGame.gameWords.length;
     const content: string = `
     <div class="timer-sprint"></div>
 
@@ -43,8 +45,15 @@ export async function startGameSprint(group?: number, page?: number): Promise<vo
 
 async function formGameWords(group?: number, page?: number): Promise<void> {
     group ? sprintGame.group = group : sprintGame.group = sprintGame.difficult;
-    const arr = await getQuestionArr(sprintGame.group, page);
-    console.log(arr);
+    let arr;
+    if (group !== undefined && page !== undefined) {
+        console.log('group:',group,'page:',page)
+        arr = await getQuestionArr(sprintGame.group, page);
+    } else {
+        arr = await getQuestionArr(sprintGame.group);
+    }
+    
+
     await formWordsArray(arr);
     await formRandomWords(); 
 }
@@ -91,6 +100,7 @@ async function getRandomAnswer(): Promise<string> {
 
 async function verifyAnswer(e: Event): Promise<void> {
     const target = e.target as HTMLElement;
+    
     if (target.id === sprintGame.gameOptions[1]) {
         if (sprintGame.gameWords[sprintGame.count - 1].right) { 
             sprintGame.rightAnswers++;
@@ -116,6 +126,17 @@ async function verifyAnswer(e: Event): Promise<void> {
             renderQuestion();
         }
     }
+}
+
+async function disableButtons(): Promise<void> {
+    const rightBtn = document.querySelector('.right-btn') as HTMLButtonElement;
+    const wrongBtn = document.querySelector('.wrong-btn') as HTMLButtonElement;
+    rightBtn.disabled = true;
+            wrongBtn.disabled = true;
+            setTimeout(() => {
+                rightBtn.disabled = false;
+                wrongBtn.disabled = false;
+            }, 1000);
 }
 
 function getSprintScore(): void {
@@ -173,9 +194,14 @@ async function renderQuestion(): Promise<void> {
     if (sprintGame.count === sprintGame.gameWords.length) {
         clearTimeout(timerId); 
         sprintGame.allAnswers = sprintGame.gameWords.length;
+        const rightBtn = document.querySelector('.right-btn') as HTMLButtonElement;
+        const wrongBtn = document.querySelector('.wrong-btn') as HTMLButtonElement;
+        rightBtn.disabled = true;
+        wrongBtn.disabled = true;
         getResults(sprintGame.gameWords, 'sprint');
         return;
-    }      
+    }  
+    await disableButtons();    
     const questionNumber = `Question: ${sprintGame.count + 1}/${sprintGame.gameWords.length}`;
     const content = `
     <div class="sprint-question">${sprintGame.gameWords[sprintGame.count].word}</div>

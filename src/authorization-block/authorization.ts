@@ -1,16 +1,10 @@
 import { getStatistics } from '../api/api';
 import { createStatistic } from '../utilits/utilits';
 import './authorization.css';
+import { showHideAuthButtons } from '../listen/authorization-listen';
 
 const emailExistsError = 'User with this e-mail exists' as string;
-const invalidNameError = 'Invalid name' as string;
-const invalidEmailError = 'Invalid email' as string;
-const invalidPasswordError = 'Invalid password' as string;
-const nameTypeError = 'name' as string;
-const emailTypeError = 'email' as string;
-const passwordTypeError = 'password' as string;
 const registrationSuccessText = 'Registration is done! Please sign up ;)' as string;
-
 const notRegisteredEmailText = 'This email is not registered' as string;
 const writeEmailCaption = 'Please, write correct email' as string;
 const signSuccessText = 'Success!' as string;
@@ -30,7 +24,7 @@ export async function renderAuthorizationBlock(): Promise<void> {
     <div class="sign-block"></div>
   </div>
   </div>`;
-}
+};
 
 export async function renderRegistrationBlock(): Promise<void> {
   const registerBlock = document.querySelector('.register-block') as HTMLElement;
@@ -63,7 +57,7 @@ export async function renderRegistrationBlock(): Promise<void> {
           <div class="registration-success"></div>
         </div>
     </form>`;
-}
+};
 
 export async function renderSignBlock(): Promise<void> {
   const signBlock = document.querySelector('.sign-block') as HTMLElement;
@@ -89,7 +83,20 @@ export async function renderSignBlock(): Promise<void> {
       <div class="sign-success"></div>
     </div>
   </form>`;
-}
+};
+
+export async function renderLogoutBlock(): Promise<void> {
+  const logoutBlock = document.querySelector('.logout-block') as HTMLElement;
+  logoutBlock.innerHTML = `
+  <div class="logout-border">
+  <div class="logout__block-wrap"> 
+  <div class="logout-text">Are you sure you want to go out?</div>
+    <div class="logout-buttons__wrap">
+      <div class="logout-button" id="logout-exit">Yes</div>
+      <div class="logout-button" id="logout-stay">No</div>
+  </div>
+  </div>`;
+};
 
 export const createUser = async (user: IRegisterUser): Promise<void> => {
   const rawResponse: Response = await fetch(`${serverUrl}/users`, {
@@ -154,7 +161,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
   function emptySignCaptions(): void {
     signErrorEmail.innerHTML = '';
     signErrorPassword.innerHTML = '';
-  }
+  };
 
   const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
   const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
@@ -172,8 +179,12 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       localStorage.setItem('Message', content.message);
       localStorage.setItem('Your token', content.token);
       localStorage.setItem('Your refreshToken', content.refreshToken);
-      localStorage.setItem('Your userId', content.userId);     
-      setTimeout(() => { authorizationBlock.innerHTML = '' }, 2000);
+      localStorage.setItem('Your userId', content.userId);
+      setTimeout(() => {
+        authorizationBlock.innerHTML = '';
+        userGreeting();
+        showHideAuthButtons();
+      }, 2000);
       authorizationBlock.dataset.open = 'false';
       await getStatistics(content.userId);
       break;
@@ -192,5 +203,10 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
         signSuccess.innerHTML = `${notRegisteredEmailText}`;
       }
       break;
-  }
+  };
+};
+
+export function userGreeting(): void {
+  const greetBlock = document.querySelector('.greet-block') as HTMLElement;
+  localStorage.getItem('Name') ? greetBlock.innerHTML = `Hello, ${localStorage.getItem('Name')}!` : greetBlock.innerHTML = ``;
 };

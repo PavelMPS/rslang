@@ -182,6 +182,9 @@
 .bookmark:nth-child(7):hover {
   background-color: #dd3b00;
 }
+.bookmark.disable {
+  display: none;
+}
 
 .word-card {
   position: relative;
@@ -189,6 +192,7 @@
   margin: 10px;
   padding: 10px;
   display: flex;
+  justify-content: space-between;
   column-gap: 20px;
   font-size: 25px;
   line-height: 35px;
@@ -200,9 +204,14 @@
 .word-card.learned-word {
   background: rgba(0, 252, 206, 0.2);
 }
+
+.word-wrapper {
+  display: flex;
+}
 .word-img {
   height: 200px;
   width: 200px;
+  margin-right: 25px;
   background-size: cover;
   border-radius: 50%;
   box-shadow: 0px 0px 15px 0px rgba(34, 60, 80, 0.7) inset;
@@ -223,17 +232,16 @@
 }
 
 .word-settings-container {
-  width: 50px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .audio-btn,
 .heavy-btn,
 .learned-btn {
-  position: absolute;
-  right: 10px;
   width: 50px;
   height: 50px;
-  margin: auto;
+  margin: 10px auto;
   cursor: pointer;
 }
 .audio-btn,
@@ -244,18 +252,15 @@
 }
 .audio-btn {
   background-image: url(../assets/icons8-audio-100.png);
-  top: 10px;
 }
 .audio-btn.disable {
   opacity: 0;
 }
 .heavy-btn {
   background-image: url(../assets/icons8-flash-on-100.png);
-  top: 80px;
 }
 .learned-btn {
   background-image: url(../assets/icons8-double-tick-100.png);
-  top: 150px;
 }
 .audio-btn:hover,
 .heavy-btn:hover,
@@ -264,4 +269,13 @@
 .learned-btn.active {
   transform: scale(1.4);
   transition: 0.3s;
+}
+.word-statistic {
+  font-size: 28px;
+  font-weight: 700;
+}
+.heavy-btn.disable,
+.learned-btn.disable,
+.word-statistic.disable {
+  display: none;
 }

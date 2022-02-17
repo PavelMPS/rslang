@@ -60,6 +60,7 @@ interface IUserWord {
   id?: string,
   difficulty: string,
   optional: IOptional,
+  wordId?: string,
 }
 
 interface IOptional {

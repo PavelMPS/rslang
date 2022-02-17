@@ -8,6 +8,12 @@ export async function getWords(group: number, page: number): Promise<IWord[]> {
   return words;
 }
 
+export async function getWord(wordId: string): Promise<IWord> {
+  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words/${wordId}`);
+  const word: IWord = await response.json();
+  return word;
+}
+
 export async function getUserWord(userId: string | null, wordId: string): Promise<Response> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
@@ -103,11 +109,12 @@ export async function getStatistics(userId: string | null) {
             const month = currentDate.getMonth();
             const year = currentDate.getFullYear();             
   switch (response.status) {
-    case 417:
+    case 401:
       if (userId) {
         console.log('create new token');
         await getNewToken(userId);
-        await renderStatisticPage();     
+         
+        break;
       }     
     case 404: 
       if (userId)
@@ -190,7 +197,7 @@ export async function getUserAggregatedWords(group: number, page: number, filter
   });
   
   const content = await res.json();
-  console.log(content)
+  console.log('contentAgregated',content)
   return content;
 }
 
@@ -205,11 +212,11 @@ async function getNewToken(userId: string): Promise<void> {
     headers: {
       'Authorization': `Bearer ${refreshToken}`,
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
   });
   console.log('res', res)
-  const content: any = res.json();
+  const content: any = await res.json();
   console.log(content)
   localStorage.setItem('Your token', content.token);
   localStorage.setItem('Your refreshToken', content.refreshToken);
