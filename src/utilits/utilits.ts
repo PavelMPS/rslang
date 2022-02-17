@@ -1,23 +1,64 @@
-import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics } from '../api/api';
+import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords, getUserWords } from '../api/api';
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
-import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak } from '../constants/constants';
+import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak, optionFilter, filters  } from '../constants/constants';
 
 import '../utilits/utilits.css';
 
-export async function getQuestionArr(group: number): Promise<IWord[]> {
-  const pagesArr: number[] = [];
+export async function getQuestionArr(group: number, page?: number): Promise<IWord[]> {
   const wordArr: Array<IWord[]> = [];
-  for (let i = 0; i < 4; i ++) {
-    pagesArr[i] = getRandomPage(pagesArr);
-    const arr: IWord[] = await getWords(group, pagesArr[i]);
+  if (page !== undefined && localStorage.getItem('Your token')) {
+    const arr = await getQuestionArrFromTextbook(group, page);
     wordArr.push(arr);
   }
-
+  if (page !== undefined && !localStorage.getItem('Your token')) {
+    const arr: IWord[] = await getWords(group, page);
+    wordArr.push(arr);
+  }
+  if (page === undefined) {
+    const pagesArr: number[] = [];
+    for (let i = 0; i < 4; i ++) {
+      pagesArr[i] = getRandomPage(pagesArr);
+      const arr: IWord[] = await getWords(group, pagesArr[i]);
+      wordArr.push(arr);
+    }
+  }
   const totalArr: IWord[] = wordArr.flat();
   shuffle(totalArr);
+  return totalArr.slice(0, maxQuestionCount);
+}
+
+async function getQuestionArrFromTextbook(group: number, page: number): Promise<IWord[]> {
+  const totalArr: IWord[] = [];
+  const allUserWords: IUserWord[] = await getUserWords();
+  while (page >= 0) {
+    const arr: IWord[] = await getWords(group, page);
+    
+    arr.forEach((el, i) => {
+      const wordId: string = el.id;
+
+      allUserWords.forEach((elem, index) =>{
+        if (wordId !== elem.wordId ) {
+          totalArr.push(el);
+          if (totalArr.length === maxQuestionCount) {
+            return totalArr;
+          }
+          console.log('true')
+        } else if(elem.optional.isLerned === false){
+          console.log('true')
+          totalArr.push(el);
+          if (totalArr.length === maxQuestionCount) {
+            return totalArr;
+          }
+        }
+      })
+    })
+    page--;
+    //TODO сделать проверку при <1 слова в массиве
+  }
+  console.log('Конец', totalArr)
   return totalArr.slice(0, maxQuestionCount);
 }
 
@@ -49,6 +90,7 @@ export async function chooseDifficult(game: string): Promise<void> {
 }
 
 export async function renderGroupSelectionPage(game: string): Promise<void> {
+  await resetGame(game);
   const content: string = ` <div class="group-select-page">
       <div class="game-title-container">
         <h3 class="game-page-title"></h3>
@@ -109,7 +151,9 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
   } else if (game === 'sprint') {
     title.innerHTML = sprintTitle;
     description.innerHTML = sprintDescription;
-    startBTN.addEventListener('click', startGameSprint);
+    startBTN.addEventListener('click', () => {
+      startGameSprint();
+    } );
     gameImg.classList.add('sprint');
   }
 
@@ -142,7 +186,7 @@ export async function getResults(words: IWordQuestion[] | GameWord[], game: stri
     token = localStorage.getItem('Your token');
     await changeUserWords(words, game);
   }
-  if (game === sprint) { words.length = sprintGame.allAnswers - 1}
+  if (game === sprint) { words.length = sprintGame.allAnswers}
   words.forEach((word: IWordQuestion | GameWord, index: number): void => {
     if (word.userAnswer === true) {
       rightAnswers += `<div>
@@ -206,20 +250,23 @@ function createResultsAydio(words: IWordQuestion[] | GameWord[]): void {
 function tryAgain(game: string): void {
   const tryAgainBtn = document.querySelector('.try-again-btn') as HTMLButtonElement;
   tryAgainBtn.addEventListener('click', () => {
-    if (game === audiochallenge) {
-      audiochallengeSettings.answerSeries = minScore;
-      audiochallengeSettings.maxLine = minScore;
-      audiochallengeSettings.lives = maxLives;
-      audiochallengeSettings.questionNum = minScore;
-      audiochallengeSettings.results = [];
-    } else if (game === sprint) {
-      sprintGame.count = 0;
-      sprintGame.score = 0;
-      sprintGame.group = sprintGame.difficult;
-      sprintGame.page = 0;
-    }
     renderGroupSelectionPage(game);
   });
+}
+
+export async function resetGame(game: string): Promise<void> {
+  if (game === audiochallenge) {
+    audiochallengeSettings.answerSeries = minScore;
+    audiochallengeSettings.maxLine = minScore;
+    audiochallengeSettings.lives = maxLives;
+    audiochallengeSettings.questionNum = minScore;
+    audiochallengeSettings.results = [];
+  } else if (game === sprint) {
+    sprintGame.count = 0;
+    sprintGame.score = 0;
+    sprintGame.group = 0;
+    sprintGame.page = 0;
+  }
 }
 
 function listenTabs() {
@@ -288,7 +335,6 @@ async function checkWords(words: IWordQuestion[] | GameWord[], userId: string | 
       let allWordAnswers: number = 0;
       let answersForIsLerned: number = 0;
       let maxCount: number = 3;
-
       if (wordResponse.ok) {
         const wordInf: IUserWord = await wordResponse.json();
         if (word.userAnswer === true) {
@@ -324,7 +370,7 @@ async function checkWords(words: IWordQuestion[] | GameWord[], userId: string | 
 }
 
 async function updateStatisticsByResults(userId: string | null, game: string, wordsInf: {newWords: number, learnedWords: number}) {
-  const statisticInf = await getStatistics(userId);
+  const statisticInf = await getStatistics(userId) as IStatistics;
   const newLearnedWords = wordsInf.learnedWords + statisticInf.learnedWords;
   if (game === sprint) {
     let maxLine: number = sprintGame.seriesTotalStatistics;
@@ -339,7 +385,7 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
       maxLine: maxLine,
     }
    
-    await updateStatistics(userId, newLearnedWords, sprintStatistic, statisticInf.optional.audiochallenge);
+    await updateStatistics(userId, newLearnedWords, sprintStatistic, statisticInf.optional.audiochallenge, statisticInf.optional.year, statisticInf.optional.month, statisticInf.optional.day);
   } else if (game === audiochallenge) {
     let maxLine: number = audiochallengeSettings.maxLine;
     if (audiochallengeSettings.maxLine < statisticInf.optional.audiochallenge.maxLine) {
@@ -352,11 +398,11 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
       allAnswers: statisticInf.optional.audiochallenge.allAnswers + audiochallengeSettings.allAnswers, 
       maxLine: maxLine,
     }
-    await updateStatistics(userId, newLearnedWords, statisticInf.optional.sprint, audiochallengeStatistic);
+    await updateStatistics(userId, newLearnedWords, statisticInf.optional.sprint, audiochallengeStatistic, statisticInf.optional.year, statisticInf.optional.month, statisticInf.optional.day);
   }
 }
 
-export async function createStatistic(id: string): Promise<void> {
+export async function createStatistic(id: string, year: number, month: number, day: number): Promise<void> {
   const sprintStatistic: IGameStatistic = {
     newWords: 0,
     rightAnswers: 0,
@@ -369,5 +415,5 @@ export async function createStatistic(id: string): Promise<void> {
     allAnswers: 0, 
     maxLine: 0,
   }
-  await updateStatistics(id, 0, sprintStatistic, audiochallengeStatistic);
+  await updateStatistics(id, 0, sprintStatistic, audiochallengeStatistic, year, month, day); 
 }
