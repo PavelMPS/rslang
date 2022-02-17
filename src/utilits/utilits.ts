@@ -3,7 +3,7 @@ import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage, shuffleWords } from '../audiochallenge-page/audiochallenge-page';
-import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak } from '../constants/constants';
+import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak, optionFilter } from '../constants/constants';
 
 import '../utilits/utilits.css';
 
@@ -11,8 +11,11 @@ export async function getQuestionArr(group: number, page?: number): Promise<IWor
   let wordArr: Array<IWord[]> = [];
   if (page && localStorage.getItem('Your token')) {
     console.log('if token ok', group, page);
-    const arr = await getUserAggregatedWords(page, 20, 'learned')
-    console.log('arr=', arr)
+    for (page; page >= 0; page--) {
+      wordArr = await getUserAggregatedWords(group, page, optionFilter.wordsPerPage);
+      console.log(wordArr);
+      
+    }
   } else {
     console.log('else token no')
     const pagesArr: number[] = []; 
