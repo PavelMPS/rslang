@@ -7,28 +7,26 @@ import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, max
 
 import '../utilits/utilits.css';
 
-export async function getQuestionArr(group: number, page?: number): Promise<IWord[]> {  
+export async function getQuestionArr(group: number, page?: number): Promise<IWord[]> {
+  const wordArr: Array<IWord[]> = [];
   if (page !== undefined && localStorage.getItem('Your token')) {
     const arr = await getQuestionArrFromTextbook(group, page);
-    return arr;
+    wordArr.push(arr);
   }
   if (page !== undefined && !localStorage.getItem('Your token')) {
     const arr: IWord[] = await getWords(group, page);
-    console.log('textbook without login',arr);
-    return arr;
-  }
-  const pagesArr: number[] = [];
-  const wordArr: Array<IWord[]> = [];
-  for (let i = 0; i < 4; i ++) {
-    pagesArr[i] = getRandomPage(pagesArr);
-    const arr: IWord[] = await getWords(group, pagesArr[i]);
     wordArr.push(arr);
   }
-
+  if (page === undefined) {
+    const pagesArr: number[] = [];
+    for (let i = 0; i < 4; i ++) {
+      pagesArr[i] = getRandomPage(pagesArr);
+      const arr: IWord[] = await getWords(group, pagesArr[i]);
+      wordArr.push(arr);
+    }
+  }
   const totalArr: IWord[] = wordArr.flat();
-
   shuffle(totalArr);
-  console.log(totalArr)
   return totalArr.slice(0, maxQuestionCount);
 }
 
@@ -58,6 +56,7 @@ async function getQuestionArrFromTextbook(group: number, page: number): Promise<
       })
     })
     page--;
+    //TODO сделать проверку при <1 слова в массиве
   }
   console.log('Конец', totalArr)
   return totalArr.slice(0, maxQuestionCount);
