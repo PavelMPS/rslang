@@ -8,6 +8,15 @@ export async function authorizationListen(): Promise<void> {
   authorizationBlock.dataset.open = 'false';
   logoutBlock.dataset.open = 'false';
 
+  function closeForm(): void {
+    const closeFormImg = document.querySelector('.close-form') as HTMLElement;
+    closeFormImg.addEventListener('click', () => {
+      let formBlock = closeFormImg.parentElement?.parentElement as HTMLElement;
+      formBlock.dataset.open = 'false';
+      formBlock.innerHTML = '';
+    });
+  };
+
   authorizationOpenButton.addEventListener('click', (): void => {
 
     renderAuthorizationBlock();
@@ -24,6 +33,7 @@ export async function authorizationListen(): Promise<void> {
       switchAuthorizeBlock([document.querySelector('.register-open__button') as HTMLElement, document.querySelector('.sign-open__button') as HTMLElement]);
       signSubmitCall(document.querySelector('.register-block') as HTMLElement);
       registerSubmitCall(document.querySelector('.sign-block') as HTMLElement);
+      closeForm();
     };
 
     function showHidePassword(): void {
@@ -101,6 +111,7 @@ export async function authorizationListen(): Promise<void> {
       logoutBlock.innerHTML = '';
     } else {
       logoutBlock.dataset.open = 'true';
+      closeForm();
     };
 
     logoutStayButton.addEventListener('click', (): void => {
