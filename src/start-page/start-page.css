@@ -12,6 +12,7 @@
     position: fixed;
     bottom: 0;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .nav {
@@ -103,6 +104,7 @@
     display: flex;
     flex-direction: row;
     gap: 5px;
+    flex-wrap: wrap;
 }
 
 .developers a {
@@ -210,4 +212,15 @@
     margin-left: auto;
     font-family: sans-serif;
     font-size: 20px;
+}
+
+@media screen and (max-width:550px) {
+    .nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .greet-block {
+        margin-left: initial !important;
+    }
 }
