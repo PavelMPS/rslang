@@ -190,6 +190,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
         authorizationBlock.innerHTML = '';
         userGreeting();
         showHideAuthButtons();
+        window.location.reload();
       }, 2000);
       authorizationBlock.dataset.open = 'false';
       await getStatistics(content.userId);
