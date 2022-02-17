@@ -6,6 +6,12 @@ export async function getWords(group: number, page: number): Promise<IWord[]> {
   return words;
 }
 
+export async function getWord(wordId: string): Promise<IWord> {
+  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words/${wordId}`);
+  const word: IWord = await response.json();
+  return word;
+}
+
 export async function getUserWord(userId: string | null, wordId: string): Promise<Response> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
@@ -18,7 +24,7 @@ export async function getUserWord(userId: string | null, wordId: string): Promis
       'Accept': 'application/json',
     }
   });
-  
+  console.log('get word', response);
   return response;
 }
 
@@ -39,7 +45,6 @@ export async function getUserWords(): Promise<IUserWord[]> {
     }
   });
   const content = await response.json();
-
   return content;
 }
 
@@ -59,7 +64,7 @@ export async function createUserWord(userId: string | null, wordId: string, diff
     body: JSON.stringify(word)
   });
   const content = await rawResponse.json();
-
+  console.log('create word', content);
   return content;
 };
 
@@ -80,7 +85,7 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
     body: JSON.stringify(word)
   });
   const content = await rawResponse.json();
-
+  console.log(content);
   return content;
 };
 
@@ -101,7 +106,7 @@ export async function getStatistics(userId: string | null) {
 
   } else {
     const content = await response.json();
-    console.log('create', content);
+    console.log('get', content);
     return content;
   }
 };
