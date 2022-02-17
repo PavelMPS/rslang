@@ -78,6 +78,9 @@ interface IStatistics {
 interface IStatisticsOptional {
   sprint: IGameStatistic;
   audiochallenge: IGameStatistic;
+  year: number;
+  month: number;
+  day: number;
 }
 
 interface IGameStatistic {

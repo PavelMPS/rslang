@@ -1,8 +1,10 @@
 import { getWord, getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics } from '../api/api';
-import { createAydio, playAudio } from '../utilits/utilits';
+import { createAydio, getQuestionArr, playAudio } from '../utilits/utilits';
 import { difficultHeavy, difficultWeak } from '../constants/constants';
 
 import '../textbook-page/textbook-page.css';
+import { startGameSprint } from '../sprint-game/sprint-game';
+import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 
 const textbookSettings: { page: number, group: number } = {
   page: 0,
@@ -41,7 +43,7 @@ async function makeLearned(id: string, btn: HTMLElement) {
   let learnedWords = 0;
   let learned: boolean = false;
 
-  if (wordResponse.ok) {
+  if (wordResponse.ok && statistic) {
     const wordInf: IUserWord = await wordResponse.json();
     if (btn.classList.contains('active')) {
       learned = true;
@@ -51,20 +53,24 @@ async function makeLearned(id: string, btn: HTMLElement) {
       learnedWords = statistic.learnedWords - 1;
     }
     await updateUserWord(userId, id, wordInf.difficulty, learned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, wordInf.optional.answersForIsLerned);
-    await updateStatistics(userId, learnedWords, statistic.sprint, statistic.audiochallenge);
+    await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
   } else {
     let rightWordAnswers: number = 0;
     let allWordAnswers: number = 0;
     let answersForIsLerned: number = 0;
-    if (btn.classList.contains('active')) {
-      learned = true;
-      statistic.learnedWords = statistic.learnedWords + 1;
-    } else {
-      learned = false;
-      if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1;}
+    if (statistic) {
+      if (btn.classList.contains('active')) {
+        learned = true;
+        statistic.learnedWords = statistic.learnedWords + 1;
+      } else {
+        learned = false;
+        if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1;}
+      }
+      await createUserWord(userId, id, difficultWeak, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
+    await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
     }
-    await createUserWord(userId, id, difficultWeak, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
-    await updateStatistics(userId, learnedWords, statistic.sprint, statistic.audiochallenge);
+    
+    
   }
 }
 
@@ -292,12 +298,14 @@ export function renderTextbookPage(): void {
   }
 
   const sprintBTN: HTMLElement = document.querySelector('.sprint-btn') as HTMLElement;
-  sprintBTN.addEventListener(('click'), () => {
-    //TODO функция спринта
+  sprintBTN.addEventListener(('click'), async (): Promise<void> => {
+    console.log(textbookSettings)
+    await startGameSprint(textbookSettings.group, textbookSettings.page);
   });
 
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;
-  audiocallBTN.addEventListener(('click'), () => {
-    //TODO функция аудиовызова
+  audiocallBTN.addEventListener(('click'), async (): Promise<void> => {
+    const arr = await getQuestionArr(textbookSettings.group, textbookSettings.page)
+    renderAudiochallengePage(arr);
   });
 }
