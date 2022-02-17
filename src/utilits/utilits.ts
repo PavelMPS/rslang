@@ -2,7 +2,7 @@ import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, u
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint } from '../sprint-game/sprint-game';
-import { renderAudiochallengePage, shuffleWords } from '../audiochallenge-page/audiochallenge-page';
+import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak } from '../constants/constants';
 
 import '../utilits/utilits.css';
@@ -101,7 +101,7 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
     description.innerHTML = audiochallengeDescription;
 
     startBTN.addEventListener('click', async () => {
-      const newWordArr: IWord[] = await shuffleWords() as IWord[];
+      const newWordArr: IWord[] = await getQuestionArr(audiochallengeSettings.group) as IWord[];
       audiochallengeSettings.questionNum = minScore;
       renderAudiochallengePage(newWordArr);
     });
