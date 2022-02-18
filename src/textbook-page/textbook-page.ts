@@ -1,6 +1,6 @@
 import { getWord, getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics } from '../api/api';
-import { createAydio, getQuestionArr, playAudio } from '../utilits/utilits';
-import { difficultHeavy, difficultWeak } from '../constants/constants';
+import { createAydio, getQuestionArr, playAudio, resetGame } from '../utilits/utilits';
+import { audiochallenge, difficultHeavy, difficultWeak } from '../constants/constants';
 
 import '../textbook-page/textbook-page.css';
 import { startGameSprint } from '../sprint-game/sprint-game';
@@ -305,6 +305,7 @@ export function renderTextbookPage(): void {
 
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;
   audiocallBTN.addEventListener(('click'), async (): Promise<void> => {
+    resetGame(audiochallenge)
     const arr = await getQuestionArr(textbookSettings.group, textbookSettings.page)
     renderAudiochallengePage(arr);
   });

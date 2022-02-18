@@ -31,34 +31,16 @@ export async function getQuestionArr(group: number, page?: number): Promise<IWor
 }
 
 async function getQuestionArrFromTextbook(group: number, page: number): Promise<IWord[]> {
-  const totalArr: IWord[] = [];
-  const allUserWords: IUserWord[] = await getUserWords();
-  while (page >= 0) {
-    const arr: IWord[] = await getWords(group, page);
-    
-    arr.forEach((el, i) => {
-      const wordId: string = el.id;
+  let totalArr: IWord[] = [];
+    const arr: IWord[] = await getUserAggregatedWords(group - 1, page, 'getRight');
+    arr.forEach(el => {
+      if (el.page <= page) {
+        totalArr.push(el);
+      }
+    });
 
-      allUserWords.forEach((elem, index) =>{
-        if (wordId !== elem.wordId ) {
-          totalArr.push(el);
-          if (totalArr.length === maxQuestionCount) {
-            return totalArr;
-          }
-          console.log('true')
-        } else if(elem.optional.isLerned === false){
-          console.log('true')
-          totalArr.push(el);
-          if (totalArr.length === maxQuestionCount) {
-            return totalArr;
-          }
-        }
-      })
-    })
-    page--;
-    //TODO сделать проверку при <1 слова в массиве
-  }
-  console.log('Конец', totalArr)
+    totalArr.reverse();
+    console.log('reversedArr: ', totalArr) 
   return totalArr.slice(0, maxQuestionCount);
 }
 
