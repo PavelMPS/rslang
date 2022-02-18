@@ -37,15 +37,28 @@
 
 .authorization-open__button,
 .about-us__button,
-.logout-open__button {
+.logout-open__button,
+.register-submit,
+.sign-submit,
+.logout-button {
     width: fit-content;
     cursor: pointer;
     font-size: 20px;
     font-family: sans-serif;
-    background-color: black;
-    color: white;
+    background-color: rgb(155 239 230);
+    color: rgb(0 0 0);
     border: none;
-    padding: 15px 20px;
+    padding: 13px 18px;
+    border: 5px solid rgb(108 224 192);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.register-submit,
+.sign-submit,
+.logout-button {
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .main {
@@ -217,7 +230,7 @@
 @media screen and (max-width:550px) {
     .nav {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
     }
 
     .greet-block {
