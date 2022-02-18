@@ -1,5 +1,5 @@
 import { audiochallengeSettings } from '../constants/audiochallenge';
-import { shuffle, createAydio, playAudio, getResults, getQuestionArr, resetGame } from '../utilits/utilits';
+import { shuffle, createAydio, playAudio, getResults } from '../utilits/utilits';
 import { minScore, answersLength, audiochallenge } from '../constants/constants';
 
 import '../audiochallenge-page/audiochallenge-page.css';
@@ -14,6 +14,7 @@ console.log('audio')
 }
 
 export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<void> {
+  audiochallengeSettings.gameWords = newWordArr;
   const content: string = `    <div class="audiochallenge-container">
       <div class="hearts-container">
         <div class="heart broken"></div>
@@ -138,12 +139,6 @@ function getRandomNum(arr: number[]): number {
   } else {
     return newNum;
   }
-}
-
-export async function shuffleWords(): Promise<IWord[]> {
-  audiochallengeSettings.gameWords = await getQuestionArr(audiochallengeSettings.group);
-  shuffle(audiochallengeSettings.gameWords);
-  return audiochallengeSettings.gameWords;
 }
 
 function getAnswers(questionNum: number): number[] {

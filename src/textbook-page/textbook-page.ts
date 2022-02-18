@@ -1,19 +1,25 @@
-import { getWord, getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics } from '../api/api';
+import { getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords } from '../api/api';
 import { createAydio, getQuestionArr, playAudio, resetGame } from '../utilits/utilits';
-import { audiochallenge, difficultHeavy, difficultWeak } from '../constants/constants';
+import { audiochallenge, difficultHeavy, difficultWeak, optionFilter } from '../constants/constants';
 
 import '../textbook-page/textbook-page.css';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 
-const textbookSettings: { page: number, group: number } = {
+import '../textbook-page/textbook-page.css';
+
+let textbookSettings: { page: number, group: number } = {
   page: 0,
   group: 0,
 }
-const maxPageNum = 29;
+if (localStorage.getItem('Textbook')) {
+  const newSettings: string = localStorage.getItem('Textbook') || '';
+  textbookSettings = JSON.parse(newSettings);
+}
+const maxPageNum: number = 29;
 
-async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]) {
-  userWords.find((elem: IUserWord) => {
+async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]): Promise<void> {
+  userWords.find((elem: IUserWord): void => {
     if (elem.wordId === card.dataset.id) {
       const heavyBTN: HTMLElement = card.querySelector('.heavy-btn') as HTMLElement;
       const learnedBTN: HTMLElement = card.querySelector('.learned-btn') as HTMLElement;
@@ -32,15 +38,15 @@ async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]) {
   });
 }
 
-async function makeLearned(id: string, btn: HTMLElement) {
+async function makeLearned(id: string, btn: HTMLElement): Promise<void> {
   let userId: string | null = '';
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
   }
-  const statistic = await getStatistics(userId);
+  const statistic: IStatistics | undefined = await getStatistics(userId);
 
   const wordResponse: Response = await getUserWord(userId, id);
-  let learnedWords = 0;
+  let learnedWords: number = 0;
   let learned: boolean = false;
 
   if (wordResponse.ok && statistic) {
@@ -50,7 +56,7 @@ async function makeLearned(id: string, btn: HTMLElement) {
       learnedWords = statistic.learnedWords + 1;
     } else {
       learned = false;
-      learnedWords = statistic.learnedWords - 1;
+      if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1}
     }
     await updateUserWord(userId, id, wordInf.difficulty, learned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, wordInf.optional.answersForIsLerned);
     await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
@@ -61,20 +67,18 @@ async function makeLearned(id: string, btn: HTMLElement) {
     if (statistic) {
       if (btn.classList.contains('active')) {
         learned = true;
-        statistic.learnedWords = statistic.learnedWords + 1;
+        learnedWords = statistic.learnedWords + 1;
       } else {
         learned = false;
-        if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1;}
+        if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1}
       }
       await createUserWord(userId, id, difficultWeak, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
-    await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
-    }
-    
-    
+      await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
+    }    
   }
 }
 
-async function chooseDifficult(id: string, btn: HTMLElement) {
+async function chooseDifficult(id: string, btn: HTMLElement): Promise<void> {
   let userId: string | null = '';
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
@@ -128,23 +132,43 @@ function createTextbookContent(words: IWord[]): string {
   return textForInput;
 }
 
-async function getDifficultWords(): Promise<IWord[]> {
-  const userWords = await getUserWords();
-  const newWords: IWord[] = [];
-  userWords.forEach(async (userWord: IUserWord) => {
-    if (userWord.difficulty === difficultHeavy) {
-      const word: IWord = await getWord(userWord.wordId as string);
-      newWords.push(word);
-    }
-  });
-  return newWords;
+function createDifficultContent(words: IAgregetedWord[]): string {
+  let textForInput: string = '' as string;
+  words.forEach((word: IAgregetedWord): void => {
+    textForInput += `<div class="word-card" data-id="${word._id}">
+      <div class="word-wrapper">
+        <div class="word-img" style="background-image: url('https://react-rslang-example.herokuapp.com/${word.image}');"></div>
+        <div class="word-inf">
+          <div class="word">${word.word} - ${word.transcription} - ${word.wordTranslate}</div>
+          <div class="word-meaning">
+            <div class="english"><b>${word.textMeaning}</b></div>
+            <div class="translation">${word.textMeaningTranslate}</div>
+          </div>
+          <div class="word-example">
+            <div class="english">${word.textExample}</div>
+            <div class="translation">${word.textExampleTranslate}</div>
+          </div>
+        </div>
+      </div>
+      <div class="word-settings-container">
+        <div class="word-statistic disable"></div>
+        <div class="audio-btn"></div>
+        <div class="heavy-btn disable"></div>
+        <div class="learned-btn disable"></div>
+      </div>
+    </div>`;
+  })
+  return textForInput;
 }
 
 async function renderTextbookContent(): Promise<void> {
   const page: HTMLElement = document.querySelector('.page') as HTMLElement;
   page.innerHTML = '';
 
-  let words: IWord[] = [];
+  const gameContainer: HTMLElement = document.querySelector('.game-container') as HTMLElement;
+  const pageNum: HTMLElement = document.querySelector('.page-num') as HTMLElement;
+
+  let words: IWord[] | IAgregetedWord[] = [];
 
   let userWords: IUserWord[];
   if (localStorage.getItem('Your token')) {
@@ -155,18 +179,22 @@ async function renderTextbookContent(): Promise<void> {
     words = await getWords(textbookSettings.group, textbookSettings.page);
     page.innerHTML = createTextbookContent(words);
   } else {
-    const difficultWords: IWord[] = await getDifficultWords();
-    console.log(createTextbookContent(difficultWords));
-    // page.innerHTML = createTextbookContent(difficultWords);
+    words = await getUserAggregatedWords(optionFilter.hard);
+    page.innerHTML = createDifficultContent(words as IAgregetedWord[]);
+    const nav: HTMLElement = document.querySelector('.page-nav') as HTMLElement;
+    nav.style.opacity = '0';
+    gameContainer.style.opacity = '0';
   }
 
-
-
   const wordCards: NodeListOf<HTMLElement> = document.querySelectorAll('.word-card') as  NodeListOf<HTMLElement>;
-  wordCards.forEach((card: HTMLElement, index: number) => {
+  wordCards.forEach((card: HTMLElement) => {
     const audioBTN: HTMLElement = card.querySelector('.audio-btn') as HTMLElement;
     audioBTN.addEventListener(('click'), (): void => {
-      playTextbookAudio(words, card);
+      if (textbookSettings.group !== 6) {
+        playTextbookAudio(words as IWord[], card);
+      } else {
+        playDifficultAudio(words as IAgregetedWord[], card);
+      }
     });
 
     const heavyBTN: HTMLElement = card.querySelector('.heavy-btn') as HTMLElement;
@@ -174,6 +202,9 @@ async function renderTextbookContent(): Promise<void> {
       heavyBTN.classList.toggle('active');
       card.classList.toggle('heavy-word');
       chooseDifficult(card.dataset.id as string, heavyBTN);
+      if (textbookSettings.group === 6) {
+        setTimeout(renderTextbookContent, 200);
+      }
     });
 
     const learnedBTN: HTMLElement = card.querySelector('.learned-btn') as HTMLElement;
@@ -181,6 +212,23 @@ async function renderTextbookContent(): Promise<void> {
       learnedBTN.classList.toggle('active');
       card.classList.toggle('learned-word');
       makeLearned(card.dataset.id as string, learnedBTN);
+
+      let count: number = 0;
+
+      wordCards.forEach((wordCard: HTMLElement): void => {
+        if (wordCard.classList.contains('learned-word')) {
+          count = count + 1;
+        }
+      })
+      if (count === 20) {
+        page.classList.add('learned');
+        gameContainer.style.opacity = '0';
+        pageNum.classList.add('learned');
+      } else {
+        page.classList.remove('learned');
+        gameContainer.style.opacity = '1';
+        pageNum.classList.remove('learned');
+      }
     });
 
     const wordStatistic: HTMLElement = card.querySelector('.word-statistic') as HTMLElement;
@@ -192,20 +240,56 @@ async function renderTextbookContent(): Promise<void> {
       wordStatistic.classList.remove('disable');
     }
   })
+
+  let count: number = 0;
+
+  wordCards.forEach((wordCard: HTMLElement): void => {
+    if (wordCard.classList.contains('learned-word')) {
+      count = count + 1;
+    }
+  })
+  if (count === 20) {
+    page.classList.add('learned');
+    gameContainer.style.opacity = '0';
+    pageNum.classList.add('learned');
+  } else {
+    page.classList.remove('learned');
+    gameContainer.style.opacity = '1';
+    pageNum.classList.remove('learned');
+  }
+
+  localStorage.setItem('Textbook', JSON.stringify(textbookSettings));
 }
 
 function playTextbookAudio(words: IWord[], card: HTMLElement): void {
-  const id = card.dataset.id;
+  const id: string = card.dataset.id as string;
   const word: IWord = words.find((word: IWord) => word.id === id) as IWord;
-  const wordAudio = createAydio(word.audio);
-  const wordMeaning = createAydio(word.audioMeaning);
-  const wordExample = createAydio(word.audioExample);
+  const wordAudio: HTMLAudioElement = createAydio(word.audio);
+  const wordMeaning: HTMLAudioElement = createAydio(word.audioMeaning);
+  const wordExample: HTMLAudioElement = createAydio(word.audioExample);
 
   playAudio(wordAudio);
 
-  wordAudio.onended = function () {
+  wordAudio.onended = function (): void {
     playAudio(wordMeaning);
-    wordMeaning.onended = function () {
+    wordMeaning.onended = function (): void {
+      playAudio(wordExample);
+    }
+  }
+}
+
+function playDifficultAudio(words: IAgregetedWord[], card: HTMLElement): void {
+  const id: string = card.dataset.id as string;
+  const word: IAgregetedWord = words.find((word: IAgregetedWord) => word._id === id) as IAgregetedWord;
+  const wordAudio: HTMLAudioElement = createAydio(word.audio);
+  const wordMeaning: HTMLAudioElement = createAydio(word.audioMeaning);
+  const wordExample: HTMLAudioElement = createAydio(word.audioExample);
+
+  playAudio(wordAudio);
+
+  wordAudio.onended = function (): void {
+    playAudio(wordMeaning);
+    wordMeaning.onended = function (): void {
       playAudio(wordExample);
     }
   }
@@ -215,8 +299,7 @@ export function createTextbookStructyre(): void {
   const main: HTMLElement = document.querySelector('.main') as HTMLElement;
   main.innerHTML = '';
 
-  const content = `<div class="textbook">
-      <div class="page-container">
+  const content: string = `<div class="textbook">
         <div class="sidebar">
           <div class="bookmarks">
             <div class="bookmark" data-group="0">I</div>
@@ -240,8 +323,7 @@ export function createTextbookStructyre(): void {
           <div class="game-menu-text">Let's start training</div>
         </div>        
         <div class="page">
-        </div>
-      </div>      
+        </div>   
     </div>`;
 
     main.innerHTML = content;
@@ -299,7 +381,6 @@ export function renderTextbookPage(): void {
 
   const sprintBTN: HTMLElement = document.querySelector('.sprint-btn') as HTMLElement;
   sprintBTN.addEventListener(('click'), async (): Promise<void> => {
-    console.log(textbookSettings)
     await startGameSprint(textbookSettings.group, textbookSettings.page);
   });
 

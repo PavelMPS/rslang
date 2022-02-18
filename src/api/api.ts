@@ -125,6 +125,7 @@ export async function getStatistics(userId: string | null) {
       const content: IStatistics = await response.json();
       if (content.optional.year === year&& content.optional.month === month && content.optional.day === day) {
         console.log('1date = 2date');
+        console.log(content);
         return content;
       } else {
         console.log('last else')
@@ -169,7 +170,7 @@ export async function updateStatistics(userId: string | null, lernedWords: numbe
 //   return content;
 // };
 
-export async function getUserAggregatedWords(group: number, page: number, filterOption: string ) {
+export async function getUserAggregatedWords(filterOption: string, group?: number, page?: number) {
   let token: string | null = '';
   let filter: string = '';
   if (localStorage.getItem('Your token')) {
@@ -179,18 +180,14 @@ export async function getUserAggregatedWords(group: number, page: number, filter
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
   }
-  if (filterOption === optionFilter.learned) {
-    filter = filters.learned;
-  } else if (filterOption === optionFilter.hard) {
+  if (filterOption === optionFilter.hard) {
     filter = filters.hard;
-  } else if (filterOption === optionFilter.noLearned) {
-    filter = filters.noLearned; 
   } else if (filterOption === optionFilter.wordsPerPage) {
-    filter = `{"$and": [{"group": ${group}}, {"page": ${page}}]}&wordsPerPage=20`;
+    filter = `filter={"$and": [{"group": ${group}}, {"page": ${page}}]}&wordsPerPage=20`;
   } else if (filterOption === 'getRight') {
-    filter = `{"$or": [{"userWord":null}, {"userWord.optional.isLerned": false}]}&wordsPerPage=3600`;
+    filter = `group=${group}&filter={"$or": [{"userWord":null}, {"userWord.optional.isLerned": false}]}&wordsPerPage=3600`;
   }
-  const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/aggregatedWords?group=${group}&filter=${filter}`, {
+  const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/aggregatedWords?${filter}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,

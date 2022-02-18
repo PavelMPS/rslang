@@ -2,8 +2,8 @@ import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, u
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
 import { startGameSprint } from '../sprint-game/sprint-game';
-import { renderAudiochallengePage, shuffleWords } from '../audiochallenge-page/audiochallenge-page';
-import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak, optionFilter, filters } from '../constants/constants';
+import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
+import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak, optionFilter, filters  } from '../constants/constants';
 
 import '../utilits/utilits.css';
 
@@ -32,16 +32,18 @@ export async function getQuestionArr(group: number, page?: number): Promise<IWor
 
 async function getQuestionArrFromTextbook(group: number, page: number): Promise<IWord[]> {
   let totalArr: IWord[] = [];
-    const arr: IWord[] = await getUserAggregatedWords(group - 1, page, 'getRight');
+    const arr: IWord[] = await getUserAggregatedWords('getRight', group - 1, page);
     arr.forEach(el => {
       if (el.page <= page) {
         totalArr.push(el);
       }
     });
-
-    totalArr.reverse();
+    
+    //TODO поменять массив _id-> id
+    totalArr = totalArr.reverse().slice(0, maxQuestionCount);
+    totalArr.forEach
     console.log('reversedArr: ', totalArr) 
-  return totalArr.slice(0, maxQuestionCount);
+  return totalArr;
 }
 
 function getRandomPage(arr: number[]) {
@@ -125,7 +127,7 @@ export async function renderGroupSelectionPage(game: string): Promise<void> {
     description.innerHTML = audiochallengeDescription;
 
     startBTN.addEventListener('click', async () => {
-      const newWordArr: IWord[] = await shuffleWords() as IWord[];
+      const newWordArr: IWord[] = await getQuestionArr(audiochallengeSettings.group) as IWord[];
       audiochallengeSettings.questionNum = minScore;
       renderAudiochallengePage(newWordArr);
     });
@@ -274,7 +276,7 @@ function listenTabs() {
 function createResults(game: string) {
   const goodResultsSprint = 'Great job! Your score is: ' + sprintGame.score + ' points';
   const badResultsSprint = 'It will be better next time... Your score is: ' + + sprintGame.score + ' points';
-  const goodResultsAudio = 'You have ' + audiochallengeSettings.lives + ' lives left';
+  const goodResultsAudio = 'Great job! You have ' + audiochallengeSettings.lives + ' lives left';
   const badResultsAudio = 'It will be better next time... Unfortunately there are no lives left...';
 
   const resultImg: HTMLElement = document.querySelector('.results-img') as HTMLElement;
@@ -302,8 +304,9 @@ export async function changeUserWords(words: IWordQuestion[] | GameWord[], game:
   }
   console.log('user id is: ', userId)
   const wordsInf = await checkWords(words, userId);
- 
-  await updateStatisticsByResults(userId, game, wordsInf);
+  setTimeout(() => {
+    updateStatisticsByResults(userId, game, wordsInf);
+  }, 1000); 
 }
 
 async function checkWords(words: IWordQuestion[] | GameWord[], userId: string | null) {
