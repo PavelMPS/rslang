@@ -292,7 +292,7 @@ function listenTabs() {
 function createResults(game: string) {
   const goodResultsSprint = 'Great job! Your score is: ' + sprintGame.score + ' points';
   const badResultsSprint = 'It will be better next time... Your score is: ' + + sprintGame.score + ' points';
-  const goodResultsAudio = 'You have ' + audiochallengeSettings.lives + ' lives left';
+  const goodResultsAudio = 'Great job! You have ' + audiochallengeSettings.lives + ' lives left';
   const badResultsAudio = 'It will be better next time... Unfortunately there are no lives left...';
 
   const resultImg: HTMLElement = document.querySelector('.results-img') as HTMLElement;

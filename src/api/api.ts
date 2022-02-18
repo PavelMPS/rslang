@@ -124,6 +124,7 @@ export async function getStatistics(userId: string | null) {
       const content: IStatistics = await response.json();
       if (content.optional.year === year&& content.optional.month === month && content.optional.day === day) {
         console.log('1date = 2date');
+        console.log(content);
         return content;
       } else {
         console.log('last else')

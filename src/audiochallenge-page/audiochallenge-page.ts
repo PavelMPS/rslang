@@ -1,5 +1,5 @@
 import { audiochallengeSettings } from '../constants/audiochallenge';
-import { shuffle, createAydio, playAudio, getResults, getQuestionArr, resetGame } from '../utilits/utilits';
+import { shuffle, createAydio, playAudio, getResults } from '../utilits/utilits';
 import { minScore, answersLength, audiochallenge } from '../constants/constants';
 
 import '../audiochallenge-page/audiochallenge-page.css';

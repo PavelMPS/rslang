@@ -1,18 +1,16 @@
 .textbook {
+  display: flex;
   margin: 20px 0;
   width: 90%;
   margin-bottom: 100px;
 }
 .sidebar {
-  position: relative;
   display: block;
   width: 50px;
 }
 .page-nav {
-  position: absolute;
-  top: 380px;
-  right: 0px;
-  justify-content: space-between;
+  display: block;
+  margin-top: 25px;
 }
 .prev-page,
 .next-page,
@@ -23,6 +21,10 @@
   line-height: 40px;
   text-align: center;
   cursor: pointer;
+}
+.page-num.learned {
+  color: rgb(0, 206, 168);
+  font-weight: 700;
 }
 .prev-page:hover,
 .next-page:hover,
@@ -95,19 +97,19 @@
   justify-content: space-between;
 }
 .page {
-  left: 50px;
   width: calc(100% - 50px);
   min-height: 300px;
   box-shadow: 0px 0px 20px -1px rgba(34, 60, 80, 0.27);
 }
+.page.learned {
+  background-color: rgba(0, 255, 179, 0.27);
+}
 .bookmarks {
-  position: relative;
+  display: block;
 }
 .bookmark {
   height: 50px;
   width: 50px;
-  position: absolute;
-  left: 0px;
   font-size: 35px;
   color: #ffffff;
   text-align: center;
@@ -123,31 +125,24 @@
   z-index: 10;
 }
 .bookmark:nth-child(1) {
-  top: 0px;
   background-color: #ffd900;
 }
 .bookmark:nth-child(2) {
-  top: 50px;
   background-color: #ffb700;
 }
 .bookmark:nth-child(3) {
-  top: 100px;
   background-color: #ff9100;
 }
 .bookmark:nth-child(4) {
-  top: 150px;
   background-color: #ff6f00;
 }
 .bookmark:nth-child(5) {
-  top: 200px;
   background-color: #ff5900;
 }
 .bookmark:nth-child(6) {
-  top: 250px;
   background-color: #ff4400;
 }
 .bookmark:nth-child(7) {
-  top: 300px;
   background-color: #dd3b00;
   background-image: url(../assets/icons8-flash-on-100.png);
   background-size: 50px 50px;
@@ -155,7 +150,6 @@
 
 .bookmark.active:nth-child(1),
 .bookmark:nth-child(1):hover {
-  top: 5px;
   background-color: #ffd900;
 }
 .bookmark.active:nth-child(2),
