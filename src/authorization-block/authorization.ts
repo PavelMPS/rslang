@@ -10,6 +10,7 @@ const writeEmailCaption = 'Please, write correct email' as string;
 const signSuccessText = 'Success!' as string;
 const signPasswordEmailError = 'Incorrect e-mail or password' as string;
 const serverUrl = `https://react-rslang-example.herokuapp.com` as string;
+let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
 export async function renderAuthorizationBlock(): Promise<void> {
   const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
@@ -152,9 +153,7 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
         });
       });
 
-      let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-      let address = registerEmail.value;
-      if (reg.test(address) == false) {
+      if (reg.test(registerEmail.value) == false) {
         registerErrorEmail.innerHTML = `${writeEmailCaption}`;
       }
       break;
@@ -211,9 +210,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
     case 404:
       emptySignCaptions();
 
-      let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-      let address = signEmail.value;
-      if (reg.test(address) == false) {
+      if (reg.test(signEmail.value) == false) {
         signSuccess.innerHTML = ``;
         signErrorPassword.innerHTML = `${signPasswordEmailError}`;
       } else {
