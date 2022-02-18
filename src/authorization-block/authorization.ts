@@ -35,7 +35,7 @@ export async function renderRegistrationBlock(): Promise<void> {
     <form class="register-form">
         <div class="form-block">
           <div class="placeholder-container">
-            <input class="form-input" type="text" name="register-name" id="register-name" placeholder="Name">
+            <input class="form-input" type="text" maxlength="20" name="register-name" id="register-name" placeholder="Name">
             <label>Name</label>
           </div>
           <div class="register-error__name"></div>
@@ -118,6 +118,7 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
   const registerErrorEmail = document.querySelector('.register-error__email') as HTMLElement;
   const registerErrorPassword = document.querySelector('.register-error__password') as HTMLElement;
   const registrationSuccess = document.querySelector('.registration-success') as HTMLElement;
+  const registerEmail = document.querySelector('.registration-success') as HTMLInputElement;
 
   function emptyRegisterCaptions(): void {
     registerErrorName.innerHTML = '';
@@ -150,6 +151,12 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
           (document.querySelector(`.register-error__${elem}`) as HTMLElement).innerHTML = `Invalid ${element.path}`;
         });
       });
+
+      let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      let address = registerEmail.value;
+      if (reg.test(address) == false) {
+        registerErrorEmail.innerHTML = `${writeEmailCaption}`;
+      }
       break;
   };
 };
@@ -202,11 +209,15 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       break;
 
     case 404:
-      if (signEmail.value.length < 1) {
-        emptySignCaptions();
-        signErrorEmail.innerHTML = `${writeEmailCaption}`;
+      emptySignCaptions();
+
+      let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      let address = signEmail.value;
+      if (reg.test(address) == false) {
+        signSuccess.innerHTML = ``;
+        signErrorPassword.innerHTML = `${signPasswordEmailError}`;
       } else {
-        emptySignCaptions();
+        signErrorPassword.innerHTML = ``;
         signSuccess.innerHTML = `${notRegisteredEmailText}`;
       }
       break;

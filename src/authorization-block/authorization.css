@@ -37,7 +37,7 @@
 .register-open__button.active,
 .sign-open__button.active {
   background-color: rgb(255 199 146);
-  color: white;
+  color: black;
 }
 
 .form-border__wrap {
