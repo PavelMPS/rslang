@@ -24,6 +24,7 @@
 .game-img {
   width: 250px;
   height: 250px;
+  margin: 0px auto;
   background-size: 100%;
   background-repeat: no-repeat;
 }
@@ -37,7 +38,6 @@
 }
 
 .game-describe-container {
-  margin-top: 50px;
   font-size: 28px;
 }
 
@@ -56,10 +56,12 @@
 
 .difficult-buttons-container {
   display: flex;
+  flex-wrap: wrap;
   column-gap: 20px;
+  row-gap: 20px;
   width: 80%;
   margin: 25px auto 50px auto;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .difficult-btn {
@@ -67,7 +69,6 @@
   height: 60px;
   font-size: 32px;
   line-height: 60px;
-  background: black;
   color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -148,7 +149,7 @@
   font-size: 32px;
   text-align: center;
   font-weight: 700;
-  color: #000000;
+  color: #ffffff;
   line-height: 50px;
 }
 
@@ -260,7 +261,43 @@
 }
 
 .answers-container {
-  min-width: 400px;
+  min-width: 240px;
   margin: auto;
   padding: 0 20px;
+}
+
+@media (max-width: 700px) {
+  .audiochallenge-main-inf {
+    flex-direction: column;
+    row-gap: 25px;
+  }
+  .game-page-title {
+    font-size: 30px;
+    margin-bottom: 25px;
+  }
+  .difficult-subtitle {
+    font-size: 30px;
+  }
+  .game-describe-container {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 520px) {
+  .game-page-title {
+    font-size: 25px;
+  }
+  .difficult-subtitle {
+    font-size: 25px;
+  }
+  .game-describe-container {
+    font-size: 20px;
+  }
+  .difficult-buttons-container {
+    width: 100%;
+  }
+  .main-tab,
+  .words-tab {
+    font-size: 24px;
+  }
 }

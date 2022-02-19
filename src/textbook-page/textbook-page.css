@@ -6,12 +6,14 @@
 }
 
 .sidebar {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 50px;
 }
 
 .page-nav {
-  display: block;
+  display: flex;
+  flex-direction: column;
   margin-top: 25px;
 }
 
@@ -69,7 +71,8 @@
 .game-container {
   width: 100px;
   position: fixed;
-  display: block;
+  display: flex;
+  flex-direction: column;
   top: 50%;
   transform: translate(0%, -50%);
   right: 30px;
@@ -96,6 +99,7 @@
   height: 100px;
   width: 100px;
   background-size: 100%;
+  background-repeat: no-repeat;
   margin: 20px 0;
 }
 
@@ -124,7 +128,8 @@
 }
 
 .bookmarks {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .bookmark {
@@ -216,8 +221,6 @@
 }
 
 .word-card {
-  position: relative;
-  width: 98%;
   margin: 10px;
   padding: 10px;
   display: flex;
@@ -287,6 +290,8 @@
 .learned-btn {
   background-size: 50px 50px;
   cursor: pointer;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 .audio-btn {
@@ -323,4 +328,138 @@
 .learned-btn.disable,
 .word-statistic.disable {
   display: none;
+}
+
+.top-btn {
+  cursor: pointer;
+  position: fixed;
+  bottom: 100px;
+  right: 50px;
+  z-index: 99; 
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  outline: none;
+  transition: 0.2s;
+  transform: translate(50%, 50%);
+  padding-top: 12px;
+  font-size: 35px;
+  line-height: 50px;
+  text-align: center;
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+  background-color: #6ce0c0;
+}
+.top-btn:hover,
+.top-btn:active {
+  background-color: #9befe6;
+}
+
+@media (max-width: 1440px) {
+  .page {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  .word-card {
+    flex-direction: column;
+    width: 400px;
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .word-wrapper {
+    display: block;
+  }
+  .word-settings-container {
+    height: 50px;
+    width: 100%;
+    flex-direction: row;
+    margin-bottom: 10px;
+  }
+  .word-statistic {
+    margin: 20px 0px auto 0px;
+  }
+  .word-img {
+    margin: 0px auto;
+  }
+  .word {
+    font-size: 25px;
+    line-height: 35px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .page {
+    width: 100%;
+  }
+  .textbook {
+    flex-direction: column;
+  }
+  .sidebar {
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+  }
+  .page-nav {
+    flex-direction: row;
+    margin-top: 0px;
+  }
+  .bookmarks {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 700px) {
+  .game-container {
+    position: inherit;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    top: 0px;
+    transform: translate(0%, 0%);
+    right: 0px;
+    z-index: 0;
+  }
+  .game-menu-text {
+    margin: auto 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .word {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .word-card {
+    width: 95%;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .bookmark {
+    height: 40px;
+    width: 40px;
+    font-size: 30px;
+    line-height: 40px;
+    background-repeat: no-repeat;
+  }
+  .page-nav {
+    margin: 0px auto;
+  }
+  .word-statistic {
+    font-size: 20px;
+  }
+  .audio-btn,
+  .heavy-btn,
+  .learned-btn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 520px) {
+  .sidebar {
+    flex-direction: column-reverse;
+    row-gap: 18px;
+  }
 }
