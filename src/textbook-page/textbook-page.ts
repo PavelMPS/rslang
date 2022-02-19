@@ -323,7 +323,9 @@ export function createTextbookStructyre(): void {
           <div class="game-menu-text">Let's start training</div>
           <div class="audio-call-btn"></div>
         </div>
-    </div>`;
+        <a class="top-btn" href="#">TOP
+        </a>
+      </div>`;
 
     main.innerHTML = content;
 }

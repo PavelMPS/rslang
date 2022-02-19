@@ -273,6 +273,32 @@
   display: none;
 }
 
+.top-btn {
+  cursor: pointer;
+  position: fixed;
+  bottom: 100px;
+  right: 50px;
+  z-index: 99; 
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  outline: none;
+  transition: 0.2s;
+  transform: translate(50%, 50%);
+  padding-top: 12px;
+  font-size: 35px;
+  line-height: 50px;
+  text-align: center;
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+  background-color: #6ce0c0;
+}
+.top-btn:hover,
+.top-btn:active {
+  background-color: #9befe6;
+}
+
 @media (max-width: 1440px) {
   .page {
     display: flex;
