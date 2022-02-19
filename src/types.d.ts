@@ -15,6 +15,23 @@ interface IWord {
   textExampleTranslate: string,
 }
 
+interface IAgregetedWord {
+  _id: string,
+  group: number,
+  page: number,
+  word: string,
+  image: string,
+  audio: string,
+  audioMeaning: string,
+  audioExample: string,
+  textMeaning: string,
+  textExample: string,
+  transcription: string,
+  wordTranslate: string,
+  textMeaningTranslate: string,
+  textExampleTranslate: string,
+}
+
 interface IWordQuestion {
   id: string,
   group: number,
@@ -44,6 +61,7 @@ interface IAudiochallenge {
   gameWords: IWordQuestion[],
   rightAnswers: number,
   allAnswers: number,
+  fromTextbook: boolean,
 }
 interface IRegisterUser {
   name: string,
@@ -60,6 +78,7 @@ interface IUserWord {
   id?: string,
   difficulty: string,
   optional: IOptional,
+  wordId?: string,
 }
 
 interface IOptional {
@@ -77,6 +96,9 @@ interface IStatistics {
 interface IStatisticsOptional {
   sprint: IGameStatistic;
   audiochallenge: IGameStatistic;
+  year: number;
+  month: number;
+  day: number;
 }
 
 interface IGameStatistic {
@@ -84,4 +106,12 @@ interface IGameStatistic {
   rightAnswers: number;
   allAnswers: number;  
   maxLine: number;
+}
+
+interface IUserInfo {
+    message: string;
+    token: string;
+    refreshToken: string;
+    userId: string;
+    name: string;
 }

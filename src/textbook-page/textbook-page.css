@@ -1,19 +1,22 @@
 .textbook {
+  display: flex;
   margin: 20px 0;
   width: 90%;
   margin-bottom: 100px;
 }
+
 .sidebar {
-  position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 50px;
 }
+
 .page-nav {
-  position: absolute;
-  top: 380px;
-  right: 0px;
-  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
 }
+
 .prev-page,
 .next-page,
 .page-num {
@@ -24,6 +27,12 @@
   text-align: center;
   cursor: pointer;
 }
+
+.page-num.learned {
+  color: rgb(0, 206, 168);
+  font-weight: 700;
+}
+
 .prev-page:hover,
 .next-page:hover,
 .prev-page.active,
@@ -31,62 +40,75 @@
   transform: scale(1.4);
   transition: 0.3s;
 }
+
 .prev-page.disable,
 .next-page.disable,
 .prev-page.disable:hover,
 .next-page.disable:hover {
   opacity: 0.5;
 }
+
 .prev-page {
-  background-image: url(../assets/icons8-chevron-left-100.png);
+  background-image: url(../assets/chevron-left.png);
   background-size: 40px;
 }
+
 .next-page {
-  background-image: url(../assets/icons8-chevron-right-100.png);
+  background-image: url(../assets/chevron-right.png);
   background-size: 40px;
 }
+
 .prev-page.disable,
 .next-page.disable {
   opacity: 0;
 }
+
 .prev-page.disable:hover,
 .next-page.disable:hover {
   opacity: 0;
 }
+
 .game-container {
   width: 100px;
   position: fixed;
-  display: block;
+  display: flex;
+  flex-direction: column;
   top: 50%;
   transform: translate(0%, -50%);
   right: 30px;
   z-index: 10;
 }
-.sprint-btn:hover, 
+
+.sprint-btn:hover,
 .audio-call-btn:hover {
   transform: scale(1.4);
   transition: 0.3s;
   margin: 40px 0;
   cursor: pointer;
 }
+
 .game-menu-text {
   font-size: 25px;
   font-weight: 700;
-  color:rgb(10, 0, 53);
+  color: rgb(10, 0, 53);
   text-align: center;
 }
+
 .sprint-btn,
 .audio-call-btn {
   height: 100px;
   width: 100px;
   background-size: 100%;
+  background-repeat: no-repeat;
   margin: 20px 0;
 }
+
 .sprint-btn {
-  background-image: url(../assets/free-sticker-busy-4850894.png);
+  background-image: url(../assets/busy.png);
 }
+
 .audio-call-btn {
-  background-image: url(../assets/free-sticker-marketing-4850876.png);
+  background-image: url(../assets/marketing.png);
 }
 
 .page-container {
@@ -94,20 +116,25 @@
   display: flex;
   justify-content: space-between;
 }
+
 .page {
-  left: 50px;
   width: calc(100% - 50px);
   min-height: 300px;
   box-shadow: 0px 0px 20px -1px rgba(34, 60, 80, 0.27);
 }
-.bookmarks {
-  position: relative;
+
+.page.learned {
+  background-color: rgba(0, 255, 179, 0.27);
 }
+
+.bookmarks {
+  display: flex;
+  flex-direction: column;
+}
+
 .bookmark {
   height: 50px;
   width: 50px;
-  position: absolute;
-  left: 0px;
   font-size: 35px;
   color: #ffffff;
   text-align: center;
@@ -115,6 +142,7 @@
   border-right: none;
   cursor: pointer;
 }
+
 .bookmark:hover,
 .bookmark.active {
   transform: scale(1.2);
@@ -122,141 +150,166 @@
   box-shadow: -5px 5px 5px -1px rgba(34, 60, 80, 0.23);
   z-index: 10;
 }
+
 .bookmark:nth-child(1) {
-  top: 0px;
   background-color: #ffd900;
 }
+
 .bookmark:nth-child(2) {
-  top: 50px;
   background-color: #ffb700;
 }
+
 .bookmark:nth-child(3) {
-  top: 100px;
   background-color: #ff9100;
 }
+
 .bookmark:nth-child(4) {
-  top: 150px;
   background-color: #ff6f00;
 }
+
 .bookmark:nth-child(5) {
-  top: 200px;
   background-color: #ff5900;
 }
+
 .bookmark:nth-child(6) {
-  top: 250px;
   background-color: #ff4400;
 }
+
 .bookmark:nth-child(7) {
-  top: 300px;
   background-color: #dd3b00;
-  background-image: url(../assets/icons8-flash-on-100.png);
+  background-image: url(../assets/flash.png);
   background-size: 50px 50px;
 }
 
 .bookmark.active:nth-child(1),
 .bookmark:nth-child(1):hover {
-  top: 5px;
   background-color: #ffd900;
 }
+
 .bookmark.active:nth-child(2),
 .bookmark:nth-child(2):hover {
   background-color: #ffb700;
 }
+
 .bookmark.active:nth-child(3),
 .bookmark:nth-child(3):hover {
   background-color: #ff9100;
 }
+
 .bookmark.active:nth-child(4),
 .bookmark:nth-child(4):hover {
   background-color: #ff6f00;
 }
+
 .bookmark.active:nth-child(5),
 .bookmark:nth-child(5):hover {
   background-color: #ff5900;
 }
+
 .bookmark.active:nth-child(6),
 .bookmark:nth-child(6):hover {
   background-color: #ff4400;
 }
+
 .bookmark.active:nth-child(7),
 .bookmark:nth-child(7):hover {
   background-color: #dd3b00;
 }
 
+.bookmark.disable {
+  display: none;
+}
+
 .word-card {
-  position: relative;
-  width: 98%;
   margin: 10px;
   padding: 10px;
   display: flex;
+  justify-content: space-between;
   column-gap: 20px;
   font-size: 25px;
   line-height: 35px;
   box-shadow: 0px 0px 20px -1px rgba(34, 60, 80, 0.27);
 }
+
 .word-card.heavy-word {
   background: rgba(252, 122, 0, 0.2);
 }
+
 .word-card.learned-word {
   background: rgba(0, 252, 206, 0.2);
 }
+
+.word-wrapper {
+  display: flex;
+}
+
 .word-img {
   height: 200px;
   width: 200px;
+  margin-right: 25px;
   background-size: cover;
   border-radius: 50%;
   box-shadow: 0px 0px 15px 0px rgba(34, 60, 80, 0.7) inset;
 }
+
 .word {
   font-size: 35px;
   line-height: 45px;
 }
+
 .word,
 .word-meaning {
   margin-bottom: 10px;
 }
+
 .english {
   color: #000000;
 }
+
 .translation {
   color: #6d6d6d;
 }
 
 .word-settings-container {
-  width: 50px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
 .audio-btn,
 .heavy-btn,
 .learned-btn {
-  position: absolute;
-  right: 10px;
   width: 50px;
   height: 50px;
-  margin: auto;
+  margin: 10px auto;
   cursor: pointer;
 }
+
 .audio-btn,
 .heavy-btn,
 .learned-btn {
   background-size: 50px 50px;
   cursor: pointer;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
+
 .audio-btn {
-  background-image: url(../assets/icons8-audio-100.png);
-  top: 10px;
+  background-image: url(../assets/audio-1.png);
 }
+
 .audio-btn.disable {
   opacity: 0;
 }
+
 .heavy-btn {
-  background-image: url(../assets/icons8-flash-on-100.png);
-  top: 80px;
+  background-image: url(../assets/flash.png);
 }
+
 .learned-btn {
-  background-image: url(../assets/icons8-double-tick-100.png);
-  top: 150px;
+  background-image: url(../assets/double-tick.png);
 }
+
 .audio-btn:hover,
 .heavy-btn:hover,
 .heavy-btn.active,
@@ -264,4 +317,149 @@
 .learned-btn.active {
   transform: scale(1.4);
   transition: 0.3s;
+}
+
+.word-statistic {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.heavy-btn.disable,
+.learned-btn.disable,
+.word-statistic.disable {
+  display: none;
+}
+
+.top-btn {
+  cursor: pointer;
+  position: fixed;
+  bottom: 100px;
+  right: 50px;
+  z-index: 99; 
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  outline: none;
+  transition: 0.2s;
+  transform: translate(50%, 50%);
+  padding-top: 12px;
+  font-size: 35px;
+  line-height: 50px;
+  text-align: center;
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+  background-color: #6ce0c0;
+}
+.top-btn:hover,
+.top-btn:active {
+  background-color: #9befe6;
+}
+
+@media (max-width: 1440px) {
+  .page {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  .word-card {
+    flex-direction: column;
+    width: 400px;
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .word-wrapper {
+    display: block;
+  }
+  .word-settings-container {
+    height: 50px;
+    width: 100%;
+    flex-direction: row;
+    margin-bottom: 10px;
+  }
+  .word-statistic {
+    margin: 20px 0px auto 0px;
+  }
+  .word-img {
+    margin: 0px auto;
+  }
+  .word {
+    font-size: 25px;
+    line-height: 35px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .page {
+    width: 100%;
+  }
+  .textbook {
+    flex-direction: column;
+  }
+  .sidebar {
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+  }
+  .page-nav {
+    flex-direction: row;
+    margin-top: 0px;
+  }
+  .bookmarks {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 700px) {
+  .game-container {
+    position: inherit;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    top: 0px;
+    transform: translate(0%, 0%);
+    right: 0px;
+    z-index: 0;
+  }
+  .game-menu-text {
+    margin: auto 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .word {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .word-card {
+    width: 95%;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .bookmark {
+    height: 40px;
+    width: 40px;
+    font-size: 30px;
+    line-height: 40px;
+    background-repeat: no-repeat;
+  }
+  .page-nav {
+    margin: 0px auto;
+  }
+  .word-statistic {
+    font-size: 20px;
+  }
+  .audio-btn,
+  .heavy-btn,
+  .learned-btn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 520px) {
+  .sidebar {
+    flex-direction: column-reverse;
+    row-gap: 18px;
+  }
 }
