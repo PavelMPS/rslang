@@ -1,7 +1,7 @@
 import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords, getUserWords } from '../api/api';
 import { sprintGame, GameWord } from '../constants/sprint';
 import { audiochallengeSettings } from '../constants/audiochallenge';
-import { startGameSprint } from '../sprint-game/sprint-game';
+import { keyboardControl, startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak, optionFilter, filters  } from '../constants/constants';
 
@@ -36,13 +36,18 @@ async function getQuestionArrFromTextbook(group: number, page: number): Promise<
     arr.forEach(el => {
       if (el.page <= page) {
         totalArr.push(el);
+      };
+      if (totalArr.length === maxQuestionCount) {
+        return;
       }
     });
     
-    //TODO поменять массив _id-> id
-    totalArr = totalArr.reverse().slice(0, maxQuestionCount);
-    totalArr.forEach
-    console.log('reversedArr: ', totalArr) 
+    
+    totalArr = totalArr.reverse();
+    let str = JSON.stringify(totalArr);
+    str = str.replace(/_id/g, 'id');
+    totalArr = JSON.parse(str);
+    console.log('reversedArr: ', totalArr)
   return totalArr;
 }
 
@@ -170,7 +175,10 @@ export async function getResults(words: IWordQuestion[] | GameWord[], game: stri
     token = localStorage.getItem('Your token');
     await changeUserWords(words, game);
   }
-  if (game === sprint) { words.length = sprintGame.allAnswers}
+  if (game === sprint) {
+    words.length = sprintGame.allAnswers;
+    document.removeEventListener('keydown', keyboardControl)
+  }
   words.forEach((word: IWordQuestion | GameWord, index: number): void => {
     if (word.userAnswer === true) {
       rightAnswers += `<div>
