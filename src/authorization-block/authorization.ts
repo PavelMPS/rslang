@@ -10,6 +10,7 @@ const writeEmailCaption = 'Please, write correct email' as string;
 const signSuccessText = 'Success!' as string;
 const signPasswordEmailError = 'Incorrect e-mail or password' as string;
 const serverUrl = `https://react-rslang-example.herokuapp.com` as string;
+let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
 export async function renderAuthorizationBlock(): Promise<void> {
   const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
@@ -35,7 +36,7 @@ export async function renderRegistrationBlock(): Promise<void> {
     <form class="register-form">
         <div class="form-block">
           <div class="placeholder-container">
-            <input class="form-input" type="text" name="register-name" id="register-name" placeholder="Name">
+            <input class="form-input" type="text" maxlength="20" name="register-name" id="register-name" placeholder="Name">
             <label>Name</label>
           </div>
           <div class="register-error__name"></div>
@@ -68,7 +69,7 @@ export async function renderSignBlock(): Promise<void> {
   <form class="sign-form">
     <div class="form-block">
       <div class="placeholder-container">
-        <input class="form-input" type="email" name="sign-email" id="sign-email" required placeholder="">
+        <input class="form-input" type="email" name="sign-email" id="sign-email" required placeholder="Email">
         <label>Email</label>
       </div>
       <div class="sign-error__email"></div>
@@ -118,6 +119,7 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
   const registerErrorEmail = document.querySelector('.register-error__email') as HTMLElement;
   const registerErrorPassword = document.querySelector('.register-error__password') as HTMLElement;
   const registrationSuccess = document.querySelector('.registration-success') as HTMLElement;
+  const registerEmail = document.querySelector('.registration-success') as HTMLInputElement;
 
   function emptyRegisterCaptions(): void {
     registerErrorName.innerHTML = '';
@@ -150,6 +152,10 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
           (document.querySelector(`.register-error__${elem}`) as HTMLElement).innerHTML = `Invalid ${element.path}`;
         });
       });
+
+      if (reg.test(registerEmail.value) == false) {
+        registerErrorEmail.innerHTML = `${writeEmailCaption}`;
+      }
       break;
   };
 };
@@ -190,6 +196,7 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
         authorizationBlock.innerHTML = '';
         userGreeting();
         showHideAuthButtons();
+        window.location.reload();
       }, 2000);
       authorizationBlock.dataset.open = 'false';
       await getStatistics(content.userId);
@@ -201,11 +208,13 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       break;
 
     case 404:
-      if (signEmail.value.length < 1) {
-        emptySignCaptions();
-        signErrorEmail.innerHTML = `${writeEmailCaption}`;
+      emptySignCaptions();
+
+      if (reg.test(signEmail.value) == false) {
+        signSuccess.innerHTML = ``;
+        signErrorPassword.innerHTML = `${signPasswordEmailError}`;
       } else {
-        emptySignCaptions();
+        signErrorPassword.innerHTML = ``;
         signSuccess.innerHTML = `${notRegisteredEmailText}`;
       }
       break;
