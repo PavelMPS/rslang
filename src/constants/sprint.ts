@@ -22,6 +22,7 @@ type Sprint = {
     advanceScore: Array<number>;
     rightAnswers: number,
     allAnswers: number,
+    fromTextbook: boolean,
 }
 
 export const sprintGame: Sprint = {
@@ -38,4 +39,5 @@ export const sprintGame: Sprint = {
     advanceScore: [10, 20, 30, 40, 50, 60, 70],
     rightAnswers: 0,
     allAnswers: 0,
+    fromTextbook: true,
 }

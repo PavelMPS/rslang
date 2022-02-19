@@ -38,17 +38,27 @@ export function renderStartPage(): void {
 </header>
 
 <main class="main">
-  <section class="about-us__block">
-      <button class="about-us__button">About us</button>
       <article class="about-us__info">
           Description
       </article>
-  </section>
 
   <section class="games-button__wrap">
-  <div class="game1">Game1</div>
-  <div class="game2">Game2</div>
+    <div class="sprint-game">
+      <img class="game-img" src="../assets/busy.png">
+      <div class="game-caption">Sprint game</div>
+    </div>
+    <div class="audio-challenge">
+      <img class="game-img" src="../assets/marketing.png">
+      <div class="game-caption">Audio challenge</div>
+    </div>
+    <div class="textbook-button">
+      <img class="game-img" src="../assets/books.png">
+      <div class="game-caption">Textbook</div>
+  </div>
 </section>
+
+<button class="about-us__button">About us</button>
+
 </main>
 
 <footer class="footer">
