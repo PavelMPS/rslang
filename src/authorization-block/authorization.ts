@@ -69,7 +69,7 @@ export async function renderSignBlock(): Promise<void> {
   <form class="sign-form">
     <div class="form-block">
       <div class="placeholder-container">
-        <input class="form-input" type="email" name="sign-email" id="sign-email" required placeholder="">
+        <input class="form-input" type="email" name="sign-email" id="sign-email" required placeholder="Email">
         <label>Email</label>
       </div>
       <div class="sign-error__email"></div>
