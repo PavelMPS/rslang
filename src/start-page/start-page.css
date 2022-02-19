@@ -81,28 +81,9 @@
     margin: 50px 0 100px 0;
 }
 
-.game1,
-.game2 {
-    width: 200px;
-    height: 200px;
-    font-size: 30px;
-    font-family: sans-serif;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 30px;
-    background-color: #ff9c3d;
-    border: 3px solid black;
-}
-
-.about-us__block {
+.about-us__info {
     width: 100%;
     margin: 50px 0;
-}
-
-.about-us__info {
-    margin-top: 30px;
     height: 200px;
     font-size: 20px;
     font-family: sans-serif;
