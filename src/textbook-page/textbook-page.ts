@@ -19,7 +19,7 @@ if (localStorage.getItem('Textbook')) {
 }
 const maxPageNum: number = 29;
 
-async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]): Promise<void> {
+async function getUserWordsParam(card: HTMLElement, userWords: IUserWord[]): Promise<void> {
   userWords.find((elem: IUserWord): void => {
     if (elem.wordId === card.dataset.id) {
       const heavyBTN: HTMLElement = card.querySelector('.heavy-btn') as HTMLElement;
@@ -57,7 +57,7 @@ async function makeLearned(id: string, btn: HTMLElement): Promise<void> {
       learnedWords = statistic.learnedWords + 1;
     } else {
       learned = false;
-      if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1}
+      if (statistic.learnedWords > 0) { learnedWords = statistic.learnedWords - 1 }
     }
     await updateUserWord(userId, id, wordInf.difficulty, learned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, 0);
     await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
@@ -71,11 +71,11 @@ async function makeLearned(id: string, btn: HTMLElement): Promise<void> {
         learnedWords = statistic.learnedWords + 1;
       } else {
         learned = false;
-        if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1}
+        if (statistic.learnedWords > 0) { learnedWords = statistic.learnedWords - 1 }
       }
       await createUserWord(userId, id, difficultWeak, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
       await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
-    }    
+    }
   }
 }
 
@@ -90,16 +90,16 @@ async function chooseDifficult(id: string, btn: HTMLElement): Promise<void> {
   if (wordResponse.ok) {
     const wordInf: IUserWord = await wordResponse.json();
     if (btn.classList.contains('active')) {
-      await updateUserWord(userId, id, difficultHeavy, wordInf.optional.isLerned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers,  wordInf.optional.answersForIsLerned);
+      await updateUserWord(userId, id, difficultHeavy, wordInf.optional.isLerned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, wordInf.optional.answersForIsLerned);
     } else {
-      await updateUserWord(userId, id, difficultWeak, wordInf.optional.isLerned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers,  wordInf.optional.answersForIsLerned);
-    }    
+      await updateUserWord(userId, id, difficultWeak, wordInf.optional.isLerned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, wordInf.optional.answersForIsLerned);
+    }
   } else {
     let learned: boolean = false;
     let rightWordAnswers: number = 0;
     let allWordAnswers: number = 0;
     let answersForIsLerned: number = 0;
-  
+
     await createUserWord(userId, id, difficultHeavy, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
   }
 }
@@ -187,7 +187,7 @@ async function renderTextbookContent(): Promise<void> {
     gameContainer.style.opacity = '0';
   }
 
-  const wordCards: NodeListOf<HTMLElement> = document.querySelectorAll('.word-card') as  NodeListOf<HTMLElement>;
+  const wordCards: NodeListOf<HTMLElement> = document.querySelectorAll('.word-card') as NodeListOf<HTMLElement>;
   wordCards.forEach((card: HTMLElement) => {
     const audioBTN: HTMLElement = card.querySelector('.audio-btn') as HTMLElement;
     audioBTN.addEventListener(('click'), (): void => {
@@ -296,7 +296,7 @@ function playDifficultAudio(words: IAgregetedWord[], card: HTMLElement): void {
   }
 }
 
-export function createTextbookStructyre(): void {
+export function createTextbookStructure(): void {
   const main: HTMLElement = document.querySelector('.main') as HTMLElement;
   main.innerHTML = '';
 
@@ -329,7 +329,7 @@ export function createTextbookStructyre(): void {
         </a>
       </div>`;
 
-    main.innerHTML = content;
+  main.innerHTML = content;
 }
 
 function toPrevPage(): void {
@@ -348,10 +348,10 @@ function goToGroup(bookmark: HTMLElement): void {
   renderTextbookPage();
 }
 
-export function renderTextbookPage(): void {
-  createTextbookStructyre();
+export async function renderTextbookPage(): Promise<void> {
+  createTextbookStructure();
   renderTextbookContent();
-  
+
   const bookmarks: NodeListOf<HTMLElement> = document.querySelectorAll('.bookmark');
 
   if (localStorage.getItem('Your token')) {

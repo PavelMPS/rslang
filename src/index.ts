@@ -22,5 +22,3 @@ export async function getNewToken(userId: string): Promise<void> {
   localStorage.setItem('Your token', content.token);
   localStorage.setItem('Your refreshToken', content.refreshToken);
 }
-
-// getNewToken('	6210b7ded266500016ff6ee2');
