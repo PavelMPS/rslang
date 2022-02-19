@@ -106,3 +106,11 @@ interface IGameStatistic {
   allAnswers: number;  
   maxLine: number;
 }
+
+interface IUserInfo {
+    message: string;
+    token: string;
+    refreshToken: string;
+    userId: string;
+    name: string;
+}

@@ -8,7 +8,7 @@ export async function renderStatisticPage(): Promise<void> {
     if (localStorage.getItem('Your userId')) {
         userId = localStorage.getItem('Your userId') as string;
     } 
-    if (!localStorage.getItem('Your id') && !userId){ 
+    if ((!localStorage.getItem('Your id') || localStorage.getItem('Your id')) && !userId){ 
         main.innerHTML = `<h2>Please login or register</h2>`
         return;
     } else {
