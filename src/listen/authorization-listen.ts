@@ -125,6 +125,7 @@ export async function authorizationListen(): Promise<void> {
       userGreeting();
       logoutBlock.innerHTML = '';
       logoutBlock.dataset.open = 'false';
+      window.location.reload();
     });
   });
 

@@ -6,15 +6,8 @@ import '../start-page/start-page.css';
 export function renderStartPage(): void {
   const startPage = `
   <header class="header">
-  <nav class="nav">
 
-  <div class="burger">
-    <div class="line1"></div>
-    <div class="line2"></div>
-    <div class="line3"></div>
-  </div>
-
-<div class="burger-menu">
+  <div class="burger-menu">
   <nav class="burger-menu__nav">
     <ul>
       <li><a href="#"><img class="burger-menu__img" src="./assets/home.png"><div id="burger-menu-item-0">Home</div></a></a></li>
@@ -27,6 +20,13 @@ export function renderStartPage(): void {
   </nav>
 </div>
 
+  <nav class="nav">
+
+  <div class="burger">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+  </div>
       <div class="greet-block"></div>
       <div class="register-sign__block">
           <button class="authorization-open__button">Authorize</button>

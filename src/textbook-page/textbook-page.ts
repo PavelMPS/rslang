@@ -1,6 +1,8 @@
 import { getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords } from '../api/api';
-import { createAydio, getQuestionArr, playAudio } from '../utilits/utilits';
-import { difficultHeavy, difficultWeak, optionFilter } from '../constants/constants';
+import { createAydio, getQuestionArr, playAudio, resetGame } from '../utilits/utilits';
+import { audiochallenge, difficultHeavy, difficultWeak, optionFilter } from '../constants/constants';
+
+import '../textbook-page/textbook-page.css';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 
@@ -177,8 +179,7 @@ async function renderTextbookContent(): Promise<void> {
     words = await getWords(textbookSettings.group, textbookSettings.page);
     page.innerHTML = createTextbookContent(words);
   } else {
-    const hardWords = await getUserAggregatedWords(optionFilter.hard);
-    words = hardWords[0].paginatedResults;
+    words = await getUserAggregatedWords(optionFilter.hard);
     page.innerHTML = createDifficultContent(words as IAgregetedWord[]);
     const nav: HTMLElement = document.querySelector('.page-nav') as HTMLElement;
     nav.style.opacity = '0';
@@ -387,6 +388,7 @@ export function renderTextbookPage(): void {
 
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;
   audiocallBTN.addEventListener(('click'), async (): Promise<void> => {
+    resetGame(audiochallenge)
     const arr = await getQuestionArr(textbookSettings.group, textbookSettings.page)
     renderAudiochallengePage(arr);
   });
