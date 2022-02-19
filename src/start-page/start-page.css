@@ -8,6 +8,10 @@
     padding: 20px 40px;
 }
 
+.header {
+    position: relative;
+}
+
 .footer {
     position: fixed;
     bottom: 0;
@@ -37,15 +41,26 @@
 
 .authorization-open__button,
 .about-us__button,
-.logout-open__button {
+.logout-open__button,
+.register-submit,
+.sign-submit,
+.logout-button {
     width: fit-content;
     cursor: pointer;
     font-size: 20px;
     font-family: sans-serif;
-    background-color: black;
+    background-color: #ff4400;
     color: white;
     border: none;
-    padding: 15px 20px;
+    padding: 13px 18px;
+    text-align: center;
+}
+
+.register-submit,
+.sign-submit,
+.logout-button {
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .main {
@@ -161,7 +176,7 @@
     font-family: sans-serif;
     background-color: #ff9c3d;
     position: absolute;
-    top: 92.5px;
+    top: 100%;
     left: -202px;
     transition: all .4s ease-in-out;
     width: 200px;
@@ -214,10 +229,10 @@
     font-size: 20px;
 }
 
-@media screen and (max-width:550px) {
+@media screen and (max-width:560px) {
     .nav {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
     }
 
     .greet-block {
