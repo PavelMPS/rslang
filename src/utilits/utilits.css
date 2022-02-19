@@ -149,7 +149,7 @@
   font-size: 32px;
   text-align: center;
   font-weight: 700;
-  color: #000000;
+  color: #ffffff;
   line-height: 50px;
 }
 
@@ -261,7 +261,7 @@
 }
 
 .answers-container {
-  min-width: 400px;
+  min-width: 240px;
   margin: auto;
   padding: 0 20px;
 }
@@ -295,5 +295,9 @@
   }
   .difficult-buttons-container {
     width: 100%;
+  }
+  .main-tab,
+  .words-tab {
+    font-size: 24px;
   }
 }
