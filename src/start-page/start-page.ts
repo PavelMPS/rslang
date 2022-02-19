@@ -6,7 +6,6 @@ import '../start-page/start-page.css';
 export function renderStartPage(): void {
   const startPage = `
   <header class="header">
-
   <div class="burger-menu">
   <nav class="burger-menu__nav">
     <ul>
@@ -19,9 +18,7 @@ export function renderStartPage(): void {
     </ul>
   </nav>
 </div>
-
   <nav class="nav">
-
   <div class="burger">
     <div class="line1"></div>
     <div class="line2"></div>
@@ -36,31 +33,26 @@ export function renderStartPage(): void {
       </div>
   </nav>
 </header>
-
 <main class="main">
       <article class="about-us__info">
           Description
       </article>
-
   <section class="games-button__wrap">
     <div class="sprint-game">
       <img class="game-img" src="../assets/busy.png">
       <div class="game-caption">Sprint game</div>
     </div>
-    <div class="audio-challenge">
-      <img class="game-img" src="../assets/marketing.png">
-      <div class="game-caption">Audio challenge</div>
-    </div>
     <div class="textbook-button">
       <img class="game-img" src="../assets/books.png">
       <div class="game-caption">Textbook</div>
   </div>
+  <div class="audio-challenge">
+    <img class="game-img" src="../assets/marketing.png">
+    <div class="game-caption">Audio challenge</div>
+  </div>
 </section>
-
 <button class="about-us__button">About us</button>
-
 </main>
-
 <footer class="footer">
   <div class="developers">
       <a href="https://github.com/PavelMPS" target="_blank">Pavel Sergeevich, </a>
@@ -75,11 +67,9 @@ export function renderStartPage(): void {
  `;
   const body = document.querySelector('.body') as HTMLElement;
   body.innerHTML = startPage;
-
   const burger = document.querySelector('.burger') as HTMLElement;
   const burgerMenu = document.querySelector('.burger-menu') as HTMLElement;
   const burgerMenuLinks = document.querySelectorAll<HTMLElement>('.burger-menu a, .burger');
-  const greetBlock = document.querySelector('.greet-block') as HTMLElement;
 
   const openBurgerMenu = () => {
     burgerMenu.classList.toggle('active');
