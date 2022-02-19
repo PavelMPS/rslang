@@ -12,6 +12,7 @@ async function getWords(): Promise<IWord[]> {
 }
 
 export async function startGameSprint(group?: number, page?: number): Promise<void> {
+    console.log(sprintGame.difficult)
     await resetGame(sprint);
     const content: string = `
     <div class="timer-sprint"></div>
@@ -24,7 +25,7 @@ export async function startGameSprint(group?: number, page?: number): Promise<vo
         <div class="sprint-difficult-info-container">
             <div class="sprint-score">${sprintGame.gameOptions[0]}<span class="score-window">0</span></div>
             <div class="pop-up-window-score"></div>
-            <p class="sprint-difficult-info">Difficulty: ${sprintGame.difficult + 1}</p>               
+            <p class="sprint-difficult-info">Difficulty: ${group ? group : sprintGame.difficult + 1}</p>               
         </div>  
         <div class="question-area"></div>  
         <div class="answer-btn">
