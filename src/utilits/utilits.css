@@ -30,11 +30,11 @@
 }
 
 .game-img.audiochallenge {
-  background-image: url(../assets/free-sticker-marketing-4850876.png);
+  background-image: url(../assets/marketing.png);
 }
 
 .game-img.sprint {
-  background-image: url(../assets/free-sticker-busy-4850894.png);
+  background-image: url(../assets/busy.png);
 }
 
 .game-describe-container {
@@ -190,7 +190,7 @@
 }
 
 .good-result-img {
-  background-image: url(../assets/free-sticker-trophy-4852328.png);
+  background-image: url(../assets/trophy.png);
 }
 
 .bad-result-img {
@@ -241,17 +241,17 @@
 }
 
 .answer-title-right {
-  background-image: url(../assets/icons8-done-100.png);
+  background-image: url(../assets/done-1.png);
 }
 
 .answer-title-wrong {
-  background-image: url(../assets/icons8-close-100.png);
+  background-image: url(../assets/сlose.png);
 }
 
 .result-audio-btn {
   width: 30px;
   height: 30px;
-  background-image: url(../assets/icons8-audio-100.png);
+  background-image: url(../assets/audio-1.png);
   background-size: cover;
   cursor: pointer;
 }

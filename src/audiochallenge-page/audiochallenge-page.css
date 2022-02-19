@@ -13,11 +13,12 @@
   width: 25px;
   height: 25px;
   margin-left: 0px;
-  background-image: url(../assets/icons8-heart-100.png);
+  background-image: url(../assets/heart.png);
   background-size: 100%;
 }
+
 .heart.broken {
-  background-image: url(../assets/icons8-broken-heart-100\ \(1\).png);
+  background-image: url(../assets/broken-heart.png);
 }
 
 .listen-btn {
@@ -26,11 +27,12 @@
   margin: 100px auto;
   border-radius: 50%;
   background-color: #6ce0c0;
-  background-image: url(../assets/free-sticker-marketing-4850876.png);
+  background-image: url(../assets/marketing.png);
   background-size: 100%;
   cursor: pointer;
   transition: 0.3s;
 }
+
 .listen-btn:hover,
 .listen-btn.active {
   width: 175px;
@@ -65,13 +67,16 @@
   line-height: 50px;
   transition: 0.3s;
 }
+
 .answers-btn {
   background-color: #ff9100;
   margin: 0 auto;
 }
+
 .answers-btn.disable {
   opacity: 0;
 }
+
 .not-to-know-btn,
 .next-question-btn {
   display: block;
@@ -79,27 +84,31 @@
   background-color: #6ce0c0;
   transition: 1s;
 }
+
 .answers-btn:hover,
 .not-to-know-btn:hover,
 .next-question-btn:hover {
   cursor: pointer;
   transform: scale(1.2);
 }
+
 .answers-btn.right {
   opacity: 1;
   transform: scale(1.2);
   background-color: rgb(92, 255, 184);
 }
+
 .answers-btn.wrong {
   opacity: 1;
   transform: scale(1.2);
   background-color: rgb(252, 98, 98);
 }
+
 .not-to-know-btn.disable,
 .next-question-btn.disable {
   display: none;
   transition: 1s;
-}
+
 
 @media (max-width: 800px) {
   .listen-btn {
