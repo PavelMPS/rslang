@@ -9,7 +9,6 @@ function renderAudiochallengeQuestion(words: IWord[], answers: number[]) {
   answers.forEach((answer: number) => {
     content += `<div class="answers-btn" data-translate="${words[answer].wordTranslate}">${words[answer].wordTranslate}</div>`
   });
-console.log('audio')
   return content;
 }
 
@@ -141,13 +140,21 @@ function getRandomNum(arr: number[]): number {
   }
 }
 
-function getAnswers(questionNum: number): number[] {
+function getAnswers(questionNum: number, words: IWord[]): number[] {
   const answersArr: number[] = [];
 
   answersArr[0] = questionNum;
-  for (let i = 1; i < answersLength; i++) {
-    answersArr[i] = getRandomNum(answersArr);
+
+  if (words.length >= answersLength) {
+    for (let i = 1; i < answersLength; i++) {
+      answersArr[i] = getRandomNum(answersArr);
+    }
+  } else {
+    for (let i = 1; i < words.length; i++) {
+      answersArr[i] = getRandomNum(answersArr);
+    }
   }
+
   shuffle(answersArr);
   return answersArr;
 }
@@ -157,7 +164,7 @@ async function createQuestion(newWordArr: IWord[], index: number): Promise<void>
   const listenBTN: HTMLElement = document.querySelector('.listen-btn') as HTMLElement;
 
   if (index < audiochallengeSettings.allAnswers && audiochallengeSettings.lives > minScore) {
-    const answers = getAnswers(index);
+    const answers = getAnswers(index, newWordArr);
     answersContainer.innerHTML = renderAudiochallengeQuestion(newWordArr, answers as number[]);
     const wordAudio: HTMLAudioElement = createAydio(newWordArr[index].audio);
     playAudio(wordAudio);
@@ -178,6 +185,7 @@ async function createQuestion(newWordArr: IWord[], index: number): Promise<void>
   } else {
     const main = document.querySelector('.main') as HTMLElement;
     main.innerHTML = '';
+    audiochallengeSettings.maxLine = audiochallengeSettings.answerSeries;
     getResults(newWordArr, audiochallenge);
   }
 }
