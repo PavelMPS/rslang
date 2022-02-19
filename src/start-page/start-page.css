@@ -2,21 +2,21 @@
 .footer {
     width: 100%;
     max-width: inherit;
-    background-color: khaki;
+    background-color: #ff9c3d;
     display: flex;
     align-items: center;
     padding: 20px 40px;
 }
 
 .header {
-    border-bottom: 2px solid black;
+    position: relative;
 }
 
 .footer {
     position: fixed;
     bottom: 0;
     justify-content: space-between;
-    border-top: 2px solid black;
+    gap: 20px;
 }
 
 .nav {
@@ -37,20 +37,30 @@
 .register-sign__block {
     display: flex;
     flex-direction: row;
-    gap: 20px;
 }
 
-.register-open__button,
-.sign-open__button,
-.about-us__button {
+.authorization-open__button,
+.about-us__button,
+.logout-open__button,
+.register-submit,
+.sign-submit,
+.logout-button {
     width: fit-content;
     cursor: pointer;
     font-size: 20px;
     font-family: sans-serif;
-    background-color: black;
+    background-color: #ff4400;
     color: white;
     border: none;
-    padding: 15px 20px;
+    padding: 13px 18px;
+    text-align: center;
+}
+
+.register-submit,
+.sign-submit,
+.logout-button {
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .main {
@@ -82,83 +92,9 @@
     justify-content: center;
     align-items: center;
     border-radius: 30px;
-    background-color: khaki;
+    background-color: #ff9c3d;
     border: 3px solid black;
 }
-
-.register-block,
-.sign-block {
-    display: none;
-}
-
-.register-block.active,
-.sign-block.active {
-    display: block;
-    width: fit-content;
-    height: fit-content;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    margin: auto;
-    background-color: khaki;
-    border: 2px solid black;
-}
-
-.close-form {
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    top: 20px;
-    left: calc(100% - 45px);
-    cursor: pointer;
-}
-
-.register-form,
-.sign-form {
-    display: flex;
-    flex-direction: column;
-    margin: 70px;
-    font-size: 15px;
-    font-family: sans-serif;
-}
-
-.form-label {
-    margin-bottom: 5px;
-}
-
-.form-input {
-    border: 1px solid black;
-    padding: 5px;
-    margin-bottom: 15px;
-}
-
-.register-submit,
-.sign-submit {
-    margin-top: 10px;
-    background-color: khaki;
-    border: 1.5px solid black;
-    padding: 10px;
-    color: black;
-    background: linear-gradient(45deg, black, brown);
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    padding: 7px 10px;
-    background-size: 0% 100%;
-    transition: background-size .3s ease-in-out, color .3s ease-in-out;
-    font-size: 15px;
-    font-family: sans-serif;
-    cursor: pointer;
-}
-
-.register-submit:hover,
-.sign-submit:hover {
-    color: khaki;
-    transition: background-size .3s ease-in-out, color .3s ease-in-out;
-    background-size: 100% 100%;
-}
-
 
 .about-us__block {
     width: 100%;
@@ -183,6 +119,7 @@
     display: flex;
     flex-direction: row;
     gap: 5px;
+    flex-wrap: wrap;
 }
 
 .developers a {
@@ -237,16 +174,13 @@
 .burger-menu {
     font-size: 20px;
     font-family: sans-serif;
-    background-color: khaki;
+    background-color: #ff9c3d;
     position: absolute;
-    top: 92.5px;
+    top: 100%;
     left: -202px;
     transition: all .4s ease-in-out;
     width: 200px;
-    z-index: 98;
-    border-right: 2px solid black;
-    border-bottom: 2px solid black;
-    z-index: 100;
+    z-index: 99;
 }
 
 .burger-menu.active {
@@ -261,34 +195,47 @@
 }
 
 .burger-menu nav ul li {
-    padding: 10px 0;
+    padding: 7px 0;
     display: flex;
-    padding-left: 30px;
+    padding-left: 25px;
+    text-align: left;
 }
 
 .burger-menu nav ul li a {
     text-decoration: none;
     color: black;
-    background: linear-gradient(45deg, black, brown);
-    background-position: 0 100%;
-    background-repeat: no-repeat;
     padding: 7px 10px;
-    background-size: 0% 3.5px;
-    transition: background-size .5s;
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-/* .burger-menu nav ul li a:hover {
+.burger-menu nav ul li a:hover {
     background-size: 100% 3.5px;
-} */
+}
 
 .burger-menu__img {
     width: 30px;
     height: fit-content;
 }
 
-.burger-menu__item {
-    text-align: left;
+.disabled {
+    display: none;
+}
+
+.greet-block {
+    margin-left: auto;
+    font-family: sans-serif;
+    font-size: 20px;
+}
+
+@media screen and (max-width:560px) {
+    .nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .greet-block {
+        margin-left: initial !important;
+    }
 }
