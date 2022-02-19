@@ -120,7 +120,7 @@ function createTextbookContent(words: IWord[]): string {
         </div>
       </div>
       <div class="word-settings-container">
-        <div class="word-statistic disable"></div>
+        <div class="word-statistic disable">0 / 0</div>
         <div class="audio-btn"></div>
         <div class="heavy-btn disable"></div>
         <div class="learned-btn disable"></div>
@@ -149,7 +149,7 @@ function createDifficultContent(words: IAgregetedWord[]): string {
         </div>
       </div>
       <div class="word-settings-container">
-        <div class="word-statistic disable"></div>
+        <div class="word-statistic disable">0 / 0</div>
         <div class="audio-btn"></div>
         <div class="heavy-btn disable"></div>
         <div class="learned-btn disable"></div>
@@ -315,14 +315,14 @@ export function createTextbookStructyre(): void {
             <div class="page-num">${textbookSettings.page + 1}</div>
             <div class="next-page"></div>
           </div>
-        </div>
-        <div class="game-container">
-          <div class="sprint-btn"></div>
-          <div class="audio-call-btn"></div>
-          <div class="game-menu-text">Let's start training</div>
         </div>        
         <div class="page">
         </div>   
+        <div class="game-container">
+          <div class="sprint-btn"></div>
+          <div class="game-menu-text">Let's start training</div>
+          <div class="audio-call-btn"></div>
+        </div>
     </div>`;
 
     main.innerHTML = content;
