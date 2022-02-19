@@ -1,16 +1,12 @@
 .audiochallenge-container {
-  position: relative;
   width: 100%;
   height: 100%;
-  min-height: 600px;
 }
 
 .hearts-container {
-  position: absolute;
+  margin: 25px auto 0px auto;
   display: flex;
   column-gap: 20px;
-  top: 50px;
-  right: 20px;
 }
 
 .heart {
@@ -27,10 +23,7 @@
 .listen-btn {
   width: 150px;
   height: 150px;
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  transform: translate(-50%, -50%);
+  margin: 100px auto;
   border-radius: 50%;
   background-color: #6ce0c0;
   background-image: url(../assets/free-sticker-marketing-4850876.png);
@@ -48,12 +41,14 @@
 .btns-container {
   width: 100%;
   align-items: center;
-  position: absolute;
-  bottom: 150px;
+  margin-bottom: 100px;
 }
 
 .answers-btn-container {
   display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  row-gap: 20px;
   column-gap: 20px;
   margin: 50px auto;
 }
@@ -61,7 +56,7 @@
 .answers-btn,
 .not-to-know-btn,
 .next-question-btn {
-  width: 250px;
+  width: 225px;
   height: 50px;
   cursor: pointer;
   color: #ffffff;
@@ -71,7 +66,6 @@
   transition: 0.3s;
 }
 .answers-btn {
-  width: 225px;
   background-color: #ff9100;
   margin: 0 auto;
 }
@@ -105,4 +99,10 @@
 .next-question-btn.disable {
   display: none;
   transition: 1s;
+}
+
+@media (max-width: 800px) {
+  .listen-btn {
+    margin: 50px auto;
+  }
 }

@@ -69,15 +69,15 @@ export function keyboardControl(event: KeyboardEventInit): void {
 }
 
 async function formGameWords(group?: number, page?: number): Promise<void> {
-  group ? (sprintGame.group = group) : (sprintGame.group = sprintGame.difficult);
-  let arr: IWord[];
-  if (group !== undefined && page !== undefined) {
-    arr = await getQuestionArr(sprintGame.group, page);
-  } else {
-    arr = await getQuestionArr(sprintGame.group);
-  }
-  await formWordsArray(arr);
-  await formRandomWords();
+    group ? sprintGame.group = group : sprintGame.group = sprintGame.difficult;
+    let arr: IWord[];
+    if (group !== undefined && page !== undefined) {
+        arr = await getQuestionArr(sprintGame.group, sprint, page);
+    } else {
+        arr = await getQuestionArr(sprintGame.group, sprint);
+    } 
+    await formWordsArray(arr);
+    await formRandomWords();
 }
 
 async function formWordsArray(array: IWord[]): Promise<void> {

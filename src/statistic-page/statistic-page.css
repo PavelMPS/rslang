@@ -101,3 +101,9 @@ h3 {
     top: -57px;
     left: -55px;
 }
+
+.wrong-message-statistic {
+    font-size: 36px;
+    text-shadow: 2px 2px 3px #ff9c3d;
+    margin-top: 50px;
+}

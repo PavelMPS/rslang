@@ -113,7 +113,7 @@ export async function getStatistics(userId: string | null) {
       if (userId) {
         console.log('create new token');
         
-        // await getNewToken(userId);
+        await getNewToken(userId);
          
         break;
       }     
@@ -157,19 +157,6 @@ export async function updateStatistics(userId: string | null, lernedWords: numbe
   return content;
 };
 
-// export async function getUser(user) {
-//   const rawResponse = await fetch('https://react-rslang-example.herokuapp.com/users/${userId}', {
-//     method: 'GET',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//   });
-//   const content = await rawResponse.json();
-
-//   return content;
-// };
-
 export async function getUserAggregatedWords(filterOption: string, group?: number, page?: number) {
   let token: string | null = '';
   let filter: string = '';
@@ -200,26 +187,26 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
   return content[0].paginatedResults;
 }
 
-// async function getNewToken(userId: string): Promise<void> {
-//   let refreshToken: string = '';
-//   if (localStorage.getItem('Your refreshToken')) {
-//     refreshToken = localStorage.getItem('Your refreshToken') as string;
-//   }
-//   console.log(refreshToken)
-//   const res: Response = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/tokens`, {
-//     method: 'GET',
-//     headers: {
-//       'Authorization': `Bearer ${refreshToken}`,
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json',
-//     },
-//   });
-//   console.log('res', res)
-//   const content: IUserInfo = await res.json();
-//   console.log(content)
-//   localStorage.setItem('Name', content.name);
-//   localStorage.setItem('Message', content.message);
-//   localStorage.setItem('Your token', content.token);
-//   localStorage.setItem('Your userId', content.userId);
-//   localStorage.setItem('Your refreshToken', content.refreshToken);
-// }
+async function getNewToken(userId: string): Promise<void> {
+  let refreshToken: string = '';
+  if (localStorage.getItem('Your refreshToken')) {
+    refreshToken = localStorage.getItem('Your refreshToken') as string;
+  }
+  console.log(refreshToken)
+  const res: Response = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/tokens`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${refreshToken}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log('res', res)
+  const content: IUserInfo = await res.json();
+  console.log(content)
+  localStorage.setItem('Name', content.name);
+  localStorage.setItem('Message', content.message);
+  localStorage.setItem('Your token', content.token);
+  localStorage.setItem('Your userId', content.userId);
+  localStorage.setItem('Your refreshToken', content.refreshToken);
+}
