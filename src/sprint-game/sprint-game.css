@@ -92,16 +92,6 @@
 }
 
 .right-btn {
-    /* width: 25%;
-    height: 10%;
-    min-height: 30px;
-    background: #ff9c3d;
-    color: white;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all .4s; */
     width: 200px;
     height: 200px;
     background: url("../assets/yes-message.png");
@@ -201,7 +191,7 @@
     background: #6ce0c0;
     color: white;
     border: none;
-    font-size: 20px;
+    font-size: 22px;
     margin: auto;
     transition: all .4s;
     cursor: pointer;

@@ -7,22 +7,22 @@ export async function renderStatisticPage(): Promise<void> {
     let userId: string = '';
     if (localStorage.getItem('Your userId')) {
         userId = localStorage.getItem('Your userId') as string;
-    } 
-    if ((!localStorage.getItem('Your id') || localStorage.getItem('Your id')) && !userId){ 
+    }
+    if ((!localStorage.getItem('Your id') || localStorage.getItem('Your id')) && !userId) {
         main.innerHTML = `<h2>Please login or register</h2>`
         return;
     } else {
         let statisticInfo = await getStatistics(userId) as IStatistics;
         if (statisticInfo === undefined) {
-            const currentDate: Date = new Date();        
-            const day =  currentDate.getDate();
+            const currentDate: Date = new Date();
+            const day = currentDate.getDate();
             const month = currentDate.getMonth();
-            const year = currentDate.getFullYear();          
-            console.log('undefind');          
+            const year = currentDate.getFullYear();
+            console.log('undefind');
             await createStatistic(userId, year, month, day);
             statisticInfo = await getStatistics(userId) as IStatistics;
         }
-        console.log('here',statisticInfo)
+        console.log('here', statisticInfo)
         let sprintRightAnswersPercent: number = 0;
         let audiochallengeRightAnswersPercent: number = 0;
         let totalRightPercent: number = 0;
@@ -35,20 +35,21 @@ export async function renderStatisticPage(): Promise<void> {
         if (statisticInfo.optional.audiochallenge.allAnswers > 0) {
             audiochallengeRightAnswersPercent = Math.round(statisticInfo.optional.audiochallenge.rightAnswers /
                 statisticInfo.optional.audiochallenge.allAnswers * 100);
-        }      
-        const totalNewWords: number = sprintNewWords + audiochallengeNewWords;      
+        }
+        const totalNewWords: number = sprintNewWords + audiochallengeNewWords;
         if (sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent === 0) {
             totalRightPercent = 0;
-        } else if (sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent > 0){
+        } else if (sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent > 0) {
             totalRightPercent = audiochallengeRightAnswersPercent;
         } else if (sprintRightAnswersPercent > 0 && audiochallengeRightAnswersPercent === 0) {
             totalRightPercent = sprintRightAnswersPercent;
         } else {
             totalRightPercent = (sprintRightAnswersPercent + audiochallengeRightAnswersPercent) / 2;
-        }      
+        }
         const content: string = `
+        <div class="group-select-page">
         <div class="statistic-page__title">
-            <h2 class="games-statistic-title">Statistics</h2>
+            <h2 class="game-page-title">STATISTICS</h2>
         </div>
     
         <div class="games-statistic-container">
@@ -104,12 +105,13 @@ export async function renderStatisticPage(): Promise<void> {
             <div class="stats__info-block">
                 <div class="stats__info" class="everyday-new__words-count">${totalNewWords} words</div>
                 <div class="stats__info" class="everyday-learn__words-count">${totalRightPercent}%</div>
-                <div class="stats__info" class="everyday-right__words-count">${statisticInfo.learnedWords } words</div>
+                <div class="stats__info" class="everyday-right__words-count">${statisticInfo.learnedWords} words</div>
            </div>
         </div>
         </div>
         </div>
-    `;  
-    main.innerHTML = content;
+        </div>
+    `;
+        main.innerHTML = content;
     }
 }   

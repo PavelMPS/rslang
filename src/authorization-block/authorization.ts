@@ -35,25 +35,16 @@ export async function renderRegistrationBlock(): Promise<void> {
   registerBlock.innerHTML = `
     <form class="register-form">
         <div class="form-block">
-          <div class="placeholder-container">
             <input class="form-input" type="text" maxlength="20" name="register-name" id="register-name" placeholder="Name">
-            <label>Name</label>
-          </div>
           <div class="register-error__name"></div>
         </div>
         <div class="form-block">
-          <div class="placeholder-container">
             <input class="form-input" type="email" name="register-email" id="register-email" placeholder="Email">
-            <label>Email</label>
-          </div>
           <div class="register-error__email"></div>
         </div>
         <div class="form-block">
-          <div class="placeholder-container">
               <input class="form-input" type="password" name="register-password" id="register-password" placeholder="Password">
               <a href="#" class="password-control"></a>
-              <label>Password</label>
-            </div>
             <div class="register-error__password"></div>
         </div>
         <div class="form-block">
@@ -68,18 +59,12 @@ export async function renderSignBlock(): Promise<void> {
   signBlock.innerHTML = `
   <form class="sign-form">
     <div class="form-block">
-      <div class="placeholder-container">
         <input class="form-input" type="email" name="sign-email" id="sign-email" required placeholder="Email">
-        <label>Email</label>
-      </div>
       <div class="sign-error__email"></div>
     </div>
     <div class="form-block">
-      <div class="placeholder-container">
         <input class="form-input" type="password" name="sign-password" id="sign-password" required placeholder="Password">
         <a href="#" class="password-control"></a>
-        <label>Password</label>
-      </div>
         <div class="sign-error__password"></div>
     </div>
     <div class="form-block">
@@ -93,16 +78,16 @@ export async function renderLogoutBlock(): Promise<void> {
   const logoutBlock = document.querySelector('.logout-block') as HTMLElement;
   logoutBlock.innerHTML = `
   <div class="logout-border">
-  <img class="close-form" src="../assets/cross.svg" alt="Close">
+    <img class="close-form" src="../assets/cross.svg" alt="Close">
   <div class="auth"> 
-  <div class="logout__block-wrap"> 
-  <div class="logout-text">Are you sure you want to go out?</div>
-    <div class="logout-buttons__wrap">
-      <div class="logout-button" id="logout-exit">Yes</div>
-      <div class="logout-button" id="logout-stay">No</div>
-  </div>
-  </div>
-  </div>`;
+    <div class="logout__block-wrap"> 
+      <div class="logout-text">Are you sure you want to go out?</div>
+        <div class="logout-buttons__wrap">
+          <div class="logout-button" id="logout-exit">Yes</div>
+          <div class="logout-button" id="logout-stay">No</div>
+        </div>
+      </div>
+    </div>`;
 };
 
 export const createUser = async (user: IRegisterUser): Promise<void> => {
