@@ -1,10 +1,18 @@
 @import './normalize.css';
 
+@font-face {
+	font-family: 'Architects Daughter';
+	src: url('./assets/fonts/ArchitectsDaughter-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+
 html {
 	height: 100%;
 }
 
 .body {
+	font-family: 'Architects Daughter';
 	height: inherit;
 	margin: auto;
 }
