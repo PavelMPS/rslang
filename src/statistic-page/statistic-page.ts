@@ -29,8 +29,7 @@ export async function renderStatisticPage(): Promise<void> {
     let audiochallengeRightAnswersPercent: number = 0;
     let totalRightPercent: number = 0;
     const sprintNewWords: number = statisticInfo.optional.sprint.newWords;
-    const audiochallengeNewWords: number =
-      statisticInfo.optional.audiochallenge.newWords;
+    const audiochallengeNewWords: number = statisticInfo.optional.audiochallenge.newWords;
     if (statisticInfo.optional.sprint.allAnswers > 0) {
       sprintRightAnswersPercent = Math.round(
         (statisticInfo.optional.sprint.rightAnswers /
@@ -46,24 +45,14 @@ export async function renderStatisticPage(): Promise<void> {
       );
     }
     const totalNewWords: number = sprintNewWords + audiochallengeNewWords;
-    if (
-      sprintRightAnswersPercent === 0 &&
-      audiochallengeRightAnswersPercent === 0
-    ) {
+    if (sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent === 0) {
       totalRightPercent = 0;
-    } else if (
-      sprintRightAnswersPercent === 0 &&
-      audiochallengeRightAnswersPercent > 0
-    ) {
+    } else if ( sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent > 0) {
       totalRightPercent = audiochallengeRightAnswersPercent;
-    } else if (
-      sprintRightAnswersPercent > 0 &&
-      audiochallengeRightAnswersPercent === 0
-    ) {
+    } else if (sprintRightAnswersPercent > 0 && audiochallengeRightAnswersPercent === 0) {
       totalRightPercent = sprintRightAnswersPercent;
     } else {
-      totalRightPercent =
-        (sprintRightAnswersPercent + audiochallengeRightAnswersPercent) / 2;
+      totalRightPercent = (sprintRightAnswersPercent + audiochallengeRightAnswersPercent) / 2;
     }
     const content: string = `
       <div class="statistic-page__title">

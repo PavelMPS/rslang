@@ -31,7 +31,7 @@
 .app-name {
     align-self: center;
     font-size: 40px;
-    font-family: monospace;
+    font-family: 'Architects Daughter';
 }
 
 .register-sign__block {
@@ -48,7 +48,7 @@
     width: fit-content;
     cursor: pointer;
     font-size: 20px;
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
     background-color: #ff4400;
     color: white;
     border: none;
@@ -81,31 +81,12 @@
     margin: 50px 0 100px 0;
 }
 
-.game1,
-.game2 {
-    width: 200px;
-    height: 200px;
-    font-size: 30px;
-    font-family: sans-serif;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 30px;
-    background-color: #ff9c3d;
-    border: 3px solid black;
-}
-
-.about-us__block {
+.about-us__info {
     width: 100%;
     margin: 50px 0;
-}
-
-.about-us__info {
-    margin-top: 30px;
     height: 200px;
     font-size: 20px;
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
     padding: 20px;
     border: 1px solid black;
 }
@@ -125,12 +106,12 @@
 .developers a {
     text-decoration: none;
     color: black;
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
 }
 
 .year {
     font-size: 18px;
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
 }
 
 .burger {
@@ -173,7 +154,7 @@
 
 .burger-menu {
     font-size: 20px;
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
     background-color: #ff9c3d;
     position: absolute;
     top: 100%;
@@ -225,7 +206,7 @@
 
 .greet-block {
     margin-left: auto;
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
     font-size: 20px;
 }
 
@@ -238,4 +219,25 @@
     .greet-block {
         margin-left: initial !important;
     }
+}
+
+.game-caption {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+    font-family: 'Architects Daughter';
+}
+
+.games-button__wrap div {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.games-button__wrap div:hover {
+    transform: scale(1.2);
+    transition: 0.3s;
+}
+
+input::placeholder {
+    font-family: 'Architects Daughter';
 }

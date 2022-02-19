@@ -60,7 +60,7 @@
 }
 
 .stats-block__wrap {
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -85,13 +85,13 @@
 }
 
 h3 {
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
     margin-bottom: 15px;
 }
 
 .games-statistic-title,
 .words-statistic-title {
-    font-family: sans-serif;
+    font-family: 'Architects Daughter';
 }
 
 .stats-sticker__img {
