@@ -108,7 +108,7 @@
 .next-question-btn.disable {
   display: none;
   transition: 1s;
-
+}
 
 @media (max-width: 800px) {
   .listen-btn {
