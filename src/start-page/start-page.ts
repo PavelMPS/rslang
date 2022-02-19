@@ -43,10 +43,18 @@ export function renderStartPage(): void {
       </article>
 
   <section class="games-button__wrap">
-  <div class="game1">Game1
-  <img class="game-img" src="../assets/books.png">
+    <div class="sprint-game">
+      <img class="game-img" src="../assets/busy.png">
+      <div class="game-caption">Sprint game</div>
+    </div>
+    <div class="audio-challenge">
+      <img class="game-img" src="../assets/marketing.png">
+      <div class="game-caption">Audio challenge</div>
+    </div>
+    <div class="textbook-button">
+      <img class="game-img" src="../assets/books.png">
+      <div class="game-caption">Textbook</div>
   </div>
-  <div class="game2">Game2</div>
 </section>
 
 <button class="about-us__button">About us</button>

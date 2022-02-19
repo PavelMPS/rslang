@@ -220,3 +220,20 @@
         margin-left: initial !important;
     }
 }
+
+.game-caption {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+.games-button__wrap div {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.games-button__wrap div:hover {
+    transform: scale(1.2);
+    transition: 0.3s;
+}
