@@ -1,14 +1,15 @@
 import { getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords } from '../api/api';
 import { createAydio, getQuestionArr, playAudio, resetGame } from '../utilits/utilits';
 import { audiochallenge, difficultHeavy, difficultWeak, optionFilter } from '../constants/constants';
-
 import '../textbook-page/textbook-page.css';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
+import { audiochallengeSettings } from '../constants/audiochallenge';
+import { sprintGame } from '../constants/sprint';
 
 import '../textbook-page/textbook-page.css';
 
-let textbookSettings: { page: number, group: number } = {
+export let textbookSettings: { page: number, group: number } = {
   page: 0,
   group: 0,
 }
@@ -58,7 +59,7 @@ async function makeLearned(id: string, btn: HTMLElement): Promise<void> {
       learned = false;
       if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1}
     }
-    await updateUserWord(userId, id, wordInf.difficulty, learned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, wordInf.optional.answersForIsLerned);
+    await updateUserWord(userId, id, wordInf.difficulty, learned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, 0);
     await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
   } else {
     let rightWordAnswers: number = 0;
@@ -122,7 +123,7 @@ function createTextbookContent(words: IWord[]): string {
         </div>
       </div>
       <div class="word-settings-container">
-        <div class="word-statistic disable"></div>
+        <div class="word-statistic disable">0 / 0</div>
         <div class="audio-btn"></div>
         <div class="heavy-btn disable"></div>
         <div class="learned-btn disable"></div>
@@ -151,7 +152,7 @@ function createDifficultContent(words: IAgregetedWord[]): string {
         </div>
       </div>
       <div class="word-settings-container">
-        <div class="word-statistic disable"></div>
+        <div class="word-statistic disable">0 / 0</div>
         <div class="audio-btn"></div>
         <div class="heavy-btn disable"></div>
         <div class="learned-btn disable"></div>
@@ -316,15 +317,17 @@ export function createTextbookStructyre(): void {
             <div class="page-num">${textbookSettings.page + 1}</div>
             <div class="next-page"></div>
           </div>
-        </div>
-        <div class="game-container">
-          <div class="sprint-btn"></div>
-          <div class="audio-call-btn"></div>
-          <div class="game-menu-text">Let's start training</div>
         </div>        
         <div class="page">
         </div>   
-    </div>`;
+        <div class="game-container">
+          <div class="sprint-btn"></div>
+          <div class="game-menu-text">Let's start training</div>
+          <div class="audio-call-btn"></div>
+        </div>
+        <a class="top-btn" href="#">TOP
+        </a>
+      </div>`;
 
     main.innerHTML = content;
 }
@@ -382,12 +385,14 @@ export function renderTextbookPage(): void {
   const sprintBTN: HTMLElement = document.querySelector('.sprint-btn') as HTMLElement;
   sprintBTN.addEventListener(('click'), async (): Promise<void> => {
     await startGameSprint(textbookSettings.group, textbookSettings.page);
+    sprintGame.fromTextbook = true;
   });
 
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;
   audiocallBTN.addEventListener(('click'), async (): Promise<void> => {
     resetGame(audiochallenge)
-    const arr = await getQuestionArr(textbookSettings.group, textbookSettings.page)
+    const arr = await getQuestionArr(textbookSettings.group, audiochallenge, textbookSettings.page)
     renderAudiochallengePage(arr);
+    audiochallengeSettings.fromTextbook = true;
   });
 }

@@ -61,6 +61,7 @@ interface IAudiochallenge {
   gameWords: IWordQuestion[],
   rightAnswers: number,
   allAnswers: number,
+  fromTextbook: boolean,
 }
 interface IRegisterUser {
   name: string,
