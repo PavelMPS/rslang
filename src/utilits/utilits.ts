@@ -169,7 +169,6 @@ export function createAydio(link: string): HTMLAudioElement {
   const audio: HTMLAudioElement = new Audio();
   audio.preload = 'auto';
   audio.src = `https://react-rslang-example.herokuapp.com/${link}`;
-
   return audio;
 }
 
@@ -185,7 +184,8 @@ export async function getResults(words: IWordQuestion[] | GameWord[], game: stri
   }
   if (game === sprint) {
     words.length = sprintGame.allAnswers;
-    document.removeEventListener('keydown', keyboardControl)
+    document.removeEventListener('keydown', keyboardControl);
+    resetGame(sprint);
   }
   words.forEach((word: IWordQuestion | GameWord, index: number): void => {
     if (word.userAnswer === true) {
@@ -250,6 +250,7 @@ function createResultsAydio(words: IWordQuestion[] | GameWord[]): void {
 function tryAgain(game: string): void {
   const tryAgainBtn = document.querySelector('.try-again-btn') as HTMLButtonElement;
   if (game === sprint) {
+    resetGame(sprint);
     if (sprintGame.fromTextbook) {
       tryAgainBtn.addEventListener('click', async () => {
         await startGameSprint(textbookSettings.group, textbookSettings.page);
@@ -260,9 +261,9 @@ function tryAgain(game: string): void {
       });
     }
   } else {
+    resetGame(audiochallenge)
     if (sprintGame.fromTextbook) {
       tryAgainBtn.addEventListener('click', async () => {
-        resetGame(game)
         const arr = await getQuestionArr(textbookSettings.group, game, textbookSettings.page)
         renderAudiochallengePage(arr);
       });
