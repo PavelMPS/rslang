@@ -2,6 +2,7 @@ import { renderStartPage } from "../start-page/start-page";
 import { renderStatisticPage } from "../statistic-page/statistic-page";
 import { renderTextbookPage } from "../textbook-page/textbook-page";
 import { renderGroupSelectionPage, resetGame } from "../utilits/utilits";
+import { renderAboutUsBlock } from "../about-us/about-us";
 import { timerId } from "../sprint-game/sprint-game";
 import { sprint, audiochallenge } from '../constants/constants';
 
@@ -17,12 +18,12 @@ export function burgerListen(): void {
             case 'burger-menu-item-1':
                 resetGame(sprint);
                 renderGroupSelectionPage(sprint);
-                break;             
-            case 'burger-menu-item-2': 
+                break;
+            case 'burger-menu-item-2':
                 resetGame(audiochallenge);
                 renderGroupSelectionPage(audiochallenge);
-                break;             
-            case 'burger-menu-item-3': 
+                break;
+            case 'burger-menu-item-3':
                 renderTextbookPage();
                 break;
             case 'burger-menu-item-4':
