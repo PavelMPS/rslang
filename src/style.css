@@ -2,9 +2,16 @@
 
 @font-face {
 	font-family: 'Architects Daughter';
-	src: url('./assets/fonts/ArchitectsDaughter-Regular.ttf');
+	src: url('./assets/fonts/ArchitectsDaughter-Regular.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
+}
+
+@font-face {
+	font-family: 'JakobCTT';
+	font-style: normal;
+	font-weight: 400;
+	src: url('./assets/fonts/JakobCTT.ttf') format('truetype');
 }
 
 html {
@@ -12,7 +19,7 @@ html {
 }
 
 .body {
-	font-family: 'Architects Daughter';
+	font-family: 'Architects Daughter', 'JakobCTT';
 	height: inherit;
 	margin: auto;
 }

@@ -212,12 +212,6 @@
     font-size: 24px;
 }
 
-@media (max-width:935px) {
-    .main {
-        padding-bottom: 130px;
-    }
-}
-
 @media (max-width:560px) {
     .nav {
         flex-direction: column;
@@ -226,10 +220,6 @@
 
     .greet-block {
         margin-left: initial !important;
-    }
-
-    .main {
-        padding-bottom: 180px;
     }
 }
 
