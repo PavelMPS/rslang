@@ -1,5 +1,6 @@
 import { renderGroupSelectionPage } from "../utilits/utilits";
 import { renderTextbookPage } from "../textbook-page/textbook-page";
+import { renderAboutUsBlock } from '../about-us/about-us';
 
 export async function startPageListen(): Promise<void> {
     const btnGameSprint = document.querySelector('.sprint-game') as HTMLElement;
@@ -9,5 +10,8 @@ export async function startPageListen(): Promise<void> {
     btnGameAudiochallenge.addEventListener('click', (): Promise<void> => renderGroupSelectionPage('audiochallenge'));
 
     const btnTextBook = document.querySelector('.textbook-button') as HTMLElement;
-    btnTextBook.addEventListener('click', (): void => renderTextbookPage());
+    btnTextBook.addEventListener('click', (): Promise<void> => renderTextbookPage());
+
+    const btnAboutUs = document.querySelector('.about-us__button') as HTMLElement;
+    btnAboutUs.addEventListener('click', (): Promise<void> => renderAboutUsBlock());
 }

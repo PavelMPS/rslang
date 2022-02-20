@@ -47,7 +47,7 @@
 .logout-button {
     width: fit-content;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 24px;
     font-family: 'Architects Daughter';
     background-color: #ff4400;
     color: white;
@@ -69,13 +69,14 @@
     justify-content: space-evenly;
     align-items: center;
     padding: 0 40px;
+    padding-bottom: 100px;
 }
 
 .games-button__wrap {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    gap: 30px;
+    gap: 40px;
     flex-direction: row;
     justify-content: space-evenly;
     margin: 50px 0 100px 0;
@@ -85,7 +86,7 @@
     width: 100%;
     margin: 50px 0;
     height: 200px;
-    font-size: 34px;
+    font-size: 24px;
     font-family: 'Architects Daughter';
     padding: 20px;
 }
@@ -100,6 +101,7 @@
     flex-direction: row;
     gap: 5px;
     flex-wrap: wrap;
+    font-size: 20px;
 }
 
 .developers a {
@@ -109,7 +111,7 @@
 }
 
 .year {
-    font-size: 18px;
+    font-size: 20px;
     font-family: 'Architects Daughter';
 }
 
@@ -152,7 +154,7 @@
 }
 
 .burger-menu {
-    font-size: 20px;
+    font-size: 22px;
     font-family: 'Architects Daughter';
     background-color: #ff9c3d;
     position: absolute;
@@ -206,16 +208,16 @@
 .greet-block {
     margin-left: auto;
     font-family: 'Architects Daughter';
-    font-size: 20px;
+    font-size: 24px;
 }
 
-@media (max-width: 1200px) {
-    .about-us__info {
-        font-size: 24px;
+@media (max-width:935px) {
+    .main {
+        padding-bottom: 130px;
     }
 }
 
-@media screen and (max-width:560px) {
+@media (max-width:560px) {
     .nav {
         flex-direction: column;
         align-items: center;
@@ -225,21 +227,15 @@
         margin-left: initial !important;
     }
 
-    .about-us__info {
-        font-size: 18px;
-    }
-}
-
-@media (max-width: 320px) {
-    .about-us__info {
-        font-size: 14px;
+    .main {
+        padding-bottom: 180px;
     }
 }
 
 .game-caption {
     text-align: center;
     margin-top: 20px;
-    font-size: 20px;
+    font-size: 30px;
     font-family: 'Architects Daughter';
 }
 
@@ -249,7 +245,7 @@
 }
 
 .games-button__wrap div:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
     transition: 0.3s;
 }
 
