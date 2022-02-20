@@ -18,12 +18,12 @@ export function burgerListen(): void {
             case 'burger-menu-item-1':
                 resetGame(sprint);
                 renderGroupSelectionPage(sprint);
-                break;             
-            case 'burger-menu-item-2': 
+                break;
+            case 'burger-menu-item-2':
                 resetGame(audiochallenge);
                 renderGroupSelectionPage(audiochallenge);
-                break;             
-            case 'burger-menu-item-3': 
+                break;
+            case 'burger-menu-item-3':
                 renderTextbookPage();
                 break;
             case 'burger-menu-item-4':
