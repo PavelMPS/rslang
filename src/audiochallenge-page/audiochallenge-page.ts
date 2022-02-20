@@ -185,7 +185,10 @@ async function createQuestion(newWordArr: IWord[], index: number): Promise<void>
   } else {
     const main = document.querySelector('.main') as HTMLElement;
     main.innerHTML = '';
-    audiochallengeSettings.maxLine = audiochallengeSettings.answerSeries;
+    if (audiochallengeSettings.answerSeries > audiochallengeSettings.maxLine) {
+      audiochallengeSettings.maxLine = audiochallengeSettings.answerSeries;
+    };
     getResults(newWordArr, audiochallenge);
+    console.log('end', audiochallengeSettings);
   }
 }

@@ -85,10 +85,9 @@
     width: 100%;
     margin: 50px 0;
     height: 200px;
-    font-size: 20px;
+    font-size: 34px;
     font-family: 'Architects Daughter';
     padding: 20px;
-    border: 1px solid black;
 }
 
 .rsschool-img {
@@ -210,6 +209,12 @@
     font-size: 20px;
 }
 
+@media (max-width: 1200px) {
+    .about-us__info {
+        font-size: 24px;
+    }
+}
+
 @media screen and (max-width:560px) {
     .nav {
         flex-direction: column;
@@ -218,6 +223,16 @@
 
     .greet-block {
         margin-left: initial !important;
+    }
+
+    .about-us__info {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 320px) {
+    .about-us__info {
+        font-size: 14px;
     }
 }
 

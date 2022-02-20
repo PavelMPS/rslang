@@ -83,7 +83,7 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
   return await rawResponse.json();
 };
 
-export async function getStatistics(userId: string | null) { //What is function return????
+export async function getStatistics(userId: string | null): Promise<IStatistics | undefined> { //What is function return????
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');

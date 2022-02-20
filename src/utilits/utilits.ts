@@ -248,7 +248,7 @@ function tryAgain(game: string): void {
   }
 }
 
-export async function resetGame(game: string): Promise<void> {
+export function resetGame(game: string): void {
   if (game === audiochallenge) {
     audiochallengeSettings.answerSeries = minScore;
     audiochallengeSettings.maxLine = minScore;
@@ -310,8 +310,9 @@ function createResults(game: string): void {
     resultImg.classList.add('bad-result-img');
   }
   setTimeout(() => {
+    console.log('reset game')
     resetGame(game);
-  }, 2000);
+  }, 5000);
 }
 
 export async function changeUserWords(words: IWordQuestion[] | IGameWord[], game: string): Promise<void> {
