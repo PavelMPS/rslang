@@ -319,6 +319,13 @@
   transition: 0.3s;
 }
 
+.heavy-btn.passive {
+  opacity: 0.5;
+}
+.heavy-btn.passive:hover {
+  transform: scale(1);
+}
+
 .word-statistic {
   font-size: 28px;
   font-weight: 700;
