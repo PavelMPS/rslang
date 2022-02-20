@@ -11,12 +11,10 @@ export const difficultWeak: string = 'easy';
 export const difficultHeavy: string = 'hard';
 
 export const filters: {hard: string} = {
-    hard: `filter={"$and":[{"userWord.difficulty": "hard"}]}&wordsPerPage=3600`,
+  hard: `filter={"$and":[{"userWord.difficulty": "hard"}]}&wordsPerPage=3600`,
 }
 
 export const optionFilter: FilterOption = {
-    learned: 'learned',
-    noLearned: 'noLearned',
-    hard: 'hard',
-    wordsPerPage: 'wordsPerPage'
+  noLearned: 'noLearned',
+  hard: 'hard',
 }

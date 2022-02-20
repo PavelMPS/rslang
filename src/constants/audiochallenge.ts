@@ -13,9 +13,9 @@ export const audiochallengeSettings: IAudiochallenge = {
 }
 
 export const audiochallengeDescription = `<div class="game-describe">"Audiochallenge" is a workout that improves listening comprehension.</div>
-    <ul>
-      <li>Use the mouse to select.</li>
-      <li>Use number keys from 1 to 5 to select an answer.</li>
-      <li>Use a space to repeat a word.</li>
-      <li>Use the Enter key for a hint or to move to the next word.</li>
-    </ul>`;
+  <ul>
+    <li>Use the mouse to select.</li>
+    <li>Use number keys from 1 to 5 to select an answer.</li>
+    <li>Use a space to repeat a word.</li>
+    <li>Use the Enter key for a hint or to move to the next word.</li>
+  </ul>`;

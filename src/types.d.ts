@@ -109,18 +109,16 @@ interface IGameStatistic {
 }
 
 interface IUserInfo {
-    message: string;
-    token: string;
-    refreshToken: string;
-    userId: string;
-    name: string;
+  message: string;
+  token: string;
+  refreshToken: string;
+  userId: string;
+  name: string;
 }
 
 interface FilterOption {
-  learned: string;
   noLearned: string;
   hard: string;
-  wordsPerPage: string;
 }
 
  interface IGameWord {
