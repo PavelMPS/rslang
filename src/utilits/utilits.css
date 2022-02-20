@@ -12,6 +12,7 @@
   margin-bottom: 25px;
   font-weight: 900;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .audiochallenge-main-inf {
@@ -262,7 +263,7 @@
 
 .answers-container {
   min-width: 240px;
-  margin: auto;
+  margin-bottom: auto;
   padding: 0 20px;
 }
 
@@ -271,13 +272,16 @@
     flex-direction: column;
     row-gap: 25px;
   }
+
   .game-page-title {
     font-size: 30px;
     margin-bottom: 25px;
   }
+
   .difficult-subtitle {
     font-size: 30px;
   }
+
   .game-describe-container {
     font-size: 24px;
   }
@@ -287,15 +291,19 @@
   .game-page-title {
     font-size: 25px;
   }
+
   .difficult-subtitle {
     font-size: 25px;
   }
+
   .game-describe-container {
     font-size: 20px;
   }
+
   .difficult-buttons-container {
     width: 100%;
   }
+
   .main-tab,
   .words-tab {
     font-size: 24px;
