@@ -4,7 +4,7 @@ import { sprintDescription, sprintGame } from '../constants/sprint';
 import { audiochallengeDescription, audiochallengeSettings } from '../constants/audiochallenge';
 import { keyboardControl, startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
-import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak, optionFilter, filters, differenceCoefficient  } from '../constants/constants';
+import { maxLives, averegeSprintGameScore, minScore, sprint, audiochallenge, maxPageCount, maxQuestionCount, difficultHeavy, difficultWeak, optionFilter, differenceCoefficient  } from '../constants/constants';
 
 import '../utilits/utilits.css';
 
@@ -38,9 +38,9 @@ async function getQuestionArrFromTextbook(group: number, page: number, game: str
   } else {
     gameGroup = group;
   }
-  let totalArr: IWord[] = [];
-    const arr: IWord[] = await getUserAggregatedWords(optionFilter.noLearned, gameGroup, page);
-    arr.forEach((el: IWord): void => {
+  let totalArr: IAgregetedWord[] = [];
+    const arr: IAgregetedWord[] = await getUserAggregatedWords(optionFilter.noLearned, gameGroup);
+    arr.forEach((el: IAgregetedWord): void => {
       if (el.page <= page) {
         totalArr.push(el);
       };
@@ -49,8 +49,8 @@ async function getQuestionArrFromTextbook(group: number, page: number, game: str
       }
     });       
     totalArr = totalArr.reverse();
-    totalArr = JSON.parse(JSON.stringify(totalArr).replace(/_id/g, 'id')) ;
-  return totalArr;
+    const newTotalArr: IWord[] = JSON.parse(JSON.stringify(totalArr).replace(/_id/g, 'id')) ;
+  return newTotalArr;
 }
 
 function getRandomPage(arr: number[]): number {
@@ -309,9 +309,9 @@ function createResults(game: string): void {
     resultTitle.innerHTML = badResultsSprint;
     resultImg.classList.add('bad-result-img');
   }
-  setTimeout(() => {
-    resetGame(game);
-  }, 2000);
+  // setTimeout(() => {
+  //   resetGame(game);
+  // }, 2000);
 }
 
 export async function changeUserWords(words: IWordQuestion[] | IGameWord[], game: string): Promise<void> {
@@ -389,6 +389,7 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
     if (audiochallengeSettings.maxLine < statisticInf.optional.audiochallenge.maxLine) {
       maxLine = statisticInf.optional.audiochallenge.maxLine;
     }
+    console.log('result', maxLine, audiochallengeSettings);
     const audiochallengeStatistic: IGameStatistic = {
       newWords: statisticInf.optional.audiochallenge.newWords + wordsInf.newWords,
       rightAnswers: statisticInf.optional.audiochallenge.rightAnswers + audiochallengeSettings.rightAnswers,
@@ -397,6 +398,7 @@ async function updateStatisticsByResults(userId: string | null, game: string, wo
     }
     await updateStatistics(userId, newLearnedWords, statisticInf.optional.sprint, audiochallengeStatistic, statisticInf.optional.year, statisticInf.optional.month, statisticInf.optional.day);
   }
+  resetGame(game);
 }
 
 export async function createStatistic(id: string, year: number, month: number, day: number): Promise<void> {

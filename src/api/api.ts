@@ -83,7 +83,7 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
   return await rawResponse.json();
 };
 
-export async function getStatistics(userId: string | null) { //What is function return????
+export async function getStatistics(userId: string | null): Promise<IStatistics | undefined> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
@@ -140,7 +140,7 @@ export async function updateStatistics(userId: string | null, lernedWords: numbe
   return await rawResponse.json();
 };
 
-export async function getUserAggregatedWords(filterOption: string, group?: number, page?: number) {//What is function return????
+export async function getUserAggregatedWords(filterOption: string, group?: number): Promise<IAgregetedWord[]> {
   let token: string | null = '';
   let filter: string = '';
   if (localStorage.getItem('Your token')) {
@@ -163,7 +163,8 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
       'Content-Type': 'application/json'
     },
   }); 
-  const content = await res.json();
+  const content: IAgregetedWordArr = await res.json();
+  console.log(content);
   return content[0].paginatedResults;
 }
 
