@@ -1,36 +1,8 @@
-export type GameWord = {
-    id: string;
-    word: string;
-    answer: string;
-    right: boolean;
-    wordTranslate: string;
-    userAnswer: boolean;
-    audio: string;
-}
-
-type Sprint = {
-    gameOptions: Array<string>;
-    gameOver: Array<string>;
-    gameMessages: Array<string>;
-    difficult: number;
-    gameWords: Array<GameWord>;
-    page: number;
-    group: number;
-    count: number;
-    score: number;
-    answerSeries: number;
-    seriesTotalStatistics: number;
-    advanceScore: Array<number>;
-    rightAnswers: number,
-    allAnswers: number,
-    fromTextbook: boolean,
-}
-
-export const sprintGame: Sprint = {
+export const sprintGame: ISprint = {
     gameOptions: ['SCORE: ', 'right-answer', 'wrong-answer', 'Your score is: ', 'Try again?', 'Question: '],
     gameOver: ['Don\'t despair!', 'Nice work!','You dont answer any question :('],
     gameMessages: ['nice!', 'good!', 'very good!', 'amazing!', 'excellent!', 'impressive!', 'godlike!'],
-    difficult: 1,
+    difficult: 0,
     gameWords: [],
     page: 0,
     group: 0,
@@ -43,3 +15,7 @@ export const sprintGame: Sprint = {
     allAnswers: 0,
     fromTextbook: true,
 }
+
+export const sprintDescription = `In this game you must choose rihgt answer.
+    Click at that button you think right or press key left or right
+    for choosing answer`;

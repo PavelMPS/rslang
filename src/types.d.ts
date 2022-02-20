@@ -115,3 +115,43 @@ interface IUserInfo {
     userId: string;
     name: string;
 }
+
+interface FilterOption {
+  learned: string;
+  noLearned: string;
+  hard: string;
+  wordsPerPage: string;
+}
+
+ interface IGameWord {
+  id: string;
+  word: string;
+  answer: string;
+  right: boolean;
+  wordTranslate: string;
+  userAnswer: boolean;
+  audio: string;
+}
+
+interface ISprint {
+  gameOptions: Array<string>;
+  gameOver: Array<string>;
+  gameMessages: Array<string>;
+  difficult: number;
+  gameWords: Array<GameWord>;
+  page: number;
+  group: number;
+  count: number;
+  score: number;
+  answerSeries: number;
+  seriesTotalStatistics: number;
+  advanceScore: Array<number>;
+  rightAnswers: number,
+  allAnswers: number,
+  fromTextbook: boolean,
+}
+
+interface INewWord {
+  newWords: number;
+  learnedWords: number;
+}

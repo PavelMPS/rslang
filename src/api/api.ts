@@ -171,7 +171,7 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
     filter = filters.hard;
   } else if (filterOption === optionFilter.wordsPerPage) {
     filter = `filter={"$and": [{"group": ${group}}, {"page": ${page}}]}&wordsPerPage=20`;
-  } else if (filterOption === 'getRight') {
+  } else if (filterOption === optionFilter.noLearned) {
     filter = `group=${group}&filter={"$or": [{"userWord":null}, {"userWord.optional.isLerned": false}]}&wordsPerPage=3600`;
   }
   const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/aggregatedWords?${filter}`, {
@@ -181,8 +181,7 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-  });
-  
+  }); 
   const content = await res.json();
   return content[0].paginatedResults;
 }
@@ -192,7 +191,6 @@ async function getNewToken(userId: string): Promise<void> {
   if (localStorage.getItem('Your refreshToken')) {
     refreshToken = localStorage.getItem('Your refreshToken') as string;
   }
-  console.log(refreshToken)
   const res: Response = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/tokens`, {
     method: 'GET',
     headers: {
@@ -201,9 +199,7 @@ async function getNewToken(userId: string): Promise<void> {
       'Content-Type': 'application/json',
     },
   });
-  console.log('res', res)
   const content: IUserInfo = await res.json();
-  console.log(content)
   localStorage.setItem('Name', content.name);
   localStorage.setItem('Message', content.message);
   localStorage.setItem('Your token', content.token);

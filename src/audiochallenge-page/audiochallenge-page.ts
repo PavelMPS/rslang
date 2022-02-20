@@ -49,7 +49,7 @@ function brokeHeart() {
   }
 }
 
-const listener: Array<(event) => void> = [];
+const listener: Array<(event: Event) => void> = [];
 
 async function chooseAnswer(result: string, index: number, newWordArr: IWord[]): Promise<void> {
   const buttons: NodeListOf<HTMLElement> = document.querySelectorAll('.answers-btn');
