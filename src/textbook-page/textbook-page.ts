@@ -1,7 +1,6 @@
 import { getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords } from '../api/api';
-import { createAydio, getQuestionArr, playAudio, resetGame } from '../utilits/utilits';
-import { audiochallenge, difficultHeavy, difficultWeak, optionFilter, sprint } from '../constants/constants';
-import '../textbook-page/textbook-page.css';
+import { createAydio, getQuestionArr, playAudio } from '../utilits/utilits';
+import { audiochallenge, difficultHeavy, difficultWeak, optionFilter } from '../constants/constants';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 import { audiochallengeSettings } from '../constants/audiochallenge';
@@ -22,9 +21,9 @@ const maxPageNum: number = 29;
 async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]): Promise<void> {
   userWords.find((elem: IUserWord): void => {
     if (elem.wordId === card.dataset.id) {
-      const heavyBTN: HTMLElement = card.querySelector('.heavy-btn') as HTMLElement;
-      const learnedBTN: HTMLElement = card.querySelector('.learned-btn') as HTMLElement;
-      if (elem.difficulty === 'hard') {
+      const heavyBTN = card.querySelector('.heavy-btn') as HTMLElement;
+      const learnedBTN = card.querySelector('.learned-btn') as HTMLElement;
+      if (elem.difficulty === difficultHeavy) {
         heavyBTN.classList.add('active');
         card.classList.add('heavy-word');
       }
@@ -32,7 +31,7 @@ async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]): Pr
         learnedBTN.classList.add('active');
         card.classList.toggle('learned-word');
       }
-      const statistics: HTMLElement = card.querySelector('.word-statistic') as HTMLElement;
+      const statistics = card.querySelector('.word-statistic') as HTMLElement;
       statistics.innerHTML = `${elem.optional.rightAnswers} / ${elem.optional.allAnswers}`;
       return;
     }
@@ -84,9 +83,7 @@ async function chooseDifficult(id: string, btn: HTMLElement): Promise<void> {
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
   }
-
   const wordResponse: Response = await getUserWord(userId, id);
-
   if (wordResponse.ok) {
     const wordInf: IUserWord = await wordResponse.json();
     if (btn.classList.contains('active')) {
@@ -99,7 +96,6 @@ async function chooseDifficult(id: string, btn: HTMLElement): Promise<void> {
     let rightWordAnswers: number = 0;
     let allWordAnswers: number = 0;
     let answersForIsLerned: number = 0;
-  
     await createUserWord(userId, id, difficultHeavy, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
   }
 }
@@ -134,7 +130,7 @@ function createTextbookContent(words: IWord[]): string {
 }
 
 function createDifficultContent(words: IAgregetedWord[]): string {
-  let textForInput: string = '' as string;
+  let textForInput: string = '';
   words.forEach((word: IAgregetedWord): void => {
     textForInput += `<div class="word-card" data-id="${word._id}">
       <div class="word-wrapper">
@@ -163,33 +159,28 @@ function createDifficultContent(words: IAgregetedWord[]): string {
 }
 
 async function renderTextbookContent(): Promise<void> {
-  const page: HTMLElement = document.querySelector('.page') as HTMLElement;
+  const page = document.querySelector('.page') as HTMLElement;
   page.innerHTML = '';
-
-  const gameContainer: HTMLElement = document.querySelector('.game-container') as HTMLElement;
-  const pageNum: HTMLElement = document.querySelector('.page-num') as HTMLElement;
-
+  const gameContainer = document.querySelector('.game-container') as HTMLElement;
+  const pageNum = document.querySelector('.page-num') as HTMLElement;
   let words: IWord[] | IAgregetedWord[] = [];
-
   let userWords: IUserWord[];
   if (localStorage.getItem('Your token')) {
     userWords = await getUserWords();
   }
-
   if (textbookSettings.group !== 6) {
     words = await getWords(textbookSettings.group, textbookSettings.page);
     page.innerHTML = createTextbookContent(words);
   } else {
     words = await getUserAggregatedWords(optionFilter.hard);
     page.innerHTML = createDifficultContent(words as IAgregetedWord[]);
-    const nav: HTMLElement = document.querySelector('.page-nav') as HTMLElement;
+    const nav = document.querySelector('.page-nav') as HTMLElement;
     nav.style.opacity = '0';
     gameContainer.style.opacity = '0';
   }
-
-  const wordCards: NodeListOf<HTMLElement> = document.querySelectorAll('.word-card') as  NodeListOf<HTMLElement>;
-  wordCards.forEach((card: HTMLElement) => {
-    const audioBTN: HTMLElement = card.querySelector('.audio-btn') as HTMLElement;
+  const wordCards = document.querySelectorAll('.word-card') as  NodeListOf<HTMLElement>;
+  wordCards.forEach((card: HTMLElement): void => {
+    const audioBTN = card.querySelector('.audio-btn') as HTMLElement;
     audioBTN.addEventListener(('click'), (): void => {
       if (textbookSettings.group !== 6) {
         playTextbookAudio(words as IWord[], card);
@@ -197,8 +188,7 @@ async function renderTextbookContent(): Promise<void> {
         playDifficultAudio(words as IAgregetedWord[], card);
       }
     });
-
-    const heavyBTN: HTMLElement = card.querySelector('.heavy-btn') as HTMLElement;
+    const heavyBTN = card.querySelector('.heavy-btn') as HTMLElement;
     heavyBTN.addEventListener(('click'), (): void => {
       heavyBTN.classList.toggle('active');
       card.classList.toggle('heavy-word');
@@ -208,14 +198,12 @@ async function renderTextbookContent(): Promise<void> {
       }
     });
 
-    const learnedBTN: HTMLElement = card.querySelector('.learned-btn') as HTMLElement;
+    const learnedBTN = card.querySelector('.learned-btn') as HTMLElement;
     learnedBTN.addEventListener(('click'), (): void => {
       learnedBTN.classList.toggle('active');
       card.classList.toggle('learned-word');
       makeLearned(card.dataset.id as string, learnedBTN);
-
       let count: number = 0;
-
       wordCards.forEach((wordCard: HTMLElement): void => {
         if (wordCard.classList.contains('learned-word')) {
           count = count + 1;
@@ -231,19 +219,15 @@ async function renderTextbookContent(): Promise<void> {
         pageNum.classList.remove('learned');
       }
     });
-
-    const wordStatistic: HTMLElement = card.querySelector('.word-statistic') as HTMLElement;
-
+    const wordStatistic = card.querySelector('.word-statistic') as HTMLElement;
     if (localStorage.getItem('Your token')) {
       getUserWordsParam(card, userWords);
       heavyBTN.classList.remove('disable');
       learnedBTN.classList.remove('disable');
       wordStatistic.classList.remove('disable');
     }
-  })
-
+  });
   let count: number = 0;
-
   wordCards.forEach((wordCard: HTMLElement): void => {
     if (wordCard.classList.contains('learned-word')) {
       count = count + 1;
@@ -268,9 +252,7 @@ function playTextbookAudio(words: IWord[], card: HTMLElement): void {
   const wordAudio: HTMLAudioElement = createAydio(word.audio);
   const wordMeaning: HTMLAudioElement = createAydio(word.audioMeaning);
   const wordExample: HTMLAudioElement = createAydio(word.audioExample);
-
   playAudio(wordAudio);
-
   wordAudio.onended = function (): void {
     playAudio(wordMeaning);
     wordMeaning.onended = function (): void {
@@ -285,9 +267,7 @@ function playDifficultAudio(words: IAgregetedWord[], card: HTMLElement): void {
   const wordAudio: HTMLAudioElement = createAydio(word.audio);
   const wordMeaning: HTMLAudioElement = createAydio(word.audioMeaning);
   const wordExample: HTMLAudioElement = createAydio(word.audioExample);
-
   playAudio(wordAudio);
-
   wordAudio.onended = function (): void {
     playAudio(wordMeaning);
     wordMeaning.onended = function (): void {
@@ -297,9 +277,8 @@ function playDifficultAudio(words: IAgregetedWord[], card: HTMLElement): void {
 }
 
 export function createTextbookStructyre(): void {
-  const main: HTMLElement = document.querySelector('.main') as HTMLElement;
+  const main = document.querySelector('.main') as HTMLElement;
   main.innerHTML = '';
-
   const content: string = `<div class="textbook">
         <div class="sidebar">
           <div class="bookmarks">
@@ -351,48 +330,38 @@ function goToGroup(bookmark: HTMLElement): void {
 export function renderTextbookPage(): void {
   createTextbookStructyre();
   renderTextbookContent();
-  
   const bookmarks: NodeListOf<HTMLElement> = document.querySelectorAll('.bookmark');
-
   if (localStorage.getItem('Your token')) {
     bookmarks[6].classList.remove('disable');
   }
-
-  bookmarks.forEach((bookmarkEl: HTMLElement) => {
+  bookmarks.forEach((bookmarkEl: HTMLElement): void => {
     if (Number(bookmarkEl.dataset.group) === textbookSettings.group) {
       bookmarkEl.classList.add('active');
     }
     bookmarkEl.addEventListener(('click'), (): void => goToGroup(bookmarkEl));
   })
-
-  const prevBTN: HTMLElement = document.querySelector('.prev-page') as HTMLElement;
+  const prevBTN = document.querySelector('.prev-page') as HTMLElement;
   if (!prevBTN.classList.contains('disable')) {
     prevBTN.addEventListener(('click'), toPrevPage);
   }
-
-  const nextBTN: HTMLElement = document.querySelector('.next-page') as HTMLElement;
+  const nextBTN = document.querySelector('.next-page') as HTMLElement;
   if (!nextBTN.classList.contains('disable')) {
     nextBTN.addEventListener(('click'), toNextPage);
   }
-
   if (textbookSettings.page === 0) {
     prevBTN.classList.add('disable');
   }
   if (textbookSettings.page === maxPageNum) {
     nextBTN.classList.add('disable');
   }
-
-  const sprintBTN: HTMLElement = document.querySelector('.sprint-btn') as HTMLElement;
+  const sprintBTN = document.querySelector('.sprint-btn') as HTMLElement;
   sprintBTN.addEventListener(('click'), async (): Promise<void> => {
-    await resetGame(sprint);
     await startGameSprint(textbookSettings.group, textbookSettings.page);
     sprintGame.fromTextbook = true;
   });
-
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;
   audiocallBTN.addEventListener(('click'), async (): Promise<void> => {
-    await resetGame(audiochallenge);
-    const arr = await getQuestionArr(textbookSettings.group, audiochallenge, textbookSettings.page)
+    const arr: IWord[] = await getQuestionArr(textbookSettings.group, audiochallenge, textbookSettings.page)
     renderAudiochallengePage(arr);
     audiochallengeSettings.fromTextbook = true;
   });

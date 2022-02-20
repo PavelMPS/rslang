@@ -1,17 +1,16 @@
 import { filters, optionFilter } from "../constants/constants";
-import { renderStatisticPage } from "../statistic-page/statistic-page";
 import { createStatistic } from "../utilits/utilits";
 
+const path: string = 'https://react-rslang-example.herokuapp.com';
+
 export async function getWords(group: number, page: number): Promise<IWord[]> {
-  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words?group=${group}&page=${page}`);
-  const words: IWord[] = await response.json();
-  return words;
+  const response: Response = await fetch(`${path}/words?group=${group}&page=${page}`);
+  return  await response.json();
 }
 
 export async function getWord(wordId: string): Promise<IWord> {
-  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words/${wordId}`);
-  const word: IWord = await response.json();
-  return word;
+  const response: Response = await fetch(`${path}/words/${wordId}`);
+  return await response.json();
 }
 
 export async function getUserWord(userId: string | null, wordId: string): Promise<Response> {
@@ -19,14 +18,13 @@ export async function getUserWord(userId: string | null, wordId: string): Promis
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
   }
-  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/words/${wordId}`, {
+  const response: Response = await fetch(`${path}/users/${userId}/words/${wordId}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
     }
-  });
-  
+  }); 
   return response;
 }
 
@@ -39,16 +37,14 @@ export async function getUserWords(): Promise<IUserWord[]> {
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
   }
-  const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/words`, {
+  const response: Response = await fetch(`${path}/users/${userId}/words`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
     }
   });
-  const content = await response.json();
-
-  return content;
+  return await response.json();
 }
 
 export async function createUserWord(userId: string | null, wordId: string, difficult: string, lerned: boolean, rightAnswers: number, allAnswers: number, answersForIsLerned: number): Promise<IUserWord> {
@@ -57,7 +53,7 @@ export async function createUserWord(userId: string | null, wordId: string, diff
     token = localStorage.getItem('Your token');
   }
   const word: IUserWord = { "difficulty": difficult, "optional": {"isLerned": lerned, "rightAnswers": rightAnswers, "allAnswers": allAnswers, "answersForIsLerned": answersForIsLerned} };
-  const rawResponse = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/words/${wordId}`, {
+  const rawResponse = await fetch(`${path}/users/${userId}/words/${wordId}`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -66,9 +62,7 @@ export async function createUserWord(userId: string | null, wordId: string, diff
     },
     body: JSON.stringify(word)
   });
-  const content = await rawResponse.json();
-
-  return content;
+  return await rawResponse.json();
 };
 
 export async function updateUserWord(userId: string | null, wordId: string, difficult: string, lerned: boolean, rightAnswers: number, allAnswers: number, answersForIsLerned: number): Promise<IUserWord> {
@@ -77,8 +71,7 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
     token = localStorage.getItem('Your token');
   }
   const word: IUserWord = { "difficulty": difficult, "optional": {"isLerned": lerned, "rightAnswers": rightAnswers, "allAnswers": allAnswers, "answersForIsLerned": answersForIsLerned} };
-
-  const rawResponse = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/words/${wordId}`, {
+  const rawResponse = await fetch(`${path}/users/${userId}/words/${wordId}`, {
     method: 'PUT',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -87,17 +80,15 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
     },
     body: JSON.stringify(word)
   });
-  const content = await rawResponse.json();
-
-  return content;
+  return await rawResponse.json();
 };
 
-export async function getStatistics(userId: string | null) {
+export async function getStatistics(userId: string | null) { //What is function return????
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
   }
-  const response = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/statistics`, {
+  const response = await fetch(`${path}/users/${userId}/statistics`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -105,16 +96,14 @@ export async function getStatistics(userId: string | null) {
     }
   });
   const currentDate: Date = new Date();        
-            const day =  currentDate.getDate();
-            const month = currentDate.getMonth();
-            const year = currentDate.getFullYear();             
+  const day: number =  currentDate.getDate();
+  const month: number = currentDate.getMonth();
+  const year: number = currentDate.getFullYear();             
   switch (response.status) {
     case 401:
-      if (userId) {
-        console.log('create new token');
-        
+      if (userId) {       
         await getNewToken(userId);
-         
+        // May be we can redirect user to login again?        
         break;
       }     
     case 404: 
@@ -124,26 +113,22 @@ export async function getStatistics(userId: string | null) {
     case 200: 
       const content: IStatistics = await response.json();
       if (content.optional.year === year&& content.optional.month === month && content.optional.day === day) {
-        console.log('1date = 2date');
-        console.log(content);
         return content;
       } else {
-        console.log('last else')
         if (userId)   
         await createStatistic(userId, year, month, day);
         break;
       }
   }
-};
+}
 
 export async function updateStatistics(userId: string | null, lernedWords: number, sprintStatistics: IGameStatistic, audiochallengeStatistics: IGameStatistic, year: number, month: number, day: number): Promise<IStatistics> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
   }
-  const statistics: IStatistics = { "learnedWords": lernedWords, "optional": { "sprint":  sprintStatistics, "audiochallenge": audiochallengeStatistics, "year": year, "month": month, "day": day,  } };
-
-  const rawResponse = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/statistics`, {
+  const statistics: IStatistics = { "learnedWords": lernedWords, "optional": { "sprint":  sprintStatistics, "audiochallenge": audiochallengeStatistics, "year": year, "month": month, "day": day, } };
+  const rawResponse = await fetch(`${path}/users/${userId}/statistics`, {
     method: 'PUT',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -152,12 +137,10 @@ export async function updateStatistics(userId: string | null, lernedWords: numbe
     },
     body: JSON.stringify(statistics)
   });
-  const content = await rawResponse.json();
-  console.log('update', content);
-  return content;
+  return await rawResponse.json();
 };
 
-export async function getUserAggregatedWords(filterOption: string, group?: number, page?: number) {
+export async function getUserAggregatedWords(filterOption: string, group?: number, page?: number) {//What is function return????
   let token: string | null = '';
   let filter: string = '';
   if (localStorage.getItem('Your token')) {
@@ -169,20 +152,17 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
   }
   if (filterOption === optionFilter.hard) {
     filter = filters.hard;
-  } else if (filterOption === optionFilter.wordsPerPage) {
-    filter = `filter={"$and": [{"group": ${group}}, {"page": ${page}}]}&wordsPerPage=20`;
-  } else if (filterOption === 'getRight') {
+  } else if (filterOption === optionFilter.noLearned) {
     filter = `group=${group}&filter={"$or": [{"userWord":null}, {"userWord.optional.isLerned": false}]}&wordsPerPage=3600`;
   }
-  const res = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/aggregatedWords?${filter}`, {
+  const res = await fetch(`${path}/users/${userId}/aggregatedWords?${filter}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-  });
-  
+  }); 
   const content = await res.json();
   return content[0].paginatedResults;
 }
@@ -192,8 +172,7 @@ async function getNewToken(userId: string): Promise<void> {
   if (localStorage.getItem('Your refreshToken')) {
     refreshToken = localStorage.getItem('Your refreshToken') as string;
   }
-  console.log(refreshToken)
-  const res: Response = await fetch(`https://react-rslang-example.herokuapp.com/users/${userId}/tokens`, {
+  const res: Response = await fetch(`${path}/users/${userId}/tokens`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${refreshToken}`,
@@ -201,9 +180,7 @@ async function getNewToken(userId: string): Promise<void> {
       'Content-Type': 'application/json',
     },
   });
-  console.log('res', res)
   const content: IUserInfo = await res.json();
-  console.log(content)
   localStorage.setItem('Name', content.name);
   localStorage.setItem('Message', content.message);
   localStorage.setItem('Your token', content.token);

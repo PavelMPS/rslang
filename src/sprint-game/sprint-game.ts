@@ -1,19 +1,12 @@
 import { maxQuestionCount, sprint } from "../constants/constants";
-import { GameWord, sprintGame } from "../constants/sprint";
-import { getQuestionArr, getResults, resetGame } from "../utilits/utilits";
+import { sprintGame } from "../constants/sprint";
+import { getQuestionArr, getResults} from "../utilits/utilits";
 import "../sprint-game/sprint-game.css";
 import { getWords } from "../api/api";
 
 export let timerId: NodeJS.Timer;
 
-// async function getWords(): Promise<IWord[]> {
-//     const response: Response = await fetch(`https://react-rslang-example.herokuapp.com/words?group=${sprintGame.group}&page=${sprintGame.page}`);
-//     const words: IWord[] = await response.json();
-//     return words;
-// }
-
 export async function startGameSprint(group?: number, page?: number): Promise<void> {
-  await resetGame(sprint);
   const content: string = `
     <div class="timer-sprint"></div>
     <div class="sprint-info-table">
@@ -82,7 +75,7 @@ async function formGameWords(group?: number, page?: number): Promise<void> {
 
 async function formWordsArray(array: IWord[]): Promise<void> {
   array.forEach((elem: IWord, index: number) => {
-    const gameWord: GameWord = {
+    const gameWord: IGameWord = {
       id: elem.id,
       word: elem.word,
       answer: elem.wordTranslate,
@@ -106,7 +99,7 @@ async function formRandomAnswers(): Promise<Array<string>> {
 async function formRandomWords(): Promise<void> {
   const randomAnswers: Array<string> = await formRandomAnswers();
   let count: number = randomAnswers.length - 1;
-  sprintGame.gameWords.forEach((el: GameWord, index: number) => {
+  sprintGame.gameWords.forEach((el: IGameWord, index: number) => {
     if (index % 2 !== 0) {
       if (el.answer !== randomAnswers[count]) {
         el.answer = randomAnswers[count];
@@ -254,7 +247,7 @@ async function renderQuestion(): Promise<void> {
   sprintGame.count++;
 }
 
-async function shuffle(array: Array<GameWord>): Promise<void> {
+async function shuffle(array: Array<IGameWord>): Promise<void> {
   array.sort(() => Math.random() - 0.5);
   await renderQuestion();
 }
