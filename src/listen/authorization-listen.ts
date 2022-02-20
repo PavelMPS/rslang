@@ -17,12 +17,23 @@ export async function authorizationListen(): Promise<void> {
     });
   };
 
-  authorizationOpenButton.addEventListener('click', (): void => {
+  function showHidePassword(): void {
+    const passwordControl = document.querySelector('.password-control') as HTMLInputElement;
+    passwordControl.addEventListener('click', (): Boolean => {
+      if (passwordControl.previousElementSibling?.getAttribute('type') == 'password') {
+        passwordControl.classList.add('view');
+        passwordControl.previousElementSibling?.setAttribute('type', 'text');
+      } else {
+        passwordControl.classList.remove('view');
+        passwordControl.previousElementSibling?.setAttribute('type', 'password');
+      };
+      return false;
+    });
+  };
 
+  authorizationOpenButton.addEventListener('click', (): void => {
     renderAuthorizationBlock();
     renderRegistrationBlock();
-    showHidePassword();
-
     if (authorizationBlock.dataset.open == 'true') {
       authorizationBlock.dataset.open = 'false';
       authorizationBlock.innerHTML = '';
@@ -34,20 +45,7 @@ export async function authorizationListen(): Promise<void> {
       signSubmitCall(document.querySelector('.register-block') as HTMLElement);
       registerSubmitCall(document.querySelector('.sign-block') as HTMLElement);
       closeForm();
-    };
-
-    function showHidePassword(): void {
-      const passwordControl = document.querySelector('.password-control') as HTMLInputElement;
-      passwordControl.addEventListener('click', (): Boolean => {
-        if (passwordControl.previousElementSibling?.getAttribute('type') == 'password') {
-          passwordControl.classList.add('view');
-          passwordControl.previousElementSibling?.setAttribute('type', 'text');
-        } else {
-          passwordControl.classList.remove('view');
-          passwordControl.previousElementSibling?.setAttribute('type', 'password');
-        };
-        return false;
-      });
+      showHidePassword();
     };
 
     function switchAuthorizeBlock(args: Array<HTMLElement>): void {
@@ -100,12 +98,9 @@ export async function authorizationListen(): Promise<void> {
   });
 
   logoutOpenButton.addEventListener('click', (): void => {
-
     renderLogoutBlock();
-
     const logoutStayButton = document.querySelector('#logout-stay') as HTMLElement;
     const logoutExitButton = document.querySelector('#logout-exit') as HTMLElement;
-
     if (logoutBlock.dataset.open == 'true') {
       logoutBlock.dataset.open = 'false';
       logoutBlock.innerHTML = '';
@@ -113,12 +108,10 @@ export async function authorizationListen(): Promise<void> {
       logoutBlock.dataset.open = 'true';
       closeForm();
     };
-
     logoutStayButton.addEventListener('click', (): void => {
       logoutBlock.innerHTML = '';
       logoutBlock.dataset.open = 'false';
     });
-
     logoutExitButton.addEventListener('click', (): void => {
       localStorage.clear();
       showHideAuthButtons();
@@ -128,7 +121,6 @@ export async function authorizationListen(): Promise<void> {
       window.location.reload();
     });
   });
-
   userGreeting();
   showHideAuthButtons();
 };

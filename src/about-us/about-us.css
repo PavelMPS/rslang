@@ -1,0 +1,48 @@
+.about-us__block {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin-top: 80px;
+}
+
+.person-block {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.person-info__wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.person-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+}
+
+.person-info {
+  font-size: 24px;
+}
+
+.github-link {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  align-items: center;
+}
+
+.github-image {
+  width: 50px;
+  height: 50px;
+}
+
+.github-link {
+  text-decoration: none;
+  color: black;
+  font-size: 24px;
+}

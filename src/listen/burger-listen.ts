@@ -24,16 +24,16 @@ export function burgerListen(): void {
                 break;             
             case 'burger-menu-item-3': 
                 renderTextbookPage();
-                break;            
-            case 'burger-menu-item-4': 
+                break;
+            case 'burger-menu-item-4':
                 renderStatisticPage();
-                break;             
-            case 'burger-menu-item-5': 
-                console.log('About us page');
-                break;             
+                break;
+            case 'burger-menu-item-5':
+                renderAboutUsBlock();
+                break;
         }
         if (target.id === 'burger-menu-item-3' || target.id === 'burger-menu-item-4' ||
-        target.id === 'burger-menu-item-5') {
+            target.id === 'burger-menu-item-5') {
             const footer = document.querySelector('.footer') as HTMLElement;
             footer.classList.remove('disabled');
         }
