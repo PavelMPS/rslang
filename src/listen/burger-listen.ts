@@ -1,8 +1,9 @@
 import { renderStartPage } from "../start-page/start-page";
 import { renderStatisticPage } from "../statistic-page/statistic-page";
 import { renderTextbookPage } from "../textbook-page/textbook-page";
-import { renderGroupSelectionPage } from "../utilits/utilits";
+import { renderGroupSelectionPage, resetGame } from "../utilits/utilits";
 import { timerId } from "../sprint-game/sprint-game";
+import { sprint, audiochallenge } from '../constants/constants';
 
 export function burgerListen(): void {
     const burgerContainer: HTMLElement | null = document.querySelector('.burger-menu__nav');
@@ -13,11 +14,13 @@ export function burgerListen(): void {
             case 'burger-menu-item-0':
                 renderStartPage();
                 break;
-            case 'burger-menu-item-1': 
-                renderGroupSelectionPage('sprint');
+            case 'burger-menu-item-1':
+                resetGame(sprint);
+                renderGroupSelectionPage(sprint);
                 break;             
             case 'burger-menu-item-2': 
-                renderGroupSelectionPage('audiochallenge');
+                resetGame(audiochallenge);
+                renderGroupSelectionPage(audiochallenge);
                 break;             
             case 'burger-menu-item-3': 
                 renderTextbookPage();

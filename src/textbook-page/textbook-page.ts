@@ -174,9 +174,6 @@ async function renderTextbookContent(): Promise<void> {
   } else {
     words = await getUserAggregatedWords(optionFilter.hard);
     page.innerHTML = createDifficultContent(words as IAgregetedWord[]);
-    const nav = document.querySelector('.page-nav') as HTMLElement;
-    nav.style.opacity = '0';
-    gameContainer.style.opacity = '0';
   }
   const wordCards = document.querySelectorAll('.word-card') as  NodeListOf<HTMLElement>;
   wordCards.forEach((card: HTMLElement): void => {
@@ -209,9 +206,8 @@ async function renderTextbookContent(): Promise<void> {
           count = count + 1;
         }
       })
-      if (count === 20) {
+      if (count === wordCards.length) {
         page.classList.add('learned');
-        gameContainer.style.opacity = '0';
         pageNum.classList.add('learned');
       } else {
         page.classList.remove('learned');
@@ -219,6 +215,7 @@ async function renderTextbookContent(): Promise<void> {
         pageNum.classList.remove('learned');
       }
     });
+
     const wordStatistic = card.querySelector('.word-statistic') as HTMLElement;
     if (localStorage.getItem('Your token')) {
       getUserWordsParam(card, userWords);
@@ -241,6 +238,12 @@ async function renderTextbookContent(): Promise<void> {
     page.classList.remove('learned');
     gameContainer.style.opacity = '1';
     pageNum.classList.remove('learned');
+  }
+
+  if (textbookSettings.group === 6) {
+    const nav = document.querySelector('.page-nav') as HTMLElement;
+    nav.style.opacity = '0';
+    gameContainer.style.opacity = '0';
   }
 
   localStorage.setItem('Textbook', JSON.stringify(textbookSettings));
