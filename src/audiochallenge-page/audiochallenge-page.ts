@@ -40,6 +40,8 @@ export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<voi
   createQuestion(newWordArr, audiochallengeSettings.questionNum);
 
   brokeHeart();
+
+  console.log('new question', audiochallengeSettings);
 }
 
 function brokeHeart() {
@@ -49,7 +51,7 @@ function brokeHeart() {
   }
 }
 
-const listener: Array<(event: Event) => void> = [];
+const listener: Array<(event: KeyboardEvent) => void> = [];
 
 async function chooseAnswer(result: string, index: number, newWordArr: IWord[]): Promise<void> {
   const buttons: NodeListOf<HTMLElement> = document.querySelectorAll('.answers-btn');
@@ -57,7 +59,8 @@ async function chooseAnswer(result: string, index: number, newWordArr: IWord[]):
   const nextBTN: HTMLElement = document.querySelector('.next-question-btn') as HTMLElement;
 
   document.removeEventListener('keydown', listener[0]);
-  const listeners: (event) => void = (event) => {
+  document.removeEventListener('keydown', listener[1]);
+  listener[0] = (event: KeyboardEvent) => {
     if (event.code == 'Digit1') {
       checkAnswer(buttons, buttons[0], result, index, notToKnowBTN, nextBTN);      
     } else if (event.code == 'Digit2') {
@@ -68,15 +71,17 @@ async function chooseAnswer(result: string, index: number, newWordArr: IWord[]):
       checkAnswer(buttons, buttons[3], result, index, notToKnowBTN, nextBTN);      
     } else if (event.code == 'Digit5') {
       checkAnswer(buttons, buttons[4], result, index, notToKnowBTN, nextBTN);      
-    } else if (event.code == 'Enter' && !notToKnowBTN.classList.contains('disable')) {
+    }
+  }
+  listener[1] = (event: KeyboardEvent) => {
+    if (event.code == 'Enter' && !notToKnowBTN.classList.contains('disable')) {
       chooseNotToKnowBTN(buttons, index, result, notToKnowBTN, nextBTN);
     } else if (event.code == 'Enter' && !nextBTN.classList.contains('disable')) {
       showNextQuestion(newWordArr);
-      console.log('next', audiochallengeSettings);
     }
   }
-  listener[0] = listeners;
-  document.addEventListener('keydown', listeners);
+  document.addEventListener('keydown', listener[0]);
+  document.addEventListener('keydown', listener[1]);
 
   buttons.forEach((btn: HTMLElement) => {
     btn.addEventListener('click', () => {
@@ -98,6 +103,9 @@ function chooseNotToKnowBTN(buttons: NodeListOf<HTMLElement>, index: number, res
       btn.classList.remove('disable');
     }
   })
+  if (audiochallengeSettings.answerSeries > audiochallengeSettings.maxLine) {
+    audiochallengeSettings.maxLine = audiochallengeSettings.answerSeries;
+  };
   audiochallengeSettings.answerSeries = minScore;
   audiochallengeSettings.lives = audiochallengeSettings.lives - 1;
   audiochallengeSettings.gameWords[index].userAnswer = false;
@@ -121,14 +129,16 @@ function checkAnswer(buttons: NodeListOf<HTMLElement>, btn: HTMLElement, result:
     audiochallengeSettings.gameWords[index].userAnswer = true;
   } else if (btn.dataset.translate !== result) {
     btn.classList.add('wrong');
-    if (audiochallengeSettings.answerSeries > audiochallengeSettings.maxLine) audiochallengeSettings.maxLine = audiochallengeSettings.answerSeries;
+    if (audiochallengeSettings.answerSeries > audiochallengeSettings.maxLine) {
+      audiochallengeSettings.maxLine = audiochallengeSettings.answerSeries;
+    };
     audiochallengeSettings.answerSeries = minScore;
     audiochallengeSettings.lives = audiochallengeSettings.lives - 1;
     audiochallengeSettings.gameWords[index].userAnswer = false;
   }
   nextBTN.classList.remove('disable');
   notToKnowBTN.classList.add('disable');
-  console.log('check', audiochallengeSettings);
+  document.removeEventListener('keydown', listener[0]);
 }
 
 function getRandomNum(arr: number[]): number {

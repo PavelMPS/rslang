@@ -23,6 +23,6 @@ export const description: string = `
 <p>Hey! Would you want to start learning English, but there is no money for a tutor?</p>
 <p>Do you want to learn English easily on your own?</p>
 <p>Our application will help you with this.</p>
-<p>We have an electronic textbook with more than 3500 English words.</p>
+<p>We have an electronic textbook with 3600 most common English words.</p>
 <p>There are also 2 games to test knowledge on 6 levels of difficulty.</p>
 <p>Learn English with the cats.</p>`;

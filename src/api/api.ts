@@ -1,3 +1,4 @@
+import { loginUser } from "../authorization-block/authorization";
 import { filters, optionFilter } from "../constants/constants";
 import { createStatistic } from "../utilits/utilits";
 
@@ -83,7 +84,7 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
   return await rawResponse.json();
 };
 
-export async function getStatistics(userId: string | null): Promise<IStatistics | undefined> { //What is function return????
+export async function getStatistics(userId: string | null): Promise<IStatistics | undefined> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
@@ -101,9 +102,9 @@ export async function getStatistics(userId: string | null): Promise<IStatistics 
   const year: number = currentDate.getFullYear();             
   switch (response.status) {
     case 401:
-      if (userId) {       
-        await getNewToken(userId);
-        // May be we can redirect user to login again?        
+      if (userId && localStorage.getItem('Your refreshToken')) {
+        console.log('relogin');       
+        loginUser({ "email": localStorage.getItem('email') as string, "password": localStorage.getItem('password') as string });      
         break;
       }     
     case 404: 
@@ -140,7 +141,7 @@ export async function updateStatistics(userId: string | null, lernedWords: numbe
   return await rawResponse.json();
 };
 
-export async function getUserAggregatedWords(filterOption: string, group?: number, page?: number) {//What is function return????
+export async function getUserAggregatedWords(filterOption: string, group?: number): Promise<IAgregetedWord[]> {
   let token: string | null = '';
   let filter: string = '';
   if (localStorage.getItem('Your token')) {
@@ -163,7 +164,8 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
       'Content-Type': 'application/json'
     },
   }); 
-  const content = await res.json();
+  const content: IAgregetedWordArr = await res.json();
+  console.log(content);
   return content[0].paginatedResults;
 }
 

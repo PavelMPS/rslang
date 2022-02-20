@@ -32,6 +32,10 @@ interface IAgregetedWord {
   textExampleTranslate: string,
 }
 
+interface IAgregetedWordArr {
+  paginatedResults: IAgregetedWord[];
+}
+
 interface IWordQuestion {
   id: string,
   group: number,
