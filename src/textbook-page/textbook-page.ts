@@ -173,7 +173,11 @@ async function renderTextbookContent(): Promise<void> {
     page.innerHTML = createTextbookContent(words);
   } else {
     words = await getUserAggregatedWords(optionFilter.hard);
-    page.innerHTML = createDifficultContent(words as IAgregetedWord[]);
+    if (words.length > 0) {
+      page.innerHTML = createDifficultContent(words as IAgregetedWord[]);
+    } else {
+      page.innerHTML = '<div class="аnnouncement">You haven not chosen any difficult words yet.</div>';
+    }
   }
   const wordCards = document.querySelectorAll('.word-card') as  NodeListOf<HTMLElement>;
   wordCards.forEach((card: HTMLElement): void => {

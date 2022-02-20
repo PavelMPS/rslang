@@ -356,6 +356,12 @@
   background-color: #9befe6;
 }
 
+.аnnouncement {
+  margin: 25px 25px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
 @media (max-width: 1440px) {
   .page {
     display: flex;
