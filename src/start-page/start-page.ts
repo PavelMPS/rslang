@@ -2,6 +2,7 @@ import { burgerListen } from '../listen/burger-listen';
 import { startPageListen } from '../listen/start-page-listen';
 import { authorizationListen } from '../listen/authorization-listen';
 import '../start-page/start-page.css';
+import { description } from '../constants/constants';
 
 export function renderStartPage(): void {
   const startPage = `
@@ -39,7 +40,7 @@ export function renderStartPage(): void {
 
 <main class="main">
       <article class="about-us__info">
-          Description
+          ${description}
       </article>
 
   <section class="games-button__wrap">
