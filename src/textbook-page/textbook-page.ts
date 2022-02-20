@@ -29,7 +29,8 @@ async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]): Pr
       }
       if (elem.optional.isLerned) {
         learnedBTN.classList.add('active');
-        card.classList.toggle('learned-word');
+        card.classList.add('learned-word');
+        heavyBTN.classList.add('passive');
       }
       const statistics = card.querySelector('.word-statistic') as HTMLElement;
       statistics.innerHTML = `${elem.optional.rightAnswers} / ${elem.optional.allAnswers}`;
@@ -38,7 +39,7 @@ async function getUserWordsParam( card: HTMLElement, userWords: IUserWord[]): Pr
   });
 }
 
-async function makeLearned(id: string, btn: HTMLElement): Promise<void> {
+async function makeLearned(id: string, btn: HTMLElement, heavyBTN: HTMLElement, card: HTMLElement): Promise<void> {
   let userId: string | null = '';
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
@@ -51,14 +52,21 @@ async function makeLearned(id: string, btn: HTMLElement): Promise<void> {
 
   if (wordResponse.ok && statistic) {
     const wordInf: IUserWord = await wordResponse.json();
+    let difficult: string;
     if (btn.classList.contains('active')) {
       learned = true;
       learnedWords = statistic.learnedWords + 1;
+      difficult = difficultWeak;
+      heavyBTN.classList.remove('active');
+      heavyBTN.classList.add('passive');
+      card.classList.remove('heavy-word');
     } else {
       learned = false;
       if (statistic.learnedWords > 0) {learnedWords = statistic.learnedWords - 1}
+      difficult = wordInf.difficulty;
+      heavyBTN.classList.remove('passive');
     }
-    await updateUserWord(userId, id, wordInf.difficulty, learned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, 0);
+    await updateUserWord(userId, id, difficult, learned, wordInf.optional.rightAnswers, wordInf.optional.allAnswers, 0);
     await updateStatistics(userId, learnedWords, statistic.optional.sprint, statistic.optional.audiochallenge, statistic.optional.year, statistic.optional.month, statistic.optional.day);
   } else {
     let rightWordAnswers: number = 0;
@@ -173,7 +181,11 @@ async function renderTextbookContent(): Promise<void> {
     page.innerHTML = createTextbookContent(words);
   } else {
     words = await getUserAggregatedWords(optionFilter.hard);
-    page.innerHTML = createDifficultContent(words as IAgregetedWord[]);
+    if (words.length > 0) {
+      page.innerHTML = createDifficultContent(words as IAgregetedWord[]);
+    } else {
+      page.innerHTML = '<div class="аnnouncement">You haven not chosen any difficult words yet.</div>';
+    }
   }
   const wordCards = document.querySelectorAll('.word-card') as  NodeListOf<HTMLElement>;
   wordCards.forEach((card: HTMLElement): void => {
@@ -187,11 +199,13 @@ async function renderTextbookContent(): Promise<void> {
     });
     const heavyBTN = card.querySelector('.heavy-btn') as HTMLElement;
     heavyBTN.addEventListener(('click'), (): void => {
-      heavyBTN.classList.toggle('active');
-      card.classList.toggle('heavy-word');
-      chooseDifficult(card.dataset.id as string, heavyBTN);
-      if (textbookSettings.group === 6) {
-        setTimeout(renderTextbookContent, 200);
+      if (!heavyBTN.classList.contains('passive')) {
+        heavyBTN.classList.toggle('active');
+        card.classList.toggle('heavy-word');
+        chooseDifficult(card.dataset.id as string, heavyBTN);
+        if (textbookSettings.group === 6) {
+          setTimeout(renderTextbookContent, 200);
+        }
       }
     });
 
@@ -199,7 +213,7 @@ async function renderTextbookContent(): Promise<void> {
     learnedBTN.addEventListener(('click'), (): void => {
       learnedBTN.classList.toggle('active');
       card.classList.toggle('learned-word');
-      makeLearned(card.dataset.id as string, learnedBTN);
+      makeLearned(card.dataset.id as string, learnedBTN, heavyBTN, card);
       let count: number = 0;
       wordCards.forEach((wordCard: HTMLElement): void => {
         if (wordCard.classList.contains('learned-word')) {

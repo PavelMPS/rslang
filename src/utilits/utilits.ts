@@ -335,8 +335,12 @@ async function checkWords(words: IWordQuestion[] | IGameWord[], userId: string |
       let allWordAnswers: number = 0;
       let answersForIsLerned: number = 0;
       let maxCount: number = 3;
+
       if (wordResponse.ok) {
         const wordInf: IUserWord = await wordResponse.json();
+
+        let difficult: string;
+
         if (word.userAnswer === true) {
           rightWordAnswers = wordInf.optional.rightAnswers + 1;
           allWordAnswers = wordInf.optional.allAnswers + 1;
@@ -350,11 +354,13 @@ async function checkWords(words: IWordQuestion[] | IGameWord[], userId: string |
         }
         if (answersForIsLerned >= maxCount) {
           learned = true;
+          difficult = difficultWeak;
           wordsInf.learnedWords = wordsInf.learnedWords + 1;
         } else {
           learned = false;
+          difficult = wordInf.difficulty;
         }
-        await updateUserWord(userId, word.id, wordInf.difficulty, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
+        await updateUserWord(userId, word.id, difficult, learned, rightWordAnswers, allWordAnswers, answersForIsLerned);
       } else {
         wordsInf.newWords = wordsInf.newWords + 1;
         if (word.userAnswer === true) {
