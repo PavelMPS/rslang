@@ -91,6 +91,8 @@ export async function authorizationListen(): Promise<void> {
         signSubmit.addEventListener('click', (): void => {
           const signEmail = document.querySelector('#sign-email') as HTMLInputElement;
           const signPassword = document.querySelector('#sign-password') as HTMLInputElement;
+          localStorage.setItem('email', signEmail.value);
+          localStorage.setItem('password', signPassword.value);
           loginUser({ "email": `${signEmail.value}`, "password": `${signPassword.value}` });
         });
       });

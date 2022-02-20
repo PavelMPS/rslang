@@ -1,3 +1,4 @@
+import { loginUser } from "../authorization-block/authorization";
 import { filters, optionFilter } from "../constants/constants";
 import { createStatistic } from "../utilits/utilits";
 
@@ -101,9 +102,9 @@ export async function getStatistics(userId: string | null): Promise<IStatistics 
   const year: number = currentDate.getFullYear();             
   switch (response.status) {
     case 401:
-      if (userId) {       
-        await getNewToken(userId);
-        // May be we can redirect user to login again?        
+      if (userId && localStorage.getItem('Your refreshToken')) {
+        console.log('relogin');       
+        loginUser({ "email": localStorage.getItem('email') as string, "password": localStorage.getItem('password') as string });      
         break;
       }     
     case 404: 
