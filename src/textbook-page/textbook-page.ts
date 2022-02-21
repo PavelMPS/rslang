@@ -1,6 +1,6 @@
-import { getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords, path } from '../api/api';
+import { getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords } from '../api/api';
 import { createAydio, getQuestionArr, playAudio } from '../utilits/utilits';
-import { audiochallenge, difficultHeavy, difficultWeak, optionFilter } from '../constants/constants';
+import { audiochallenge, difficultHeavy, difficultWeak, optionFilter, path } from '../constants/constants';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 import { audiochallengeSettings } from '../constants/audiochallenge';

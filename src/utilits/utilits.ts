@@ -1,6 +1,7 @@
-import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords, path } from '../api/api';
+import { getWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords } from '../api/api';
 import { textbookSettings } from '../textbook-page/textbook-page';
 import { sprintDescription, sprintGame } from '../constants/sprint';
+import { path } from '../constants/constants';
 import { audiochallengeDescription, audiochallengeSettings } from '../constants/audiochallenge';
 import { keyboardControl, startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';

@@ -1,8 +1,7 @@
 import { loginUser } from "../authorization-block/authorization";
 import { filters, optionFilter } from "../constants/constants";
+import { path } from '../constants/constants';
 import { createStatistic } from "../utilits/utilits";
-
-export const path: string = 'https://react-rslang-example.herokuapp.com';
 
 export async function getWords(group: number, page: number): Promise<IWord[]> {
   const response: Response = await fetch(`${path}/words?group=${group}&page=${page}`);

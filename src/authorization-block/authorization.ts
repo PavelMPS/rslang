@@ -1,6 +1,6 @@
 import './authorization.css';
 import { getStatistics } from '../api/api';
-import { path } from '../api/api'
+import { path } from '../constants/constants';
 import { showHideAuthButtons } from '../listen/authorization-listen';
 
 const emailExistsError = 'User with this e-mail exists' as string;

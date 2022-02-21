@@ -9,6 +9,7 @@ export const differenceCoefficient: number = 4
 export const maxPageCount: number = 30;
 export const difficultWeak: string = 'easy';
 export const difficultHeavy: string = 'hard';
+export const path: string = 'https://react-rslang-example.herokuapp.com';
 
 export const filters: { hard: string } = {
   hard: `filter={"$and":[{"userWord.difficulty": "hard"}]}&wordsPerPage=3600`,
