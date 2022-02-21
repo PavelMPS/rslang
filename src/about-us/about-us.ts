@@ -1,7 +1,7 @@
 import '../about-us/about-us.css';
 
 export async function renderAboutUsBlock(): Promise<void> {
-  const aboutUs = `
+  const aboutUs: string = `
   <div class="group-select-page">
     <div class="game-page-title">About us</div>
     <section class="about-us__block">
@@ -45,6 +45,6 @@ export async function renderAboutUsBlock(): Promise<void> {
       </div>
     </section>
   </div>`;
-  const main = document.querySelector('.main') as HTMLElement;
+  const main: HTMLElement = document.querySelector('.main') as HTMLElement;
   main.innerHTML = aboutUs;
 };
