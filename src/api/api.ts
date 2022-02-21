@@ -103,8 +103,12 @@ export async function getStatistics(userId: string | null): Promise<IStatistics 
   switch (response.status) {
     case 401:
       if (userId && localStorage.getItem('Your refreshToken')) {
-        console.log('relogin');       
-        loginUser({ "email": localStorage.getItem('email') as string, "password": localStorage.getItem('password') as string });      
+        console.log('relogin');
+        const pass:string | null = localStorage.getItem('password');
+        const email: string | null = localStorage.getItem('email');
+        console.log(pass, email);
+        if (pass && email)
+        await reLogin({ "email": email, "password": pass});
         break;
       }     
     case 404: 
@@ -188,4 +192,23 @@ async function getNewToken(userId: string): Promise<void> {
   localStorage.setItem('Your token', content.token);
   localStorage.setItem('Your userId', content.userId);
   localStorage.setItem('Your refreshToken', content.refreshToken);
+}
+
+async function reLogin(user: ISignUser): Promise<void> {
+  const userId: string | null= localStorage.getItem('Your userId');
+  const rawResponse: Response = await fetch(`${path}/signin`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(user)
+  });
+  const content = await rawResponse.json();
+  localStorage.setItem('Name', content.name);
+      localStorage.setItem('Message', content.message);
+      localStorage.setItem('Your token', content.token);
+      localStorage.setItem('Your refreshToken', content.refreshToken);
+      localStorage.setItem('Your userId', content.userId);
+  console.log('relogin', rawResponse);
 }
