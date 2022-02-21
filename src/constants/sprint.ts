@@ -16,6 +16,6 @@ export const sprintGame: ISprint = {
   fromTextbook: true,
 };
 
-export const sprintDescription = `In this game you must choose rihgt answer.
+export const sprintDescription: string = `In this game you must choose rihgt answer.
   Click at that button you think right or press key left or right
   for choosing answer`;

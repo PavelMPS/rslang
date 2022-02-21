@@ -5,7 +5,7 @@ import { authorizationListen } from '../listen/authorization-listen';
 import { description } from '../constants/constants';
 
 export function renderStartPage(): void {
-  const startPage = `
+  const startPage: string = `
   <header class="header">
   <div class="burger-menu">
   <nav class="burger-menu__nav">
