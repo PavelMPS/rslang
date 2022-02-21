@@ -11,9 +11,9 @@ export async function renderStatisticPage(): Promise<void> {
   }
   if ((!localStorage.getItem("Your id") || localStorage.getItem("Your id")) &&
     !userId) {
-      if (main) {
-        main.innerHTML = `<h2 class="wrong-message-statistic">${statisticOptions.wrongMessage}</h2>`;
-      }
+    if (main) {
+      main.innerHTML = `<h2 class="wrong-message-statistic">${statisticOptions.wrongMessage}</h2>`;
+    }
     return;
   } else {
     let statisticInfo = (await getStatistics(userId)) as IStatistics;
@@ -34,20 +34,20 @@ export async function renderStatisticPage(): Promise<void> {
       sprintRightAnswersPercent = Math.round(
         (statisticInfo.optional.sprint.rightAnswers /
           statisticInfo.optional.sprint.allAnswers) *
-          statisticOptions.percentCoefficient
+        statisticOptions.percentCoefficient
       );
     }
     if (statisticInfo.optional.audiochallenge.allAnswers > 0) {
       audiochallengeRightAnswersPercent = Math.round(
         (statisticInfo.optional.audiochallenge.rightAnswers /
           statisticInfo.optional.audiochallenge.allAnswers) *
-          statisticOptions.percentCoefficient
+        statisticOptions.percentCoefficient
       );
     }
     const totalNewWords: number = sprintNewWords + audiochallengeNewWords;
     if (sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent === 0) {
       totalRightPercent = 0;
-    } else if ( sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent > 0) {
+    } else if (sprintRightAnswersPercent === 0 && audiochallengeRightAnswersPercent > 0) {
       totalRightPercent = audiochallengeRightAnswersPercent;
     } else if (sprintRightAnswersPercent > 0 && audiochallengeRightAnswersPercent === 0) {
       totalRightPercent = sprintRightAnswersPercent;
@@ -55,8 +55,9 @@ export async function renderStatisticPage(): Promise<void> {
       totalRightPercent = (sprintRightAnswersPercent + audiochallengeRightAnswersPercent) / 2;
     }
     const content: string = `
+    <div class="group-select-page">
       <div class="statistic-page__title">
-        <h2 class="games-statistic-title">${statisticOptions.pageTitle}</h2>
+        <h2 class="game-page-title">${statisticOptions.pageTitle}</h2>
       </div>
   
       <div class="games-statistic-container">
@@ -117,7 +118,8 @@ export async function renderStatisticPage(): Promise<void> {
       </div>
       </div>
       </div>
+      </div>
     `;
-    if (main) { main.innerHTML = content; } 
+    if (main) { main.innerHTML = content; }
   }
 }

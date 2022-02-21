@@ -9,8 +9,9 @@
   display: flex;
   flex-direction: row;
   gap: 20px;
-  max-width: 1000px;
   margin: auto;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .person-info__wrap {
@@ -27,6 +28,7 @@
 
 .person-info {
   font-size: 24px;
+  max-width: 600px;
 }
 
 .github-link {

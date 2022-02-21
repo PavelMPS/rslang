@@ -1,6 +1,6 @@
 export const sprintGame: ISprint = {
   gameOptions: ['SCORE: ', 'right-answer', 'wrong-answer', 'Your score is: ', 'Try again?', 'Question: '],
-  gameOver: ['Don\'t despair!', 'Nice work!','You dont answer any question :('],
+  gameOver: ['Don\'t despair!', 'Nice work!', 'You dont answer any question :('],
   gameMessages: ['nice!', 'good!', 'very good!', 'amazing!', 'excellent!', 'impressive!', 'godlike!'],
   difficult: 0,
   gameWords: [],
@@ -14,7 +14,7 @@ export const sprintGame: ISprint = {
   rightAnswers: 0,
   allAnswers: 0,
   fromTextbook: true,
-}
+};
 
 export const sprintDescription = `In this game you must choose rihgt answer.
   Click at that button you think right or press key left or right
