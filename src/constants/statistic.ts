@@ -1,13 +1,3 @@
-type Statistic = {
-  words: string;
-  percent: string;
-  wrongMessage: string;
-  percentCoefficient: number;
-  pageTitle: string;
-  gameNames: Array<string>;
-  tableOptions: Array<string>;
-};
-
 export const statisticOptions: Statistic = {
   words: 'words',
   percent: '%',
