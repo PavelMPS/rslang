@@ -10,14 +10,14 @@ export const maxPageCount: number = 30;
 export const difficultWeak: string = 'easy';
 export const difficultHeavy: string = 'hard';
 
-export const filters: {hard: string} = {
+export const filters: { hard: string } = {
   hard: `filter={"$and":[{"userWord.difficulty": "hard"}]}&wordsPerPage=3600`,
-}
+};
 
 export const optionFilter: FilterOption = {
   noLearned: 'noLearned',
   hard: 'hard',
-}
+};
 
 export const description: string = `
 <p>Hey! Would you want to start learning English, but there is no money for a tutor?</p>

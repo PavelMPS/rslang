@@ -2,42 +2,42 @@ import { loginUser } from "../authorization-block/authorization";
 import { filters, optionFilter } from "../constants/constants";
 import { createStatistic } from "../utilits/utilits";
 
-const path: string = 'https://react-rslang-example.herokuapp.com';
+export const path: string = 'https://react-rslang-example.herokuapp.com';
 
 export async function getWords(group: number, page: number): Promise<IWord[]> {
   const response: Response = await fetch(`${path}/words?group=${group}&page=${page}`);
-  return  await response.json();
-}
+  return await response.json();
+};
 
 export async function getWord(wordId: string): Promise<IWord> {
   const response: Response = await fetch(`${path}/words/${wordId}`);
   return await response.json();
-}
+};
 
 export async function getUserWord(userId: string | null, wordId: string): Promise<Response> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
-  }
+  };
   const response: Response = await fetch(`${path}/users/${userId}/words/${wordId}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
     }
-  }); 
+  });
   return response;
-}
+};
 
 export async function getUserWords(): Promise<IUserWord[]> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
-  }
+  };
   let userId: string | null = '';
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
-  }
+  };
   const response: Response = await fetch(`${path}/users/${userId}/words`, {
     method: 'GET',
     headers: {
@@ -46,14 +46,14 @@ export async function getUserWords(): Promise<IUserWord[]> {
     }
   });
   return await response.json();
-}
+};
 
 export async function createUserWord(userId: string | null, wordId: string, difficult: string, lerned: boolean, rightAnswers: number, allAnswers: number, answersForIsLerned: number): Promise<IUserWord> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
-  }
-  const word: IUserWord = { "difficulty": difficult, "optional": {"isLerned": lerned, "rightAnswers": rightAnswers, "allAnswers": allAnswers, "answersForIsLerned": answersForIsLerned} };
+  };
+  const word: IUserWord = { "difficulty": difficult, "optional": { "isLerned": lerned, "rightAnswers": rightAnswers, "allAnswers": allAnswers, "answersForIsLerned": answersForIsLerned } };
   const rawResponse = await fetch(`${path}/users/${userId}/words/${wordId}`, {
     method: 'POST',
     headers: {
@@ -70,8 +70,8 @@ export async function updateUserWord(userId: string | null, wordId: string, diff
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
-  }
-  const word: IUserWord = { "difficulty": difficult, "optional": {"isLerned": lerned, "rightAnswers": rightAnswers, "allAnswers": allAnswers, "answersForIsLerned": answersForIsLerned} };
+  };
+  const word: IUserWord = { "difficulty": difficult, "optional": { "isLerned": lerned, "rightAnswers": rightAnswers, "allAnswers": allAnswers, "answersForIsLerned": answersForIsLerned } };
   const rawResponse = await fetch(`${path}/users/${userId}/words/${wordId}`, {
     method: 'PUT',
     headers: {
@@ -88,7 +88,7 @@ export async function getStatistics(userId: string | null): Promise<IStatistics 
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
-  }
+  };
   const response = await fetch(`${path}/users/${userId}/statistics`, {
     method: 'GET',
     headers: {
@@ -96,39 +96,40 @@ export async function getStatistics(userId: string | null): Promise<IStatistics 
       'Accept': 'application/json',
     }
   });
-  const currentDate: Date = new Date();        
-  const day: number =  currentDate.getDate();
+  const currentDate: Date = new Date();
+  const day: number = currentDate.getDate();
   const month: number = currentDate.getMonth();
-  const year: number = currentDate.getFullYear();             
+  const year: number = currentDate.getFullYear();
   switch (response.status) {
     case 401:
       if (userId && localStorage.getItem('Your refreshToken')) {
-        console.log('relogin');       
-        loginUser({ "email": localStorage.getItem('email') as string, "password": localStorage.getItem('password') as string });      
+        loginUser({ "email": localStorage.getItem('email') as string, "password": localStorage.getItem('password') as string });
         break;
-      }     
-    case 404: 
-      if (userId)
-      await createStatistic(userId, year, month, day);
+      };
+    case 404:
+      if (userId) {
+        await createStatistic(userId, year, month, day);
+      };
       break;
-    case 200: 
+    case 200:
       const content: IStatistics = await response.json();
-      if (content.optional.year === year&& content.optional.month === month && content.optional.day === day) {
+      if (content.optional.year === year && content.optional.month === month && content.optional.day === day) {
         return content;
       } else {
-        if (userId)   
-        await createStatistic(userId, year, month, day);
+        if (userId) {
+          await createStatistic(userId, year, month, day);
+        };
         break;
-      }
-  }
-}
+      };
+  };
+};
 
 export async function updateStatistics(userId: string | null, lernedWords: number, sprintStatistics: IGameStatistic, audiochallengeStatistics: IGameStatistic, year: number, month: number, day: number): Promise<IStatistics> {
   let token: string | null = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
-  }
-  const statistics: IStatistics = { "learnedWords": lernedWords, "optional": { "sprint":  sprintStatistics, "audiochallenge": audiochallengeStatistics, "year": year, "month": month, "day": day, } };
+  };
+  const statistics: IStatistics = { "learnedWords": lernedWords, "optional": { "sprint": sprintStatistics, "audiochallenge": audiochallengeStatistics, "year": year, "month": month, "day": day, } };
   const rawResponse = await fetch(`${path}/users/${userId}/statistics`, {
     method: 'PUT',
     headers: {
@@ -146,16 +147,16 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
   let filter: string = '';
   if (localStorage.getItem('Your token')) {
     token = localStorage.getItem('Your token');
-  }
+  };
   let userId: string | null = '';
   if (localStorage.getItem('Your userId')) {
     userId = localStorage.getItem('Your userId');
-  }
+  };
   if (filterOption === optionFilter.hard) {
     filter = filters.hard;
   } else if (filterOption === optionFilter.noLearned) {
     filter = `group=${group}&filter={"$or": [{"userWord":null}, {"userWord.optional.isLerned": false}]}&wordsPerPage=3600`;
-  }
+  };
   const res = await fetch(`${path}/users/${userId}/aggregatedWords?${filter}`, {
     method: 'GET',
     headers: {
@@ -163,17 +164,16 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-  }); 
+  });
   const content: IAgregetedWordArr = await res.json();
-  console.log(content);
   return content[0].paginatedResults;
-}
+};
 
 async function getNewToken(userId: string): Promise<void> {
   let refreshToken: string = '';
   if (localStorage.getItem('Your refreshToken')) {
     refreshToken = localStorage.getItem('Your refreshToken') as string;
-  }
+  };
   const res: Response = await fetch(`${path}/users/${userId}/tokens`, {
     method: 'GET',
     headers: {
@@ -188,4 +188,4 @@ async function getNewToken(userId: string): Promise<void> {
   localStorage.setItem('Your token', content.token);
   localStorage.setItem('Your userId', content.userId);
   localStorage.setItem('Your refreshToken', content.refreshToken);
-}
+};

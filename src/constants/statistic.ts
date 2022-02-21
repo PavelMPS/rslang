@@ -6,7 +6,7 @@ type Statistic = {
   pageTitle: string;
   gameNames: Array<string>;
   tableOptions: Array<string>;
-}
+};
 
 export const statisticOptions: Statistic = {
   words: 'words',
@@ -16,4 +16,4 @@ export const statisticOptions: Statistic = {
   pageTitle: 'Statistics',
   gameNames: ['Sprint game', 'Audio Challenge'],
   tableOptions: ['New words', 'Right answers', 'The longest serie', 'Learned words count', 'Overall progress']
-}
+};

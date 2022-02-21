@@ -68,7 +68,7 @@ export async function authorizationListen(): Promise<void> {
         const registerPassword = document.querySelector('#register-password') as HTMLInputElement;
         createUser({ "name": `${registerName.value}`, "email": `${registerEmail.value}`, "password": `${registerPassword.value}` });
       });
-    }
+    };
 
     function registerSubmitCall(element: HTMLElement): void {
       sendRegistrationInfo();

@@ -322,6 +322,7 @@
 .heavy-btn.passive {
   opacity: 0.5;
 }
+
 .heavy-btn.passive:hover {
   transform: scale(1);
 }
@@ -342,7 +343,7 @@
   position: fixed;
   bottom: 100px;
   right: 50px;
-  z-index: 99; 
+  z-index: 99;
   width: 75px;
   height: 75px;
   border-radius: 50%;
@@ -358,6 +359,7 @@
   text-decoration: none;
   background-color: #6ce0c0;
 }
+
 .top-btn:hover,
 .top-btn:active {
   background-color: #9befe6;
@@ -375,27 +377,33 @@
     justify-content: space-around;
     flex-wrap: wrap;
   }
+
   .word-card {
     flex-direction: column;
     width: 400px;
     font-size: 20px;
     line-height: 30px;
   }
+
   .word-wrapper {
     display: block;
   }
+
   .word-settings-container {
     height: 50px;
     width: 100%;
     flex-direction: row;
     margin-bottom: 10px;
   }
+
   .word-statistic {
     margin: 20px 0px auto 0px;
   }
+
   .word-img {
     margin: 0px auto;
   }
+
   .word {
     font-size: 25px;
     line-height: 35px;
@@ -406,18 +414,22 @@
   .page {
     width: 100%;
   }
+
   .textbook {
     flex-direction: column;
   }
+
   .sidebar {
     justify-content: space-between;
     flex-direction: row;
     width: 100%;
   }
+
   .page-nav {
     flex-direction: row;
     margin-top: 0px;
   }
+
   .bookmarks {
     flex-direction: row;
   }
@@ -434,6 +446,7 @@
     right: 0px;
     z-index: 0;
   }
+
   .game-menu-text {
     margin: auto 20px;
   }
@@ -444,11 +457,13 @@
     font-size: 20px;
     line-height: 30px;
   }
+
   .word-card {
     width: 95%;
     font-size: 18px;
     line-height: 28px;
   }
+
   .bookmark {
     height: 40px;
     width: 40px;
@@ -456,12 +471,15 @@
     line-height: 40px;
     background-repeat: no-repeat;
   }
+
   .page-nav {
     margin: 0px auto;
   }
+
   .word-statistic {
     font-size: 20px;
   }
+
   .audio-btn,
   .heavy-btn,
   .learned-btn {

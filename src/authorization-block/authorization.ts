@@ -1,6 +1,6 @@
-import { getStatistics } from '../api/api';
-import { createStatistic } from '../utilits/utilits';
 import './authorization.css';
+import { getStatistics } from '../api/api';
+import { path } from '../api/api'
 import { showHideAuthButtons } from '../listen/authorization-listen';
 
 const emailExistsError = 'User with this e-mail exists' as string;
@@ -9,7 +9,6 @@ const notRegisteredEmailText = 'This email is not registered' as string;
 const writeEmailCaption = 'Please, write correct email' as string;
 const signSuccessText = 'Success!' as string;
 const signPasswordEmailError = 'Incorrect e-mail or password' as string;
-const serverUrl = `https://react-rslang-example.herokuapp.com` as string;
 let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
 export async function renderAuthorizationBlock(): Promise<void> {
@@ -91,7 +90,7 @@ export async function renderLogoutBlock(): Promise<void> {
 };
 
 export const createUser = async (user: IRegisterUser): Promise<void> => {
-  const rawResponse: Response = await fetch(`${serverUrl}/users`, {
+  const rawResponse: Response = await fetch(`${path}/users`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -110,10 +109,9 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
     registerErrorName.innerHTML = '';
     registerErrorEmail.innerHTML = '';
     registerErrorPassword.innerHTML = '';
-  }
+  };
 
   switch (rawResponse.status as number) {
-
     case 200:
       const goodResult = await rawResponse.json();
       emptyRegisterCaptions();
@@ -123,12 +121,10 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
       localStorage.setItem('Your id', goodResult.id);
       localStorage.setItem('Your email', goodResult.email);
       break;
-
     case 417:
       emptyRegisterCaptions();
       registerErrorEmail.innerHTML = `${emailExistsError}`;
       break;
-
     case 422:
       const badResult = await rawResponse.json();
       emptyRegisterCaptions();
@@ -140,13 +136,13 @@ export const createUser = async (user: IRegisterUser): Promise<void> => {
 
       if (reg.test(registerEmail.value) == false) {
         registerErrorEmail.innerHTML = `${writeEmailCaption}`;
-      }
+      };
       break;
   };
 };
 
 export const loginUser = async (user: ISignUser): Promise<void> => {
-  const rawResponse: Response = await fetch(`${serverUrl}/signin`, {
+  const rawResponse: Response = await fetch(`${path}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -167,7 +163,6 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
   const signSuccess = document.querySelector('.sign-success') as HTMLElement;
 
   switch (rawResponse.status as number) {
-
     case 200:
       const content = await rawResponse.json();
       signSuccess.innerHTML = `${signSuccessText}`;
@@ -186,22 +181,19 @@ export const loginUser = async (user: ISignUser): Promise<void> => {
       authorizationBlock.dataset.open = 'false';
       await getStatistics(content.userId);
       break;
-
     case 403:
       emptySignCaptions();
       signErrorPassword.innerHTML = `${signPasswordEmailError}`;
       break;
-
     case 404:
       emptySignCaptions();
-
       if (reg.test(signEmail.value) == false) {
         signSuccess.innerHTML = ``;
         signErrorPassword.innerHTML = `${signPasswordEmailError}`;
       } else {
         signErrorPassword.innerHTML = ``;
         signSuccess.innerHTML = `${notRegisteredEmailText}`;
-      }
+      };
       break;
   };
 };

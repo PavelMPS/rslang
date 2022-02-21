@@ -152,6 +152,7 @@
   font-weight: 700;
   color: #ffffff;
   line-height: 50px;
+  cursor: pointer;
 }
 
 .main-tab.disable,
