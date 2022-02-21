@@ -4,7 +4,6 @@ export async function renderAboutUsBlock(): Promise<void> {
   const aboutUs = `
   <div class="group-select-page">
     <div class="game-page-title">About us</div>
-
     <section class="about-us__block">
       <div class="person-block">
         <img class="person-image" src="../assets/pavel.jpg" alt="Pavel Sergeevich">
@@ -48,4 +47,4 @@ export async function renderAboutUsBlock(): Promise<void> {
   </div>`;
   const main = document.querySelector('.main') as HTMLElement;
   main.innerHTML = aboutUs;
-}
+};

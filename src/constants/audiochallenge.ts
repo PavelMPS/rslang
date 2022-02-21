@@ -10,7 +10,7 @@ export const audiochallengeSettings: IAudiochallenge = {
   rightAnswers: 0,
   allAnswers: 0,
   fromTextbook: true,
-}
+};
 
 export const audiochallengeDescription = `<div class="game-describe">"Audiochallenge" is a workout that improves listening comprehension.</div>
   <ul>

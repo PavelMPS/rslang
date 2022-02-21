@@ -325,18 +325,24 @@
 }
 
 @media (max-width: 1120px) {
-    .right-btn, .wrong-btn {
+
+    .right-btn,
+    .wrong-btn {
         width: 150px;
         height: 150px;
     }
-    .sprint-score, .sprint-difficult-info {
+
+    .sprint-score,
+    .sprint-difficult-info {
         font-size: 22px;
         margin-bottom: 10px;
     }
 
-    .sprint-question, .sprint-answer {
+    .sprint-question,
+    .sprint-answer {
         font-size: 40px;
     }
+
     .question-area {
         min-height: 200px;
         flex-direction: column;
@@ -345,6 +351,7 @@
         padding-bottom: 20px;
         margin-bottom: 20px;
     }
+
     .question-number {
         padding-top: 30px;
     }

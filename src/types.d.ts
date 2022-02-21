@@ -13,7 +13,7 @@ interface IWord {
   wordTranslate: string,
   textMeaningTranslate: string,
   textExampleTranslate: string,
-}
+};
 
 interface IAgregetedWord {
   _id: string,
@@ -30,29 +30,29 @@ interface IAgregetedWord {
   wordTranslate: string,
   textMeaningTranslate: string,
   textExampleTranslate: string,
-}
+};
 
 interface IAgregetedWordArr {
   paginatedResults: IAgregetedWord[];
-}
+};
 
 interface IWordQuestion {
   id: string,
   group: number,
-  page:	number,
-  word:	string,
-  image:	string,
-  audio:	string,
-  audioMeaning:	string,
-  audioExample:	string,
+  page: number,
+  word: string,
+  image: string,
+  audio: string,
+  audioMeaning: string,
+  audioExample: string,
   textMeaning: string,
-  textExample:	string,
-  transcription:	string,
-  wordTranslate:	string,
-  textMeaningTranslate:	string,
-  textExampleTranslate:	string,
+  textExample: string,
+  transcription: string,
+  wordTranslate: string,
+  textMeaningTranslate: string,
+  textExampleTranslate: string,
   userAnswer?: boolean,
-}
+};
 
 interface IAudiochallenge {
   page: number;
@@ -66,36 +66,37 @@ interface IAudiochallenge {
   rightAnswers: number,
   allAnswers: number,
   fromTextbook: boolean,
-}
+};
+
 interface IRegisterUser {
   name: string,
   email: string,
   password: string
-}
+};
 
 interface ISignUser {
   email: string,
   password: string
-}
+};
 
 interface IUserWord {
   id?: string,
   difficulty: string,
   optional: IOptional,
   wordId?: string,
-}
+};
 
 interface IOptional {
   isLerned: boolean,
   rightAnswers: number,
   allAnswers: number,
   answersForIsLerned: number,
-}
+};
 
 interface IStatistics {
   learnedWords: number,
   optional: IStatisticsOptional,
-}
+};
 
 interface IStatisticsOptional {
   sprint: IGameStatistic;
@@ -103,14 +104,14 @@ interface IStatisticsOptional {
   year: number;
   month: number;
   day: number;
-}
+};
 
 interface IGameStatistic {
   newWords: number;
   rightAnswers: number;
-  allAnswers: number;  
+  allAnswers: number;
   maxLine: number;
-}
+};
 
 interface IUserInfo {
   message: string;
@@ -118,14 +119,14 @@ interface IUserInfo {
   refreshToken: string;
   userId: string;
   name: string;
-}
+};
 
 interface FilterOption {
   noLearned: string;
   hard: string;
-}
+};
 
- interface IGameWord {
+interface IGameWord {
   id: string;
   word: string;
   answer: string;
@@ -133,7 +134,7 @@ interface FilterOption {
   wordTranslate: string;
   userAnswer: boolean;
   audio: string;
-}
+};
 
 interface ISprint {
   gameOptions: Array<string>;
@@ -151,9 +152,19 @@ interface ISprint {
   rightAnswers: number,
   allAnswers: number,
   fromTextbook: boolean,
-}
+};
 
 interface INewWord {
   newWords: number;
   learnedWords: number;
-}
+};
+
+type Statistic = {
+  words: string;
+  percent: string;
+  wrongMessage: string;
+  percentCoefficient: number;
+  pageTitle: string;
+  gameNames: Array<string>;
+  tableOptions: Array<string>;
+};

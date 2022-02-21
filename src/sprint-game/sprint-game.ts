@@ -1,6 +1,6 @@
 import { maxQuestionCount, sprint } from "../constants/constants";
 import { sprintGame } from "../constants/sprint";
-import { getQuestionArr, getResults} from "../utilits/utilits";
+import { getQuestionArr, getResults } from "../utilits/utilits";
 import "../sprint-game/sprint-game.css";
 import { getWords } from "../api/api";
 
@@ -28,17 +28,17 @@ export async function startGameSprint(group?: number, page?: number): Promise<vo
   const main: HTMLElement | null = document.querySelector(".main");
   if (main) {
     main.innerHTML = content;
-  }
+  };
   await formGameWords(group, page);
   timer(60);
   const btnAnswer: HTMLElement | null = document.querySelector(".answer-btn");
   if (btnAnswer) {
     btnAnswer.addEventListener("click", async (e: Event): Promise<void> => {
       await verifyAnswer(e);
-      });
-  }
+    });
+  };
   document.addEventListener("keydown", keyboardControl);
-}
+};
 
 export function keyboardControl(event: KeyboardEventInit): void {
   switch (event.code) {
@@ -48,7 +48,7 @@ export function keyboardControl(event: KeyboardEventInit): void {
       } else {
         sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
         wrongAnswer();
-      }
+      };
       break;
     case "ArrowRight":
       if (!sprintGame.gameWords[sprintGame.count - 1].right) {
@@ -56,22 +56,22 @@ export function keyboardControl(event: KeyboardEventInit): void {
       } else {
         sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
         wrongAnswer();
-      }
+      };
       break;
-  }
-}
+  };
+};
 
 async function formGameWords(group?: number, page?: number): Promise<void> {
-    group ? sprintGame.group = group : sprintGame.group = sprintGame.difficult;
-    let arr: IWord[];
-    if (group !== undefined && page !== undefined) {
-        arr = await getQuestionArr(sprintGame.group, sprint, page);
-    } else {
-        arr = await getQuestionArr(sprintGame.group, sprint);
-    } 
-    await formWordsArray(arr);
-    await formRandomWords();
-}
+  group ? sprintGame.group = group : sprintGame.group = sprintGame.difficult;
+  let arr: IWord[];
+  if (group !== undefined && page !== undefined) {
+    arr = await getQuestionArr(sprintGame.group, sprint, page);
+  } else {
+    arr = await getQuestionArr(sprintGame.group, sprint);
+  };
+  await formWordsArray(arr);
+  await formRandomWords();
+};
 
 async function formWordsArray(array: IWord[]): Promise<void> {
   array.forEach((elem: IWord, index: number) => {
@@ -86,15 +86,15 @@ async function formWordsArray(array: IWord[]): Promise<void> {
     };
     sprintGame.gameWords[index] = gameWord;
   });
-}
+};
 
 async function formRandomAnswers(): Promise<Array<string>> {
   const arr: Array<string> = [];
   for (let i = 0; i < maxQuestionCount; i++) {
     arr[i] = await getRandomAnswer();
-  }
+  };
   return arr;
-}
+};
 
 async function formRandomWords(): Promise<void> {
   const randomAnswers: Array<string> = await formRandomAnswers();
@@ -105,11 +105,11 @@ async function formRandomWords(): Promise<void> {
         el.answer = randomAnswers[count];
         el.right = false;
         count--;
-      }
-    }
+      };
+    };
   });
   await shuffle(sprintGame.gameWords);
-}
+};
 
 async function getRandomAnswer(): Promise<string> {
   sprintGame.group = Math.round(Math.random() * 5);
@@ -118,7 +118,7 @@ async function getRandomAnswer(): Promise<string> {
   let temp: string = "";
   temp = randomAnswer[Math.round(Math.random() * 19)].wordTranslate;
   return temp;
-}
+};
 
 async function verifyAnswer(e: Event): Promise<void> {
   const target = e.target as HTMLElement;
@@ -128,29 +128,29 @@ async function verifyAnswer(e: Event): Promise<void> {
     } else {
       sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
       wrongAnswer();
-    }
+    };
   } else if (target.id === sprintGame.gameOptions[2]) {
     if (!sprintGame.gameWords[sprintGame.count - 1].right) {
       rightAnswer();
     } else {
       sprintGame.gameWords[sprintGame.count - 1].userAnswer = false;
       wrongAnswer();
-    }
-  }
-}
+    };
+  };
+};
 
 function rightAnswer(): void {
   sprintGame.rightAnswers++;
   highlightAnswer("green");
   getSprintScore();
   renderQuestion();
-}
+};
 
 function wrongAnswer(): void {
   sprintGame.answerSeries = 0;
   highlightAnswer("red");
   renderQuestion();
-}
+};
 
 async function disableButtons(): Promise<void> {
   const rightBtn = document.querySelector(".right-btn") as HTMLButtonElement;
@@ -161,7 +161,7 @@ async function disableButtons(): Promise<void> {
     rightBtn.disabled = false;
     wrongBtn.disabled = false;
   }, 1000);
-}
+};
 
 function getSprintScore(): void {
   switch (sprintGame.answerSeries) {
@@ -193,17 +193,17 @@ function getSprintScore(): void {
       sprintGame.score += sprintGame.advanceScore[6];
       showWinMessage(sprintGame.gameMessages[6], sprintGame.advanceScore[6]);
       break;
-  }
+  };
   sprintGame.score += sprintGame.advanceScore[0];
   sprintGame.answerSeries++;
   if (sprintGame.answerSeries > sprintGame.seriesTotalStatistics) {
     sprintGame.seriesTotalStatistics = sprintGame.answerSeries;
-  }
+  };
   const scoreWindow: HTMLElement | null = document.querySelector(".score-window");
-  if(scoreWindow) {
+  if (scoreWindow) {
     scoreWindow.innerHTML = sprintGame.score.toString();
-  }
-}
+  };
+};
 
 function showWinMessage(message: string, addingScore: number): void {
   const content: string = `
@@ -215,8 +215,8 @@ function showWinMessage(message: string, addingScore: number): void {
   const popUpWindow: HTMLElement | null = document.querySelector(".pop-up-window-score");
   if (popUpWindow) {
     popUpWindow.innerHTML = content;
-  }
-}
+  };
+};
 
 async function renderQuestion(): Promise<void> {
   if (sprintGame.count === sprintGame.gameWords.length) {
@@ -228,7 +228,7 @@ async function renderQuestion(): Promise<void> {
     wrongBtn.disabled = true;
     getResults(sprintGame.gameWords, "sprint");
     return;
-  }
+  };
   await disableButtons();
   const questionNumber: string = `${sprintGame.gameOptions[5]}${sprintGame.count + 1}/${sprintGame.gameWords.length}`;
   const content: string = `
@@ -243,14 +243,14 @@ async function renderQuestion(): Promise<void> {
   questionNumberArea.innerHTML = questionNumber;
   if (gameArea) {
     gameArea.innerHTML = content;
-  }
+  };
   sprintGame.count++;
-}
+};
 
 async function shuffle(array: Array<IGameWord>): Promise<void> {
   array.sort(() => Math.random() - 0.5);
   await renderQuestion();
-}
+};
 
 function highlightAnswer(color: string): void {
   const answerArea = document.querySelector(".question-area") as HTMLElement;
@@ -258,7 +258,7 @@ function highlightAnswer(color: string): void {
   setTimeout(() => {
     answerArea.classList.remove(`active-area-${color}`);
   }, 1000);
-}
+};
 
 function timer(value: number): void {
   timerId = setInterval(() => {
@@ -267,9 +267,9 @@ function timer(value: number): void {
       document.removeEventListener("keydown", keyboardControl);
       sprintGame.allAnswers = sprintGame.gameWords.length;
       getResults(sprintGame.gameWords, "sprint");
-    }
+    };
     const timerWindow = document.querySelector(".timer-sprint") as HTMLElement;
     timerWindow.innerHTML = String(value).padStart(2, "0");
     value--;
   }, 1000);
-}
+};
