@@ -12,30 +12,36 @@ function renderAudiochallengeQuestion(words: IWord[], answers: number[]) {
 };
 
 export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<void> {
-  audiochallengeSettings.gameWords = newWordArr;
-  const content: string = `<div class="audiochallenge-container">
-      <div class="hearts-container">
-        <div class="heart broken"></div>
-        <div class="heart broken"></div>
-        <div class="heart broken"></div>
-        <div class="heart broken"></div>
-        <div class="heart broken"></div>
-      </div>
-      <div class="listen-btn"></div>
-      <div class="btns-container">
-        <div class="answers-btn-container">
-
+  const main: HTMLElement = document.querySelector('.main') as HTMLElement;
+  const noWords: string = '<div class="аnnouncement">Not enough words to play on this page. Continue learning new words.</div>';
+  if (newWordArr.length <= 1) {
+    main.innerHTML = noWords;
+  } else {
+    audiochallengeSettings.gameWords = newWordArr;
+    const content: string = `<div class="audiochallenge-container">
+        <div class="hearts-container">
+          <div class="heart broken"></div>
+          <div class="heart broken"></div>
+          <div class="heart broken"></div>
+          <div class="heart broken"></div>
+          <div class="heart broken"></div>
         </div>
-        <div class="not-to-know-btn">I don't know</div>
-        <div class="next-question-btn disable">NEXT</div>
-      </div>
-    </div>`;
-
-  const main = document.querySelector('.main') as HTMLElement;
-  main.innerHTML = content;
-  audiochallengeSettings.allAnswers = newWordArr.length;
-  createQuestion(newWordArr, audiochallengeSettings.questionNum);
-  brokeHeart();
+        <div class="listen-btn"></div>
+        <div class="btns-container">
+          <div class="answers-btn-container">
+  
+          </div>
+          <div class="not-to-know-btn">I don't know</div>
+          <div class="next-question-btn disable">NEXT</div>
+        </div>
+      </div>`;
+  
+  
+    main.innerHTML = content;
+    audiochallengeSettings.allAnswers = newWordArr.length;
+    createQuestion(newWordArr, audiochallengeSettings.questionNum);
+    brokeHeart();
+  }
 };
 
 function brokeHeart(): void {

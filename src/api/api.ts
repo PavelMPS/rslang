@@ -1,5 +1,4 @@
-import { filters, optionFilter } from "../constants/constants";
-import { path } from '../constants/constants';
+import { filters, optionFilter, path } from '../constants/constants';
 import { createStatistic } from "../utilits/utilits";
 
 export async function getWords(group: number, page: number): Promise<IWord[]> {
