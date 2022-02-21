@@ -40,7 +40,7 @@ export async function renderAboutUsBlock(): Promise<void> {
               <div class="github-nickname">AlexJester147</div>
             </a>
           </div>
-        <div class="person-info">Create app start page, authorization and logout block and About Us page, design statistics page</div>
+        <div class="person-info">Create app start page, authorization, logout block and About Us page, design statistics page</div>
       </div>
       </div>
     </section>
