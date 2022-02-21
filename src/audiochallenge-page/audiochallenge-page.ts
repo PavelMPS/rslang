@@ -13,7 +13,7 @@ function renderAudiochallengeQuestion(words: IWord[], answers: number[]) {
 
 export async function renderAudiochallengePage(newWordArr: IWord[]): Promise<void> {
   audiochallengeSettings.gameWords = newWordArr;
-  const content: string = `    <div class="audiochallenge-container">
+  const content: string = `<div class="audiochallenge-container">
       <div class="hearts-container">
         <div class="heart broken"></div>
         <div class="heart broken"></div>

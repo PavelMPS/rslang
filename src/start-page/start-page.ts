@@ -64,7 +64,7 @@ export function renderStartPage(): void {
   <a href="https://rs.school/js/" target="_blank">
       <img class="rsschool-img" src="https://rs.school/images/rs_school_js.svg" alt="RSSchool">
   </a>
-</footer>`;
+</footer>` as string;
   const body = document.querySelector('.body') as HTMLElement;
   body.innerHTML = startPage;
   const burger = document.querySelector('.burger') as HTMLElement;
