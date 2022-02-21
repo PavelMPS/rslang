@@ -221,6 +221,18 @@
     }
 }
 
+@media (max-width:660px) {
+    .main {
+        padding-bottom: 130px;
+    }
+}
+
+@media (max-width:500px) {
+    .main {
+        padding-bottom: 180px;
+    }
+}
+
 .game-caption {
     text-align: center;
     margin-top: 20px;
