@@ -129,7 +129,6 @@
   transition: all 0.4s;
 }
 
-
 /* results */
 .results-container {
   display: block;
@@ -208,12 +207,12 @@
   font-size: 32px;
   line-height: 50px;
   text-align: center;
-  transition: all .4s;
+  transition: all 0.4s;
   cursor: pointer;
 }
 
 .try-again-btn:hover {
-  transition: all .4s;
+  transition: all 0.4s;
   transform: scale(1.2);
 }
 

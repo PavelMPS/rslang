@@ -1,25 +1,25 @@
-@import './normalize.css';
+@import "./normalize.css";
 
 @font-face {
-	font-family: 'Architects Daughter';
-	src: url('./assets/fonts/ArchitectsDaughter-Regular.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
+  font-family: "Architects Daughter";
+  src: url("./assets/fonts/ArchitectsDaughter-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: 'JakobCTT';
-	font-style: normal;
-	font-weight: 400;
-	src: url('./assets/fonts/JakobCTT.ttf') format('truetype');
+  font-family: "JakobCTT";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./assets/fonts/JakobCTT.ttf") format("truetype");
 }
 
 html {
-	height: 100%;
+  height: 100%;
 }
 
 .body {
-	font-family: 'Architects Daughter', 'JakobCTT';
-	height: inherit;
-	margin: auto;
+  font-family: "Architects Daughter", "JakobCTT";
+  height: inherit;
+  margin: auto;
 }

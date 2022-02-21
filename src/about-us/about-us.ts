@@ -15,7 +15,7 @@ export async function renderAboutUsBlock(): Promise<void> {
             </a>
           </div>
           <div class="person-info">
-            Team Lead of your crew ;) Pavel create sprint and statistics page logic, sprint game design
+            Team Lead of our crew ;) Pavel create sprint and statistics page logic, sprint game design
           </div>
         </div>
       </div>

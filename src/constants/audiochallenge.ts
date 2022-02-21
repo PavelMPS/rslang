@@ -12,7 +12,7 @@ export const audiochallengeSettings: IAudiochallenge = {
   fromTextbook: true,
 };
 
-export const audiochallengeDescription = `<div class="game-describe">"Audiochallenge" is a workout that improves listening comprehension.</div>
+export const audiochallengeDescription: string = `<div class="game-describe">"Audiochallenge" is a workout that improves listening comprehension.</div>
   <ul>
     <li>Use the mouse to select.</li>
     <li>Use number keys from 1 to 5 to select an answer.</li>

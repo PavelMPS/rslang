@@ -20,7 +20,7 @@
   width: 50%;
   text-align: center;
   background-color: rgb(255 156 61);
-  font-family: 'Architects Daughter';
+  font-family: "Architects Daughter";
   font-size: 24px;
 }
 
@@ -74,7 +74,7 @@
 
 .register-submit:hover,
 .sign-submit:hover {
-  transition: all .5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .form-block {
@@ -87,7 +87,7 @@
   border-radius: 7px;
   margin-bottom: 5px;
   color: black;
-  background-color: #FFF;
+  background-color: #fff;
   box-sizing: border-box;
   color: #000;
   font-size: 18px;
@@ -136,12 +136,11 @@
 
 .logout-text {
   font-size: 24px;
-  font-family: 'Architects Daughter';
+  font-family: "Architects Daughter";
   margin-bottom: 50px;
 }
 
-@media (max-width:600px) {
-
+@media (max-width: 600px) {
   .register-form,
   .sign-form {
     margin: 40px;
