@@ -130,7 +130,7 @@ function createTextbookContent(words: IWord[]): string {
         <div class="heavy-btn disable"></div>
         <div class="learned-btn disable"></div>
       </div>
-    </div>`;
+    </div>` as string;
   });
   return textForInput;
 };
@@ -159,7 +159,7 @@ function createDifficultContent(words: IAgregetedWord[]): string {
         <div class="heavy-btn disable"></div>
         <div class="learned-btn disable"></div>
       </div>
-    </div>`;
+    </div>` as string;
   });
   return textForInput;
 };

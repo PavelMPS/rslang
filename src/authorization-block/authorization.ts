@@ -19,7 +19,7 @@ export async function renderAuthorizationBlock(): Promise<void> {
     <div class="sign-block"></div>
   </div>
   </div> 
-  </div>`;
+  </div>` as string;
 };
 
 export async function renderRegistrationBlock(): Promise<void> {
@@ -43,7 +43,7 @@ export async function renderRegistrationBlock(): Promise<void> {
           <input class="register-submit" type="button" value="Register">
           <div class="registration-success"></div>
         </div>
-    </form>`;
+    </form>` as string;
 };
 
 export async function renderSignBlock(): Promise<void> {
@@ -63,7 +63,7 @@ export async function renderSignBlock(): Promise<void> {
       <input class="sign-submit" type="button" value="Sign in">
       <div class="sign-success"></div>
     </div>
-  </form>`;
+  </form>` as string;
 };
 
 export async function renderLogoutBlock(): Promise<void> {
@@ -79,7 +79,7 @@ export async function renderLogoutBlock(): Promise<void> {
           <div class="logout-button" id="logout-stay">No</div>
         </div>
       </div>
-    </div>`;
+    </div>` as string;
 };
 
 export const createUser = async (user: IRegisterUser): Promise<void> => {
