@@ -1,4 +1,3 @@
-import { loginUser } from "../authorization-block/authorization";
 import { filters, optionFilter } from "../constants/constants";
 import { createStatistic } from "../utilits/utilits";
 
@@ -103,10 +102,8 @@ export async function getStatistics(userId: string | null): Promise<IStatistics 
   switch (response.status) {
     case 401:
       if (userId && localStorage.getItem('Your refreshToken')) {
-        console.log('relogin');
         const pass:string | null = localStorage.getItem('password');
         const email: string | null = localStorage.getItem('email');
-        console.log(pass, email);
         if (pass && email)
         await reLogin({ "email": email, "password": pass});
         break;
@@ -169,33 +166,10 @@ export async function getUserAggregatedWords(filterOption: string, group?: numbe
     },
   }); 
   const content: IAgregetedWordArr = await res.json();
-  console.log(content);
   return content[0].paginatedResults;
 }
 
-async function getNewToken(userId: string): Promise<void> {
-  let refreshToken: string = '';
-  if (localStorage.getItem('Your refreshToken')) {
-    refreshToken = localStorage.getItem('Your refreshToken') as string;
-  }
-  const res: Response = await fetch(`${path}/users/${userId}/tokens`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${refreshToken}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-  const content: IUserInfo = await res.json();
-  localStorage.setItem('Name', content.name);
-  localStorage.setItem('Message', content.message);
-  localStorage.setItem('Your token', content.token);
-  localStorage.setItem('Your userId', content.userId);
-  localStorage.setItem('Your refreshToken', content.refreshToken);
-}
-
-async function reLogin(user: ISignUser): Promise<void> {
-  const userId: string | null= localStorage.getItem('Your userId');
+export async function reLogin(user: ISignUser): Promise<void> {
   const rawResponse: Response = await fetch(`${path}/signin`, {
     method: 'POST',
     headers: {
@@ -204,11 +178,10 @@ async function reLogin(user: ISignUser): Promise<void> {
     },
     body: JSON.stringify(user)
   });
-  const content = await rawResponse.json();
+  const content: IUserInfo = await rawResponse.json();
   localStorage.setItem('Name', content.name);
-      localStorage.setItem('Message', content.message);
-      localStorage.setItem('Your token', content.token);
-      localStorage.setItem('Your refreshToken', content.refreshToken);
-      localStorage.setItem('Your userId', content.userId);
-  console.log('relogin', rawResponse);
+  localStorage.setItem('Message', content.message);
+  localStorage.setItem('Your token', content.token);
+  localStorage.setItem('Your refreshToken', content.refreshToken);
+  localStorage.setItem('Your userId', content.userId);
 }
