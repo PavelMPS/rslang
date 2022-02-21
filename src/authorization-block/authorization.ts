@@ -2,14 +2,7 @@ import './authorization.css';
 import { getStatistics } from '../api/api';
 import { path } from '../constants/constants';
 import { showHideAuthButtons } from '../listen/authorization-listen';
-
-const emailExistsError = 'User with this e-mail exists' as string;
-const registrationSuccessText = 'Registration is done! Please sign up ;)' as string;
-const notRegisteredEmailText = 'This email is not registered' as string;
-const writeEmailCaption = 'Please, write correct email' as string;
-const signSuccessText = 'Success!' as string;
-const signPasswordEmailError = 'Incorrect e-mail or password' as string;
-let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+import { emailExistsError, registrationSuccessText, notRegisteredEmailText, writeEmailCaption, signSuccessText, signPasswordEmailError, reg } from '../constants/auth';
 
 export async function renderAuthorizationBlock(): Promise<void> {
   const authorizationBlock = document.querySelector('.authorization-block') as HTMLElement;
