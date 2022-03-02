@@ -46,6 +46,7 @@
 .prev-page.disable:hover,
 .next-page.disable:hover {
   opacity: 0.5;
+  cursor: auto;
 }
 
 .prev-page {
@@ -77,6 +78,11 @@
   transform: translate(0%, -50%);
   right: 30px;
   z-index: 10;
+  transition: 0.1s;
+}
+.game-container.disable {
+  display: none;
+  transition: 0.1s;
 }
 
 .sprint-btn:hover,

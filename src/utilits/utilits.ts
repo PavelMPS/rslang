@@ -222,21 +222,25 @@ function tryAgain(game: string): void {
   if (game === sprint) {
     if (sprintGame.fromTextbook) {
       tryAgainBtn.addEventListener('click', async (): Promise<void> => {
+        resetGame(game);
         await startGameSprint(textbookSettings.group, textbookSettings.page);
       });
     } else {
       tryAgainBtn.addEventListener('click', (): void => {
+        resetGame(game);
         renderGroupSelectionPage(game);
       });
     };
   } else {
     if (sprintGame.fromTextbook) {
       tryAgainBtn.addEventListener('click', async (): Promise<void> => {
+        resetGame(game);
         const arr = await getQuestionArr(textbookSettings.group, game, textbookSettings.page)
         renderAudiochallengePage(arr);
       });
     } else {
       tryAgainBtn.addEventListener('click', (): void => {
+        resetGame(game);
         renderGroupSelectionPage(game);
       });
     };
@@ -294,10 +298,10 @@ function createResults(game: string): void {
   } else if (game === audiochallenge && audiochallengeSettings.lives === minScore) {
     resultTitle.innerHTML = badResultsAudio;
     resultImg.classList.add('bad-result-img');
-  } else if (game === sprint && sprintGame.score >= averegeSprintGameScore) {
+  } else if (game === sprint && (sprintGame.rightAnswers / sprintGame.allAnswers) >= averegeSprintGameScore) {
     resultTitle.innerHTML = goodResultsSprint;
     resultImg.classList.add('good-result-img');
-  } else if (game === sprint && sprintGame.score < averegeSprintGameScore) {
+  } else if (game === sprint && (sprintGame.rightAnswers / sprintGame.allAnswers) < averegeSprintGameScore) {
     resultTitle.innerHTML = badResultsSprint;
     resultImg.classList.add('bad-result-img');
   };

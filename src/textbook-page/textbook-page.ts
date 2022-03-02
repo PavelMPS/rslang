@@ -1,6 +1,6 @@
 import { getWords, getUserWords, getUserWord, updateUserWord, createUserWord, getStatistics, updateStatistics, getUserAggregatedWords } from '../api/api';
-import { createAydio, getQuestionArr, playAudio } from '../utilits/utilits';
-import { audiochallenge, difficultHeavy, difficultWeak, optionFilter, path } from '../constants/constants';
+import { createAydio, getQuestionArr, playAudio, resetGame } from '../utilits/utilits';
+import { audiochallenge, sprint, difficultHeavy, difficultWeak, optionFilter, path } from '../constants/constants';
 import { startGameSprint } from '../sprint-game/sprint-game';
 import { renderAudiochallengePage } from '../audiochallenge-page/audiochallenge-page';
 import { audiochallengeSettings } from '../constants/audiochallenge';
@@ -222,10 +222,11 @@ async function renderTextbookContent(): Promise<void> {
       if (count === wordCards.length) {
         page.classList.add('learned');
         pageNum.classList.add('learned');
+        gameContainer.classList.add('disable');
       } else {
         page.classList.remove('learned');
-        gameContainer.style.opacity = '1';
         pageNum.classList.remove('learned');
+        gameContainer.classList.remove('disable');
       };
     });
 
@@ -245,18 +246,18 @@ async function renderTextbookContent(): Promise<void> {
   });
   if (count === 20) {
     page.classList.add('learned');
-    gameContainer.style.opacity = '0';
+    gameContainer.classList.add('disable');
     pageNum.classList.add('learned');
   } else {
     page.classList.remove('learned');
-    gameContainer.style.opacity = '1';
+    gameContainer.classList.remove('disable');
     pageNum.classList.remove('learned');
   };
 
   if (textbookSettings.group === 6) {
     const nav = document.querySelector('.page-nav') as HTMLElement;
     nav.style.opacity = '0';
-    gameContainer.style.opacity = '0';
+    gameContainer.classList.add('disable');
   };
   localStorage.setItem('Textbook', JSON.stringify(textbookSettings));
 };
@@ -356,28 +357,33 @@ export async function renderTextbookPage(): Promise<void> {
     bookmarkEl.addEventListener('click', (): void => goToGroup(bookmarkEl));
   });
   const prevBTN = document.querySelector('.prev-page') as HTMLElement;
-  if (!prevBTN.classList.contains('disable')) {
-    prevBTN.addEventListener('click', toPrevPage);
-  };
   const nextBTN = document.querySelector('.next-page') as HTMLElement;
-  if (!nextBTN.classList.contains('disable')) {
-    nextBTN.addEventListener('click', toNextPage);
-  };
+
   if (textbookSettings.page === 0) {
     prevBTN.classList.add('disable');
   };
   if (textbookSettings.page === maxPageNum) {
     nextBTN.classList.add('disable');
   };
+
+  if (!prevBTN.classList.contains('disable')) {
+    prevBTN.addEventListener('click', toPrevPage);
+  };
+  if (!nextBTN.classList.contains('disable')) {
+    nextBTN.addEventListener('click', toNextPage);
+  };
+
   const sprintBTN = document.querySelector('.sprint-btn') as HTMLElement;
   sprintBTN.addEventListener('click', async (): Promise<void> => {
+    resetGame(sprint);
     await startGameSprint(textbookSettings.group, textbookSettings.page);
     sprintGame.fromTextbook = true;
   });
   const audiocallBTN: HTMLElement = document.querySelector('.audio-call-btn') as HTMLElement;
   audiocallBTN.addEventListener('click', async (): Promise<void> => {
+    resetGame(audiochallenge);
     const arr: IWord[] = await getQuestionArr(textbookSettings.group, audiochallenge, textbookSettings.page)
-    renderAudiochallengePage(arr);
+    await renderAudiochallengePage(arr);
     audiochallengeSettings.fromTextbook = true;
   });
 };

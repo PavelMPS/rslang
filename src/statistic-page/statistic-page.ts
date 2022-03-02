@@ -1,7 +1,8 @@
 import { getStatistics } from "../api/api";
 import { statisticOptions } from "../constants/statistic";
-import "../statistic-page/statistic-page.css";
 import { createStatistic } from "../utilits/utilits";
+
+import "../statistic-page/statistic-page.css";
 
 export async function renderStatisticPage(): Promise<void> {
   const main: HTMLElement | null = document.querySelector(".main");
@@ -52,7 +53,7 @@ export async function renderStatisticPage(): Promise<void> {
     } else if (sprintRightAnswersPercent > 0 && audiochallengeRightAnswersPercent === 0) {
       totalRightPercent = sprintRightAnswersPercent;
     } else {
-      totalRightPercent = (sprintRightAnswersPercent + audiochallengeRightAnswersPercent) / 2;
+      totalRightPercent = Math.round((statisticInfo.optional.sprint.rightAnswers + statisticInfo.optional.audiochallenge.rightAnswers) / (statisticInfo.optional.sprint.allAnswers + statisticInfo.optional.audiochallenge.allAnswers) * statisticOptions.percentCoefficient);
     }
     const content: string = `
     <div class="group-select-page">
